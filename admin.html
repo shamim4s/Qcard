@@ -231,6 +231,7 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
+
 window.handleCredentialResponse = function(response) {
   rawGoogleIdToken = response.credential;
   localStorage.setItem("qcard_auth_token", rawGoogleIdToken);
@@ -241,13 +242,29 @@ window.handleCredentialResponse = function(response) {
   initAuthUI();
 };
 
+function isTokenExpired(token) {
+  if (!token) return true;
+  try {
+    const payload = parseJwt(token);
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp && payload.exp < now;
+  } catch (e) {
+    return true;
+  }
+}
+
 function initAuthUI() {
-  if (rawGoogleIdToken && loggedInUserEmail) {
+  if (rawGoogleIdToken && !isTokenExpired(rawGoogleIdToken)) {
     $("authOverlay").classList.add("hidden");
     $("userBar").classList.remove("hidden");
     $("currentUserEmail").textContent = loggedInUserEmail;
     loadProfilesTable();
   } else {
+    // Token missing or expired: show login overlay
+    localStorage.removeItem("qcard_auth_token");
+    localStorage.removeItem("qcard_auth_email");
+    rawGoogleIdToken = "";
+    loggedInUserEmail = "";
     $("authOverlay").classList.remove("hidden");
     $("userBar").classList.add("hidden");
   }
