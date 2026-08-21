@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Split Text into 49,000 Characters</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    textarea {
+        width: 100%;
+        height: 250px;
+        box-sizing: border-box;
+        padding: 12px;
+        font-family: monospace;
+        font-size: 14px;
+        resize: vertical;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    button {
+        margin-top: 12px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #1a73e8;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1557b0;
+    }
+
+    .stats {
+        margin: 15px 0;
+        padding: 12px;
+        background: #f1f3f4;
+        border-radius: 6px;
+    }
+
+    .part {
+        margin-top: 20px;
+    }
+
+    .part-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .part textarea {
+        height: 120px;
+    }
+
+    .copy {
+        background: #34a853;
+        margin-top: 5px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Split Text into 49,000 Characters</h2>
+
+    <p>
+        Paste your Base64 / letters + digits text below:
+    </p>
+
+    <textarea
+        id="input"
+        placeholder="Paste your Base64 text here..."
+    ></textarea>
+
+    <br>
+
+    <button onclick="splitText()">
+        Split into 49,000 Character Parts
+    </button>
+
+    <div id="stats"></div>
+    <button onclick="copyAllParts()">
+    Copy All Parts
+	</button>
+
+    <div id="output"></div>
+
+</div>
+
+<script>
+
+function splitText() {
+
+    const text = document.getElementById("input").value;
+
+    const chunkSize = 49000;
+
+    if (!text) {
+        alert("Please paste your text first.");
+        return;
+    }
+
+    const totalCharacters = text.length;
+
+    const totalParts = Math.ceil(totalCharacters / chunkSize);
+
+    document.getElementById("stats").innerHTML = `
+        <div class="stats">
+            <b>Total characters:</b> ${totalCharacters.toLocaleString()}<br>
+            <b>Chunk size:</b> ${chunkSize.toLocaleString()}<br>
+            <b>Total parts:</b> ${totalParts.toLocaleString()}
+        </div>
+    `;
+
+    const output = document.getElementById("output");
+
+    output.innerHTML = "";
+
+    for (let i = 0; i < totalParts; i++) {
+
+        const start = i * chunkSize;
+
+        const end = Math.min(
+            start + chunkSize,
+            totalCharacters
+        );
+
+        const part = text.slice(start, end);
+
+        const div = document.createElement("div");
+
+        div.className = "part";
+
+        div.innerHTML = `
+            <div class="part-title">
+                Part ${i + 1}
+                — ${part.length.toLocaleString()} characters
+            </div>
+
+            <textarea id="part${i}" readonly></textarea>
+
+            <br>
+
+            <button
+                class="copy"
+                onclick="copyPart(${i})">
+                Copy Part ${i + 1}
+            </button>
+        `;
+
+        output.appendChild(div);
+
+        document.getElementById(`part${i}`).value = part;
+    }
+}
+
+
+function copyPart(index) {
+
+    const textarea = document.getElementById(`part${index}`);
+
+    navigator.clipboard.writeText(textarea.value)
+        .then(() => {
+            alert(`Part ${index + 1} copied!`);
+        })
+        .catch(() => {
+            textarea.select();
+            document.execCommand("copy");
+            alert(`Part ${index + 1} copied!`);
+        });
+}
+
+function copyAllParts() {
+
+    const text = document.getElementById("input").value;
+    const chunkSize = 49000;
+
+    if (!text) {
+        alert("Please paste your text first.");
+        return;
+    }
+
+    let parts = [];
+
+    for (let i = 0; i < text.length; i += chunkSize) {
+        parts.push(text.slice(i, i + chunkSize));
+    }
+
+    // IMPORTANT:
+    // Use newline only — NO tab.
+    const allParts = parts.join("\n");
+
+    navigator.clipboard.writeText(allParts)
+        .then(() => {
+            alert(
+                parts.length +
+                " parts copied!\n\n" +
+                "Paste into Excel or Google Sheets."
+            );
+        })
+        .catch(() => {
+
+            const textarea = document.createElement("textarea");
+
+            textarea.value = allParts;
+
+            document.body.appendChild(textarea);
+
+            textarea.select();
+
+            document.execCommand("copy");
+
+            document.body.removeChild(textarea);
+
+            alert(
+                parts.length +
+                " parts copied!\n\n" +
+                "Paste into Excel or Google Sheets."
+            );
+        });
+}
+
+</script>
+
+</body>
+</html>
