@@ -243,7 +243,7 @@ function getProfileUrl(slug) {
 }
 
 // In-Browser Image to WebP Base64 Converter
-function processImageToWebPBase64(file, maxWidth = 300, quality = 0.8) {
+function processImageToWebPBase64(file, maxWidth = 720, quality = 0.9) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
     const reader = new FileReader();
