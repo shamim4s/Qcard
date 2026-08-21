@@ -12,7 +12,6 @@
 <script>
 "use strict";
 
-// REPLACE THIS WITH YOUR DEPLOYED WEB APP URL
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
 
 const app = document.getElementById("app");
@@ -82,12 +81,21 @@ function saveContact(profile) {
 
 async function loadProfile() {
   if (!id) throw new Error("No profile ID was supplied.");
-  const response = await fetch(`${APPS_SCRIPT_URL}?action=read&id=${encodeURIComponent(id)}`);
+  const response = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "read",
+      origin: window.location.href,
+      id: encodeURIComponent(id)
+    }),
+    redirect: "follow"
+  });
   const json = await response.json();
   if (json.status === "success" && json.data) {
     return json.data;
   }
-  throw new Error("Profile not found in Google Sheets.");
+  throw new Error(json.message || "Profile not found in Google Sheets.");
 }
 
 const SOCIAL_META = {
