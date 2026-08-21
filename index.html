@@ -81,7 +81,6 @@ function saveContact(profile) {
 
 async function loadProfile() {
   if (!id) {
-    // If no ?id= parameter, redirect to the admin management page
     window.location.href = "admin.html";
     return;
   }

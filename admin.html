@@ -215,9 +215,10 @@ let currentVCard = "";
 let currentProfileUrl = "";
 let currentMode = "online";
 let cachedPhotoBase64 = "";
+
+let rawGoogleIdToken = localStorage.getItem("qcard_auth_token") || "";
 let loggedInUserEmail = localStorage.getItem("qcard_auth_email") || "";
 
-// Random 3-character alphanumeric suffix tracker
 let currentRandomSuffix = "";
 let isCustomSlugManuallyEdited = false;
 let isEditMode = false;
@@ -231,14 +232,17 @@ function parseJwt(token) {
 }
 
 window.handleCredentialResponse = function(response) {
-  const user = parseJwt(response.credential);
+  rawGoogleIdToken = response.credential;
+  localStorage.setItem("qcard_auth_token", rawGoogleIdToken);
+  
+  const user = parseJwt(rawGoogleIdToken);
   loggedInUserEmail = user.email.toLowerCase().trim();
   localStorage.setItem("qcard_auth_email", loggedInUserEmail);
   initAuthUI();
 };
 
 function initAuthUI() {
-  if (loggedInUserEmail) {
+  if (rawGoogleIdToken && loggedInUserEmail) {
     $("authOverlay").classList.add("hidden");
     $("userBar").classList.remove("hidden");
     $("currentUserEmail").textContent = loggedInUserEmail;
@@ -250,7 +254,9 @@ function initAuthUI() {
 }
 
 function logout() {
+  localStorage.removeItem("qcard_auth_token");
   localStorage.removeItem("qcard_auth_email");
+  rawGoogleIdToken = "";
   loggedInUserEmail = "";
   location.reload();
 }
@@ -275,7 +281,6 @@ function normalizeSlug(value) {
   return String(value || "").trim().replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);
 }
 
-// Generate 3-character random letters/numbers (e.g. A8k)
 function generateRandom3Char() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
@@ -285,7 +290,6 @@ function generateRandom3Char() {
   return result;
 }
 
-// Update Slug in Real-Time
 function updateRealtimeSlug() {
   if (isEditMode || isCustomSlugManuallyEdited) return;
 
@@ -294,7 +298,6 @@ function updateRealtimeSlug() {
   }
 
   const rawName = $("name").value || "";
-  // Strip spaces & special characters from multiple words
   const cleanName = rawName.replace(/[^a-zA-Z0-9]/g, "");
 
   if (cleanName.length > 0) {
@@ -304,7 +307,6 @@ function updateRealtimeSlug() {
   }
 }
 
-// Event Listeners for Dynamic Slug Generation
 $("name").addEventListener("input", () => {
   updateRealtimeSlug();
   $("previewName").textContent = $("name").value.trim() || "Your Name";
@@ -468,7 +470,7 @@ function buildProfile() {
 }
 
 async function generate() {
-  if (!loggedInUserEmail) {
+  if (!rawGoogleIdToken) {
     $("authOverlay").classList.remove("hidden");
     return;
   }
@@ -521,7 +523,7 @@ async function generate() {
         body: JSON.stringify({
           action: "save",
           origin: window.location.href,
-          userEmail: loggedInUserEmail,
+          id_token: rawGoogleIdToken,
           data: profile
         }),
         redirect: "follow"
@@ -548,7 +550,7 @@ async function generate() {
 }
 
 async function loadProfilesTable() {
-  if (!loggedInUserEmail) return;
+  if (!rawGoogleIdToken) return;
   const tbody = $("profilesTableBody");
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -557,7 +559,7 @@ async function loadProfilesTable() {
       body: JSON.stringify({
         action: "read",
         origin: window.location.href,
-        userEmail: loggedInUserEmail
+        id_token: rawGoogleIdToken
       }),
       redirect: "follow"
     });
@@ -639,7 +641,7 @@ window.deleteProfile = async function(id) {
     body: JSON.stringify({
       action: "delete",
       origin: window.location.href,
-      userEmail: loggedInUserEmail,
+      id_token: rawGoogleIdToken,
       id
     }),
     redirect: "follow"
