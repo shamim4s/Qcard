@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Profile</title>
+<title>Contact Profile - Qcard by Shamim4s</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -80,7 +80,11 @@ function saveContact(profile) {
 }
 
 async function loadProfile() {
-  if (!id) throw new Error("No profile ID was supplied.");
+  if (!id) {
+    // If no ?id= parameter, redirect to the admin management page
+    window.location.href = "admin.html";
+    return;
+  }
   const response = await fetch(APPS_SCRIPT_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -120,6 +124,7 @@ function socialLinks(profile) {
 }
 
 function renderProfile(profile) {
+  if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
   const phoneLink = profile.phone

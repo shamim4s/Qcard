@@ -26,8 +26,10 @@
     <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" class="eyebrow" style="text-decoration:none;">Qcard by Shamim4s</a>
     <h2 style="margin: 12px 0 6px 0;">Sign In Required</h2>
     <p class="muted" style="margin-bottom: 20px;">Sign in with Google to manage and edit your accessible profiles.</p>
+    
+    <!-- PASTE YOUR ACTUAL GOOGLE CLIENT ID BELOW -->
     <div id="g_id_onload"
-         data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+         data-client_id="378132733460-p0ptv54u1m3buaetfimuoo6iua43b1b5.apps.googleusercontent.com"
          data-callback="handleCredentialResponse"
          data-auto_prompt="false">
     </div>
@@ -217,7 +219,6 @@ let loggedInUserEmail = localStorage.getItem("qcard_auth_email") || "";
 
 const $ = id => document.getElementById(id);
 
-// Google Sign-In Callback
 function parseJwt(token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
