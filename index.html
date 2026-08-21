@@ -12,8 +12,8 @@
 <script>
 "use strict";
 
-// SET YOUR APPS SCRIPT URL HERE
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
+// REPLACE THIS WITH YOUR DEPLOYED WEB APP URL
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec";
 
 const app = document.getElementById("app");
 const params = new URLSearchParams(window.location.search);
@@ -43,13 +43,15 @@ function createVCard(profile) {
     .filter(Boolean)
     .map((address, index) => `ADR;TYPE=${index === 0 ? "HOME" : index === 1 ? "WORK" : "OTHER"}:;;${escapeVCard(address)};;;;`);
   
-  const social = profile.social || {};
-  const socialLines = [
-    ["LinkedIn", social.linkedin], ["WeChat", social.wechat], ["Facebook", social.facebook],
-    ["Instagram", social.instagram], ["X", social.x], ["TikTok", social.tiktok], ["YouTube", social.youtube]
-  ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
+  const photo = (profile.photo && profile.photo.includes(",")) 
+    ? `PHOTO;ENCODING=b;TYPE=JPEG:${String(profile.photo).split(",")[1]}` 
+    : "";
 
-  const photo = profile.photo ? `PHOTO;ENCODING=b;TYPE=WEBP:${String(profile.photo).split(",")[1]}` : "";
+  const socialLines = [
+    ["LinkedIn", profile.linkedin], ["WeChat", profile.wechat], ["Facebook", profile.facebook],
+    ["Instagram", profile.instagram], ["X", profile.x], ["TikTok", profile.tiktok],
+    ["YouTube", profile.youtube], ["GitHub", profile.github]
+  ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
 
   return [
     "BEGIN:VCARD","VERSION:3.0",
@@ -73,7 +75,7 @@ function saveContact(profile) {
   const blob = new Blob([createVCard(profile)], {type:"text/vcard;charset=utf-8"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url; a.download = profile.id + "-contact.vcf";
+  a.href = url; a.download = (profile.id || "contact") + ".vcf";
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
@@ -95,14 +97,14 @@ const SOCIAL_META = {
   instagram: {label:"Instagram", icon:"◎"},
   x: {label:"X", icon:"𝕏"},
   tiktok: {label:"TikTok", icon:"♪"},
-  youtube: {label:"YouTube", icon:"▶"}
+  youtube: {label:"YouTube", icon:"▶"},
+  github: {label:"GitHub", icon:"⌨"}
 };
 
 function socialLinks(profile) {
-  const social = profile.social || {};
-  return Object.keys(SOCIAL_META).filter(key => social[key]).map(key => {
+  return Object.keys(SOCIAL_META).filter(key => profile[key]).map(key => {
     const meta = SOCIAL_META[key];
-    const url = normalizeWebsite(social[key]);
+    const url = normalizeWebsite(profile[key]);
     return `<a class="social-link social-${key}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" aria-label="${meta.label}" title="${meta.label}">
       <span class="social-icon">${meta.icon}</span><span>${meta.label}</span>
     </a>`;
@@ -110,7 +112,7 @@ function socialLinks(profile) {
 }
 
 function renderProfile(profile) {
-  document.title = profile.name || "Contact Profile";
+  document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
   const phoneLink = profile.phone
     ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.phone)}">${escapeHTML(profile.phone)}</a></div>` : "";
@@ -123,7 +125,7 @@ function renderProfile(profile) {
   const companyRow = profile.company
     ? `<div class="contact-row"><span>🏢</span><span>${escapeHTML(profile.company)}</span></div>` : "";
 
-  const address = profile.address1 || profile.address2 || profile.address3
+  const address = (profile.address1 || profile.address2 || profile.address3)
     ? `<section class="profile-section"><h3>Address</h3>
         ${profile.address1 ? `<div>${escapeHTML(profile.address1)}</div>` : ''}
         ${profile.address2 ? `<div>${escapeHTML(profile.address2)}</div>` : ''}
@@ -164,7 +166,7 @@ function renderProfile(profile) {
         ${about}
         ${additional}
         ${socials}
-        <div class="profile-footer">Powered by ProfileQR</div>
+        <div class="profile-footer">Powered by <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;">Shamim4s</a></div>
       </main>
     </div>`;
 
