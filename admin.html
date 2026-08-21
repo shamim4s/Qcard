@@ -180,7 +180,7 @@
 "use strict";
 
 // SET YOUR APPS SCRIPT URL HERE
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwttZuC9YRHZlYT3QMBZF3XE1pK-9YPWk4AfN3MW4vzOI0mvsvkwiB4oDo7wb_HlPDm/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
 
 let currentProfile = null;
 let currentVCard = "";
@@ -417,10 +417,17 @@ async function generate() {
       $("onlineResult").textContent = "Saving to Google Sheets...";
       $("onlineResult").classList.remove("hidden");
 
-      // Save via Google Apps Script
+      // Save via Google Apps Script (Bypasses CORS payload drops)
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "save", data: profile })
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({ 
+          action: "save", 
+          data: profile 
+        }),
+        redirect: "follow"
       });
       const resJson = await res.json();
 
@@ -517,7 +524,11 @@ window.deleteProfile = async function(id) {
   if (!confirm(`Delete profile "${id}" from Google Sheet?`)) return;
   await fetch(APPS_SCRIPT_URL, {
     method: "POST",
-    body: JSON.stringify({ action: "delete", id })
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({ action: "delete", id }),
+    redirect: "follow"
   });
   loadProfilesTable();
 };
