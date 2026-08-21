@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 16px; }
+    .card { background: white; width: 100%; max-width: 360px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; padding: 32px 24px; }
+    .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    h2 { margin: 0 0 4px 0; color: #111; }
+    p.title { margin: 0 0 20px 0; color: #666; font-size: 14px; font-weight: 500; }
+    .contact-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .contact-item span { color: #888; }
+    .contact-item a { color: #0070f3; text-decoration: none; font-weight: 500; }
+    .loading { color: #777; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<div class="card" id="profileCard">
+  <div class="loading" id="status">Loading profile...</div>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec";
+
+  async function loadProfile() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (!id) {
+      document.getElementById('status').innerText = 'No profile ID provided.';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=read&id=${id}`);
+      const json = await res.json();
+
+      if (!json.data) {
+        document.getElementById('status').innerText = 'Profile not found.';
+        return;
+      }
+
+      const p = json.data;
+      const avatarSrc = p.avatar_base64 || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="50" fill="%23eee"/></svg>';
+
+      document.getElementById('profileCard').innerHTML = `
+        <img src="${avatarSrc}" class="avatar">
+        <h2>${p.name || ''}</h2>
+        <p class="title">${p.title || ''}</p>
+        
+        <div class="contact-item">
+          <span>Email</span>
+          <a href="mailto:${p.email}">${p.email || '-'}</a>
+        </div>
+        <div class="contact-item">
+          <span>Phone</span>
+          <a href="tel:${p.phone}">${p.phone || '-'}</a>
+        </div>
+        <div class="contact-item">
+          <span>Website</span>
+          <a href="${p.website}" target="_blank">${p.website || '-'}</a>
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('status').innerText = 'Failed to load profile data.';
+    }
+  }
+
+  loadProfile();
+</script>
+</body>
+</html>
