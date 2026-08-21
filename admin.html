@@ -71,7 +71,7 @@
           <input id="slug" maxlength="64" placeholder="ABC123" autocomplete="off">
           <button type="button" class="btn small-btn secondary" id="regenerateSlug">New ID</button>
         </div>
-        <div class="field-help">Unique profile identifier. Auto-generated or custom.</div>
+        <div class="field-help">Unique profile identifier. Auto-generates in real time based on your name.</div>
       </div>
 
       <div class="form-group">
@@ -217,6 +217,11 @@ let currentMode = "online";
 let cachedPhotoBase64 = "";
 let loggedInUserEmail = localStorage.getItem("qcard_auth_email") || "";
 
+// Random 3-character alphanumeric suffix tracker
+let currentRandomSuffix = "";
+let isCustomSlugManuallyEdited = false;
+let isEditMode = false;
+
 const $ = id => document.getElementById(id);
 
 function parseJwt(token) {
@@ -267,25 +272,54 @@ document.querySelectorAll(".mode-btn").forEach(btn => {
 });
 
 function normalizeSlug(value) {
-  return String(value || "").trim().replace(/[^a-zA-Z0-9_-]/g, "-").replace(/-+/g, "-").slice(0, 64);
+  return String(value || "").trim().replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);
 }
 
-function generateProfileId() {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  const chars = letters + "0123456789";
-  let result = letters[Math.floor(Math.random() * letters.length)];
-  result += "0123456789"[Math.floor(Math.random() * 10)];
-  while (result.length < 6) result += chars[Math.floor(Math.random() * chars.length)];
-  return result.split("").sort(() => Math.random() - 0.5).join("");
+// Generate 3-character random letters/numbers (e.g. A8k)
+function generateRandom3Char() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 3; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }
 
-function ensureProfileId() {
-  if (!safeValue("slug")) $("slug").value = generateProfileId();
+// Update Slug in Real-Time
+function updateRealtimeSlug() {
+  if (isEditMode || isCustomSlugManuallyEdited) return;
+
+  if (!currentRandomSuffix) {
+    currentRandomSuffix = generateRandom3Char();
+  }
+
+  const rawName = $("name").value || "";
+  // Strip spaces & special characters from multiple words
+  const cleanName = rawName.replace(/[^a-zA-Z0-9]/g, "");
+
+  if (cleanName.length > 0) {
+    $("slug").value = cleanName + currentRandomSuffix;
+  } else {
+    $("slug").value = currentRandomSuffix;
+  }
 }
 
-$("slug").addEventListener("input", e => { e.target.value = normalizeSlug(e.target.value); });
-$("slug").addEventListener("blur", ensureProfileId);
-$("regenerateSlug").addEventListener("click", () => { $("slug").value = generateProfileId(); });
+// Event Listeners for Dynamic Slug Generation
+$("name").addEventListener("input", () => {
+  updateRealtimeSlug();
+  $("previewName").textContent = $("name").value.trim() || "Your Name";
+});
+
+$("slug").addEventListener("input", e => {
+  isCustomSlugManuallyEdited = true;
+  e.target.value = normalizeSlug(e.target.value);
+});
+
+$("regenerateSlug").addEventListener("click", () => {
+  isCustomSlugManuallyEdited = false;
+  currentRandomSuffix = generateRandom3Char();
+  updateRealtimeSlug();
+});
 
 function safeValue(id) {
   const el = $(id);
@@ -401,7 +435,7 @@ function generateQR(payload) {
 }
 
 function buildProfile() {
-  ensureProfileId();
+  if (!safeValue("slug")) updateRealtimeSlug();
   const name = safeValue("name");
   const slug = normalizeSlug(safeValue("slug"));
   if (!name) throw new Error("Please enter a name.");
@@ -558,6 +592,7 @@ async function loadProfilesTable() {
 }
 
 window.editProfile = function(profile) {
+  isEditMode = true;
   $("slug").value = profile.id;
   $("name").value = profile.name || "";
   $("jobTitle").value = profile.jobTitle || "";
@@ -586,6 +621,10 @@ window.editProfile = function(profile) {
     $("previewPhoto").src = cachedPhotoBase64;
     $("previewPhoto").classList.remove("hidden");
   }
+
+  $("previewName").textContent = profile.name || "Your Name";
+  $("previewJob").textContent = profile.jobTitle || "";
+  $("previewCompany").textContent = profile.company || "";
 
   $("formTitle").innerHTML = `Edit Profile <span class="edit-tag">${profile.id}</span>`;
   $("cancelEdit").classList.remove("hidden");
@@ -616,10 +655,17 @@ window.deleteProfile = async function(id) {
 function resetForm() {
   document.querySelectorAll(".generator-grid input, .generator-grid textarea").forEach(i => i.value = "");
   cachedPhotoBase64 = "";
+  isEditMode = false;
+  isCustomSlugManuallyEdited = false;
+  currentRandomSuffix = generateRandom3Char();
+  updateRealtimeSlug();
+  
   $("previewPhoto").classList.add("hidden");
+  $("previewName").textContent = "Your Name";
+  $("previewJob").textContent = "Your designation";
+  $("previewCompany").textContent = "";
   $("formTitle").textContent = "Contact Information";
   $("cancelEdit").classList.add("hidden");
-  ensureProfileId();
 }
 
 $("generate").addEventListener("click", generate);
@@ -663,8 +709,10 @@ $("copyURL").addEventListener("click", async () => {
   }
 });
 
+// Initialization
 setMode("online");
-ensureProfileId();
+currentRandomSuffix = generateRandom3Char();
+updateRealtimeSlug();
 initAuthUI();
 </script>
 </body>
