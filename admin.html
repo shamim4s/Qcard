@@ -238,7 +238,8 @@ function normalizeUrl(value) {
 }
 
 function getProfileUrl(slug) {
-  return `${window.location.pathname}/profile.html?id=${encodeURIComponent(slug)}`;
+  const baseUrl = new URL(".", window.location.href).href;
+  return `${baseUrl}/profile.html?id=${encodeURIComponent(slug)}`;
 }
 
 // In-Browser Image to WebP Base64 Converter
