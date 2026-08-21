@@ -239,7 +239,8 @@ function normalizeUrl(value) {
 }
 
 function getProfileUrl(slug) {
-  return `${window.location.origin}/profile.html?id=${encodeURIComponent(slug)}`;
+    const baseUrl = new URL(".", window.location.href).href;
+  return `${baseUrl}?id=${encodeURIComponent(slug)}`;
 }
 
 // Compact JPEG converter for iOS & Android contacts
