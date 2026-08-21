@@ -1,75 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 16px; }
-    .card { background: white; width: 100%; max-width: 360px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; padding: 32px 24px; }
-    .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-    h2 { margin: 0 0 4px 0; color: #111; }
-    p.title { margin: 0 0 20px 0; color: #666; font-size: 14px; font-weight: 500; }
-    .contact-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-    .contact-item span { color: #888; }
-    .contact-item a { color: #0070f3; text-decoration: none; font-weight: 500; }
-    .loading { color: #777; font-size: 14px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Profile</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="card" id="profileCard">
-  <div class="loading" id="status">Loading profile...</div>
-</div>
+<div id="app"><div class="loading">Loading profile from Google Sheets...</div></div>
 
 <script>
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
+"use strict";
 
-  async function loadProfile() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+// SET YOUR APPS SCRIPT URL HERE
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
 
-    if (!id) {
-      document.getElementById('status').innerText = 'No profile ID provided.';
-      return;
-    }
+const app = document.getElementById("app");
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-    try {
-      const res = await fetch(`${APPS_SCRIPT_URL}?action=read&id=${id}`);
-      const json = await res.json();
+function escapeHTML(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
 
-      if (!json.data) {
-        document.getElementById('status').innerText = 'Profile not found.';
-        return;
-      }
+function escapeVCard(value) {
+  if (!value) return "";
+  return String(value).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/;/g, "\\;").replace(/,/g, "\\,");
+}
 
-      const p = json.data;
-      const avatarSrc = p.avatar_base64 || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="50" fill="%23eee"/></svg>';
+function normalizeWebsite(value) {
+  const v = String(value || "").trim();
+  return !v ? "" : (/^https?:\/\//i.test(v) ? v : "https://" + v);
+}
 
-      document.getElementById('profileCard').innerHTML = `
-        <img src="${avatarSrc}" class="avatar">
-        <h2>${p.name || ''}</h2>
-        <p class="title">${p.title || ''}</p>
-        
-        <div class="contact-item">
-          <span>Email</span>
-          <a href="mailto:${p.email}">${p.email || '-'}</a>
-        </div>
-        <div class="contact-item">
-          <span>Phone</span>
-          <a href="tel:${p.phone}">${p.phone || '-'}</a>
-        </div>
-        <div class="contact-item">
-          <span>Website</span>
-          <a href="${p.website}" target="_blank">${p.website || '-'}</a>
-        </div>
-      `;
-    } catch (err) {
-      document.getElementById('status').innerText = 'Failed to load profile data.';
-    }
+function createVCard(profile) {
+  const nameParts = String(profile.name || "").trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts.shift() || "";
+  const lastName = nameParts.join(" ");
+  const addressLines = [profile.address1, profile.address2, profile.address3]
+    .filter(Boolean)
+    .map((address, index) => `ADR;TYPE=${index === 0 ? "HOME" : index === 1 ? "WORK" : "OTHER"}:;;${escapeVCard(address)};;;;`);
+  
+  const social = profile.social || {};
+  const socialLines = [
+    ["LinkedIn", social.linkedin], ["WeChat", social.wechat], ["Facebook", social.facebook],
+    ["Instagram", social.instagram], ["X", social.x], ["TikTok", social.tiktok], ["YouTube", social.youtube]
+  ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
+
+  const photo = profile.photo ? `PHOTO;ENCODING=b;TYPE=WEBP:${String(profile.photo).split(",")[1]}` : "";
+
+  return [
+    "BEGIN:VCARD","VERSION:3.0",
+    `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
+    `FN:${escapeVCard(profile.name)}`,
+    profile.jobTitle ? `TITLE:${escapeVCard(profile.jobTitle)}` : "",
+    profile.company ? `ORG:${escapeVCard(profile.company)}` : "",
+    profile.phone ? `TEL;TYPE=VOICE:${escapeVCard(profile.phone)}` : "",
+    profile.mobile ? `TEL;TYPE=CELL:${escapeVCard(profile.mobile)}` : "",
+    profile.email ? `EMAIL:${escapeVCard(profile.email)}` : "",
+    ...addressLines,
+    profile.website ? `URL:${escapeVCard(normalizeWebsite(profile.website))}` : "",
+    ...socialLines,
+    profile.about ? `NOTE:${escapeVCard(profile.about)}` : "",
+    profile.additionalInformation ? `X-ADDITIONAL-INFORMATION:${escapeVCard(profile.additionalInformation)}` : "",
+    photo,"END:VCARD"
+  ].filter(Boolean).join("\r\n");
+}
+
+function saveContact(profile) {
+  const blob = new Blob([createVCard(profile)], {type:"text/vcard;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = profile.id + "-contact.vcf";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function loadProfile() {
+  if (!id) throw new Error("No profile ID was supplied.");
+  const response = await fetch(`${APPS_SCRIPT_URL}?action=read&id=${encodeURIComponent(id)}`);
+  const json = await response.json();
+  if (json.status === "success" && json.data) {
+    return json.data;
   }
+  throw new Error("Profile not found in Google Sheets.");
+}
 
-  loadProfile();
+const SOCIAL_META = {
+  linkedin: {label:"LinkedIn", icon:"in"},
+  wechat: {label:"WeChat", icon:"W"},
+  facebook: {label:"Facebook", icon:"f"},
+  instagram: {label:"Instagram", icon:"◎"},
+  x: {label:"X", icon:"𝕏"},
+  tiktok: {label:"TikTok", icon:"♪"},
+  youtube: {label:"YouTube", icon:"▶"}
+};
+
+function socialLinks(profile) {
+  const social = profile.social || {};
+  return Object.keys(SOCIAL_META).filter(key => social[key]).map(key => {
+    const meta = SOCIAL_META[key];
+    const url = normalizeWebsite(social[key]);
+    return `<a class="social-link social-${key}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" aria-label="${meta.label}" title="${meta.label}">
+      <span class="social-icon">${meta.icon}</span><span>${meta.label}</span>
+    </a>`;
+  }).join("");
+}
+
+function renderProfile(profile) {
+  document.title = profile.name || "Contact Profile";
+
+  const phoneLink = profile.phone
+    ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.phone)}">${escapeHTML(profile.phone)}</a></div>` : "";
+  const mobileLink = profile.mobile
+    ? `<div class="contact-row"><span>📱</span><a href="tel:${escapeHTML(profile.mobile)}">${escapeHTML(profile.mobile)}</a></div>` : "";
+  const emailLink = profile.email
+    ? `<div class="contact-row"><span>✉️</span><a href="mailto:${escapeHTML(profile.email)}">${escapeHTML(profile.email)}</a></div>` : "";
+  const websiteLink = profile.website
+    ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">Website</a></div>` : "";
+  const companyRow = profile.company
+    ? `<div class="contact-row"><span>🏢</span><span>${escapeHTML(profile.company)}</span></div>` : "";
+
+  const address = profile.address1 || profile.address2 || profile.address3
+    ? `<section class="profile-section"><h3>Address</h3>
+        ${profile.address1 ? `<div>${escapeHTML(profile.address1)}</div>` : ''}
+        ${profile.address2 ? `<div>${escapeHTML(profile.address2)}</div>` : ''}
+        ${profile.address3 ? `<div>${escapeHTML(profile.address3)}</div>` : ''}
+      </section>` : "";
+  const about = profile.about
+    ? `<section class="profile-section"><h3>About</h3><p>${escapeHTML(profile.about)}</p></section>` : "";
+  const additional = profile.additionalInformation
+    ? `<section class="profile-section"><h3>Additional Information</h3><div>${escapeHTML(profile.additionalInformation)}</div></section>` : "";
+  const socials = socialLinks(profile)
+    ? `<section class="profile-section"><h3>Social Media</h3><div class="social-links">${socialLinks(profile)}</div></section>` : "";
+
+  app.innerHTML = `
+    <div class="profile-page">
+      <main class="profile">
+        <div class="profile-badge">DIGITAL CONTACT</div>
+        ${profile.photo
+          ? `<img class="profile-avatar" src="${escapeHTML(profile.photo)}" alt="${escapeHTML(profile.name)}">`
+          : `<div class="profile-avatar profile-avatar-placeholder">${escapeHTML((profile.name || "?").charAt(0).toUpperCase())}</div>`}
+        <h1>${escapeHTML(profile.name)}</h1>
+        <div class="title">${escapeHTML(profile.jobTitle || '')}</div>
+        ${profile.company ? `<div class="company">${escapeHTML(profile.company)}</div>` : ""}
+        <div class="profile-actions">
+          <button id="saveContact" class="btn success">💾 Save Contact</button>
+          ${profile.phone ? `<a class="btn primary" href="tel:${escapeHTML(profile.phone)}">📞 Call</a>` : ""}
+          ${profile.mobile ? `<a class="btn primary" href="tel:${escapeHTML(profile.mobile)}">📱 Mobile</a>` : ""}
+          ${profile.email ? `<a class="btn secondary" href="mailto:${escapeHTML(profile.email)}">✉️ Email</a>` : ""}
+          ${profile.website ? `<a class="btn dark" href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">🌐 Website</a>` : ""}
+        </div>
+
+        <section class="profile-section">
+          <h3>Contact</h3>
+          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${companyRow}
+          ${socials ? `<div class="contact-socials">${socialLinks(profile)}</div>` : ""}
+        </section>
+
+        ${address}
+        ${about}
+        ${additional}
+        ${socials}
+        <div class="profile-footer">Powered by ProfileQR</div>
+      </main>
+    </div>`;
+
+  document.getElementById("saveContact").addEventListener("click", () => saveContact(profile));
+}
+
+async function render() {
+  try {
+    const profile = await loadProfile();
+    renderProfile(profile);
+  } catch (error) {
+    app.innerHTML = `<div class="error"><h2>Profile unavailable</h2><p>${escapeHTML(error.message)}</p></div>`;
+  }
+}
+render();
 </script>
 </body>
 </html>
