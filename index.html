@@ -51,6 +51,12 @@ function escapeVCard(value) {
   return String(value).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/;/g, "\\;").replace(/,/g, "\\,");
 }
 
+function formatVCardDate(dateString) {
+  if (!dateString) return "";
+  const cleaned = String(dateString).split("T")[0].replace(/-/g, "").trim();
+  return /^\d{8}$/.test(cleaned) ? cleaned : "";
+}
+
 function normalizeWebsite(value) {
   const v = String(value || "").trim();
   return !v ? "" : (/^https?:\/\//i.test(v) ? v : "https://" + v);
@@ -76,11 +82,19 @@ function createVCard(profile) {
     ["YouTube", profile.youtube], ["GitHub", profile.github]
   ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
 
+  const bdayTag = profile.dob ? `BDAY:${formatVCardDate(profile.dob)}` : "";
+
+  const noteParts = [];
+  if (profile.bloodGroup) noteParts.push(`Blood Group: ${profile.bloodGroup}`);
+  if (profile.about) noteParts.push(profile.about);
+  const noteTag = noteParts.length > 0 ? `NOTE:${escapeVCard(noteParts.join(" | "))}` : "";
+
   return [
     "BEGIN:VCARD","VERSION:3.0",
     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
     `FN:${escapeVCard(profile.name)}`,
-    profile.dob ? `BDAY:${escapeVCard(profile.dob)}` : "",
+    bdayTag,
+    profile.bloodGroup ? `X-BLOOD-GROUP:${escapeVCard(profile.bloodGroup)}` : "",
     profile.jobTitle ? `TITLE:${escapeVCard(profile.jobTitle)}` : "",
     profile.company ? `ORG:${escapeVCard(profile.company)}` : "",
     profile.phone ? `TEL;TYPE=VOICE:${escapeVCard(profile.phone)}` : "",
@@ -92,7 +106,7 @@ function createVCard(profile) {
     profile.website ? `URL:${escapeVCard(normalizeWebsite(profile.website))}` : "",
     profile.companyWebsite ? `URL;TYPE=WORK:${escapeVCard(normalizeWebsite(profile.companyWebsite))}` : "",
     ...socialLines,
-    profile.about ? `NOTE:${escapeVCard(profile.about)}` : "",
+    noteTag,
     profile.additionalInformation ? `X-ADDITIONAL-INFORMATION:${escapeVCard(profile.additionalInformation)}` : "",
     photo,"END:VCARD"
   ].filter(Boolean).join("\r\n");
@@ -154,14 +168,12 @@ function renderProfile(profile) {
   if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
-  // Apply Theme
   if (profile.theme === "light") {
     document.body.classList.add("theme-light");
   } else {
     document.body.classList.remove("theme-light");
   }
 
-  // Personal Contact Rows
   const phoneLink = profile.phone
     ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.phone)}">${escapeHTML(profile.phone)}</a></div>` : "";
   const mobileLink = profile.mobile
@@ -172,8 +184,9 @@ function renderProfile(profile) {
     ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">${escapeHTML(normalizeWebsite(profile.website))}</a></div>` : "";
   const dobRow = profile.dob
     ? `<div class="contact-row"><span>🎂</span><span>${escapeHTML(profile.dob.split("T")[0])}</span></div>` : "";
+  const bloodRow = profile.bloodGroup
+    ? `<div class="contact-row"><span>🩸</span><span>Blood Group: <strong>${escapeHTML(profile.bloodGroup)}</strong></span></div>` : "";
 
-  // Job & Company Section
   const hasJobSection = profile.company || profile.companyWebsite || profile.companyEmail || profile.companyPhone || profile.companyContactPerson || profile.companyJoiningDate;
   let jobSectionHtml = "";
   if (hasJobSection) {
@@ -193,7 +206,6 @@ function renderProfile(profile) {
     `;
   }
 
-  // Address Section
   const hasAddress = profile.address1 || profile.address2 || profile.address3;
   let addressHtml = "";
   if (hasAddress) {
@@ -236,7 +248,7 @@ function renderProfile(profile) {
 
         <section class="profile-section">
           <h3>Personal Contact</h3>
-          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${dobRow}
+          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${dobRow}${bloodRow}
         </section>
 
         ${jobSectionHtml}
