@@ -355,7 +355,7 @@ function getProfileUrl(slug) {
   return `${baseUrl}?id=${encodeURIComponent(slug)}`;
 }
 
-function processImageToVCardBase64(file, maxSize = 720, quality = 0.90) {
+function processImageToVCardBase64(file, maxSize = 720, quality = 0.9) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
     const reader = new FileReader();
