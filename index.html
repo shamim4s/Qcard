@@ -5,6 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Profile - Qcard by Shamim4s</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  .theme-light {
+    --bg: #f1f5f9;
+    --bg-card: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+  }
+  .theme-light .profile-section {
+    background: #f8fafc;
+  }
+  .theme-light .contact-row a {
+    color: #0f172a;
+  }
+  .company-logo {
+    max-width: 60px;
+    max-height: 40px;
+    object-fit: contain;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+</style>
 </head>
 <body>
 <div id="app"><div class="loading">Loading profile from Google Sheets...</div></div>
@@ -38,10 +60,12 @@ function createVCard(profile) {
   const nameParts = String(profile.name || "").trim().split(/\s+/).filter(Boolean);
   const firstName = nameParts.shift() || "";
   const lastName = nameParts.join(" ");
-  const addressLines = [profile.address1, profile.address2, profile.address3]
-    .filter(Boolean)
-    .map((address, index) => `ADR;TYPE=${index === 0 ? "HOME" : index === 1 ? "WORK" : "OTHER"}:;;${escapeVCard(address)};;;;`);
-  
+
+  const addresses = [];
+  if (profile.address1) addresses.push(`ADR;TYPE=${escapeVCard(profile.address1Label || 'HOME')}:;;${escapeVCard(profile.address1)};;;;`);
+  if (profile.address2) addresses.push(`ADR;TYPE=${escapeVCard(profile.address2Label || 'WORK')}:;;${escapeVCard(profile.address2)};;;;`);
+  if (profile.address3) addresses.push(`ADR;TYPE=${escapeVCard(profile.address3Label || 'OTHER')}:;;${escapeVCard(profile.address3)};;;;`);
+
   const photo = (profile.photo && profile.photo.includes(",")) 
     ? `PHOTO;ENCODING=b;TYPE=JPEG:${String(profile.photo).split(",")[1]}` 
     : "";
@@ -56,13 +80,17 @@ function createVCard(profile) {
     "BEGIN:VCARD","VERSION:3.0",
     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
     `FN:${escapeVCard(profile.name)}`,
+    profile.dob ? `BDAY:${escapeVCard(profile.dob)}` : "",
     profile.jobTitle ? `TITLE:${escapeVCard(profile.jobTitle)}` : "",
     profile.company ? `ORG:${escapeVCard(profile.company)}` : "",
     profile.phone ? `TEL;TYPE=VOICE:${escapeVCard(profile.phone)}` : "",
     profile.mobile ? `TEL;TYPE=CELL:${escapeVCard(profile.mobile)}` : "",
-    profile.email ? `EMAIL:${escapeVCard(profile.email)}` : "",
-    ...addressLines,
+    profile.email ? `EMAIL;TYPE=INTERNET:${escapeVCard(profile.email)}` : "",
+    profile.companyEmail ? `EMAIL;TYPE=WORK:${escapeVCard(profile.companyEmail)}` : "",
+    profile.companyPhone ? `TEL;TYPE=WORK:${escapeVCard(profile.companyPhone)}` : "",
+    ...addresses,
     profile.website ? `URL:${escapeVCard(normalizeWebsite(profile.website))}` : "",
+    profile.companyWebsite ? `URL;TYPE=WORK:${escapeVCard(normalizeWebsite(profile.companyWebsite))}` : "",
     ...socialLines,
     profile.about ? `NOTE:${escapeVCard(profile.about)}` : "",
     profile.additionalInformation ? `X-ADDITIONAL-INFORMATION:${escapeVCard(profile.additionalInformation)}` : "",
@@ -126,6 +154,14 @@ function renderProfile(profile) {
   if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
+  // Apply Theme
+  if (profile.theme === "light") {
+    document.body.classList.add("theme-light");
+  } else {
+    document.body.classList.remove("theme-light");
+  }
+
+  // Personal Contact Rows
   const phoneLink = profile.phone
     ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.phone)}">${escapeHTML(profile.phone)}</a></div>` : "";
   const mobileLink = profile.mobile
@@ -133,16 +169,46 @@ function renderProfile(profile) {
   const emailLink = profile.email
     ? `<div class="contact-row"><span>✉️</span><a href="mailto:${escapeHTML(profile.email)}">${escapeHTML(profile.email)}</a></div>` : "";
   const websiteLink = profile.website
-    ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">Website</a></div>` : "";
-  const companyRow = profile.company
-    ? `<div class="contact-row"><span>🏢</span><span>${escapeHTML(profile.company)}</span></div>` : "";
+    ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">${escapeHTML(normalizeWebsite(profile.website))}</a></div>` : "";
+  const dobRow = profile.dob
+    ? `<div class="contact-row"><span>🎂</span><span>${escapeHTML(profile.dob.split("T")[0])}</span></div>` : "";
 
-  const address = (profile.address1 || profile.address2 || profile.address3)
-    ? `<section class="profile-section"><h3>Address</h3>
-        ${profile.address1 ? `<div>${escapeHTML(profile.address1)}</div>` : ''}
-        ${profile.address2 ? `<div>${escapeHTML(profile.address2)}</div>` : ''}
-        ${profile.address3 ? `<div>${escapeHTML(profile.address3)}</div>` : ''}
-      </section>` : "";
+  // Job & Company Section
+  const hasJobSection = profile.company || profile.companyWebsite || profile.companyEmail || profile.companyPhone || profile.companyContactPerson || profile.companyJoiningDate;
+  let jobSectionHtml = "";
+  if (hasJobSection) {
+    const logoHtml = profile.companyLogo ? `<img src="${escapeHTML(profile.companyLogo)}" class="company-logo" alt="Logo">` : "";
+    const compName = profile.company ? `<div class="contact-row"><span>🏢</span><strong>${logoHtml}${escapeHTML(profile.company)}</strong></div>` : "";
+    const compWeb = profile.companyWebsite ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.companyWebsite))}" target="_blank" rel="noopener">${escapeHTML(normalizeWebsite(profile.companyWebsite))}</a></div>` : "";
+    const compEmail = profile.companyEmail ? `<div class="contact-row"><span>✉️</span><a href="mailto:${escapeHTML(profile.companyEmail)}">${escapeHTML(profile.companyEmail)}</a></div>` : "";
+    const compPhone = profile.companyPhone ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.companyPhone)}">${escapeHTML(profile.companyPhone)}</a></div>` : "";
+    const compPerson = profile.companyContactPerson ? `<div class="contact-row"><span>👤</span><span>Contact: ${escapeHTML(profile.companyContactPerson)}</span></div>` : "";
+    const compJoining = profile.companyJoiningDate ? `<div class="contact-row"><span>📅</span><span>Joined: ${escapeHTML(profile.companyJoiningDate.split("T")[0])}</span></div>` : "";
+
+    jobSectionHtml = `
+      <section class="profile-section">
+        <h3>Job & Company Details</h3>
+        ${compName}${compWeb}${compEmail}${compPhone}${compPerson}${compJoining}
+      </section>
+    `;
+  }
+
+  // Address Section
+  const hasAddress = profile.address1 || profile.address2 || profile.address3;
+  let addressHtml = "";
+  if (hasAddress) {
+    const a1 = profile.address1 ? `<div style="margin-bottom:8px;"><strong>${escapeHTML(profile.address1Label || 'Address 01')}:</strong><br>${escapeHTML(profile.address1)}</div>` : "";
+    const a2 = profile.address2 ? `<div style="margin-bottom:8px;"><strong>${escapeHTML(profile.address2Label || 'Address 02')}:</strong><br>${escapeHTML(profile.address2)}</div>` : "";
+    const a3 = profile.address3 ? `<div><strong>${escapeHTML(profile.address3Label || 'Address 03')}:</strong><br>${escapeHTML(profile.address3)}</div>` : "";
+
+    addressHtml = `
+      <section class="profile-section">
+        <h3>Address</h3>
+        ${a1}${a2}${a3}
+      </section>
+    `;
+  }
+
   const about = profile.about
     ? `<section class="profile-section"><h3>About</h3><p>${escapeHTML(profile.about)}</p></section>` : "";
   const additional = profile.additionalInformation
@@ -160,21 +226,21 @@ function renderProfile(profile) {
         <h1>${escapeHTML(profile.name)}</h1>
         <div class="title">${escapeHTML(profile.jobTitle || '')}</div>
         ${profile.company ? `<div class="company">${escapeHTML(profile.company)}</div>` : ""}
+        
         <div class="profile-actions">
           <button id="saveContact" class="btn success">💾 Save Contact</button>
-          ${profile.phone ? `<a class="btn primary" href="tel:${escapeHTML(profile.phone)}">📞 Call</a>` : ""}
-          ${profile.mobile ? `<a class="btn primary" href="tel:${escapeHTML(profile.mobile)}">📱 Mobile</a>` : ""}
+          ${profile.mobile ? `<a class="btn primary" href="tel:${escapeHTML(profile.mobile)}">📱 Mobile</a>` : (profile.phone ? `<a class="btn primary" href="tel:${escapeHTML(profile.phone)}">📞 Call</a>` : "")}
           ${profile.email ? `<a class="btn secondary" href="mailto:${escapeHTML(profile.email)}">✉️ Email</a>` : ""}
           ${profile.website ? `<a class="btn dark" href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">🌐 Website</a>` : ""}
         </div>
 
         <section class="profile-section">
-          <h3>Contact</h3>
-          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${companyRow}
-          ${socials ? `<div class="contact-socials">${socialLinks(profile)}</div>` : ""}
+          <h3>Personal Contact</h3>
+          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${dobRow}
         </section>
 
-        ${address}
+        ${jobSectionHtml}
+        ${addressHtml}
         ${about}
         ${additional}
         ${socials}

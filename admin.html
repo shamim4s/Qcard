@@ -16,6 +16,8 @@
   .table-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
   .action-btns { display: flex; gap: 6px; }
   .edit-tag { background: #fffae6; color: #8a6d3b; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 10px; }
+  .section-divider { font-size: 14px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+  .input-grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
 </style>
 </head>
 <body>
@@ -27,7 +29,6 @@
     <h2 style="margin: 12px 0 6px 0;">Sign In Required</h2>
     <p class="muted" style="margin-bottom: 20px;">Sign in with Google to manage and edit your accessible profiles.</p>
     
-    <!-- PASTE YOUR ACTUAL GOOGLE CLIENT ID BELOW -->
     <div id="g_id_onload"
          data-client_id="378132733460-p0ptv54u1m3buaetfimuoo6iua43b1b5.apps.googleusercontent.com"
          data-callback="handleCredentialResponse"
@@ -66,6 +67,14 @@
       <h2 id="formTitle">Contact Information</h2>
 
       <div class="form-group">
+        <label for="theme">Profile Theme</label>
+        <select id="theme" style="width:100%; background:#0b1329; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text);">
+          <option value="dark">🌙 Dark Theme</option>
+          <option value="light">☀️ Light Theme</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="slug">Profile ID / Slug *</label>
         <div class="input-with-action">
           <input id="slug" maxlength="64" placeholder="ABC123" autocomplete="off">
@@ -80,14 +89,54 @@
       </div>
 
       <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input id="dob" type="date">
+      </div>
+
+      <div class="section-divider">Job & Company Details</div>
+
+      <div class="form-group">
         <label for="jobTitle">Job / Designation</label>
         <input id="jobTitle" placeholder="Business Consultant">
       </div>
 
       <div class="form-group">
-        <label for="company">Company</label>
+        <label for="company">Company Name</label>
         <input id="company" placeholder="Company name">
       </div>
+
+      <div class="form-group">
+        <label for="companyWebsite">Company Website</label>
+        <input id="companyWebsite" placeholder="www.company.com">
+      </div>
+
+      <div class="form-group">
+        <label for="companyEmail">Company Contact Email</label>
+        <input id="companyEmail" type="email" placeholder="contact@company.com">
+      </div>
+
+      <div class="form-group">
+        <label for="companyPhone">Company Phone</label>
+        <input id="companyPhone" placeholder="+880...">
+      </div>
+
+      <div class="form-group">
+        <label for="companyContactPerson">Company Contact Person</label>
+        <input id="companyContactPerson" placeholder="HR Manager / Supervisor Name">
+      </div>
+
+      <div class="form-group">
+        <label for="companyJoiningDate">Joining Date</label>
+        <input id="companyJoiningDate" type="date">
+      </div>
+
+      <div class="form-group">
+        <label for="companyLogo">Company Logo</label>
+        <input id="companyLogo" type="file" accept="image/*">
+        <div class="field-help">Uploaded logo is automatically resized and encoded.</div>
+      </div>
+
+      <div class="section-divider">Personal Contact Details</div>
 
       <div class="form-group">
         <label for="phone">Phone</label>
@@ -100,29 +149,41 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">Personal Email</label>
         <input id="email" type="email" placeholder="name@example.com">
       </div>
 
+      <div class="section-divider">Addresses</div>
+
       <div class="form-group">
-        <label for="address1">Address 01</label>
-        <input id="address1" placeholder="Enter full address">
+        <label>Address 01 (Label & Address)</label>
+        <div class="input-grid-2">
+          <input id="address1Label" placeholder="Label (e.g. Home)">
+          <input id="address1" placeholder="Enter full address">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="address2">Address 02</label>
-        <input id="address2" placeholder="Enter full address">
+        <label>Address 02 (Label & Address)</label>
+        <div class="input-grid-2">
+          <input id="address2Label" placeholder="Label (e.g. Office)">
+          <input id="address2" placeholder="Enter full address">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="address3">Address 03</label>
-        <input id="address3" placeholder="Enter full address">
+        <label>Address 03 (Label & Address)</label>
+        <div class="input-grid-2">
+          <input id="address3Label" placeholder="Label (e.g. Head Office)">
+          <input id="address3" placeholder="Enter full address">
+        </div>
       </div>
 
+      <div class="section-divider">About & Social</div>
+
       <div class="form-group">
-        <label for="website">Website</label>
+        <label for="website">Personal Website</label>
         <input id="website" placeholder="www.example.com">
-        <div class="field-help">https:// is added automatically.</div>
       </div>
 
       <div class="form-group">
@@ -150,9 +211,9 @@
       </div>
 
       <div class="form-group">
-        <label for="photo">Profile Picture (Auto Compressed JPEG)</label>
+        <label for="photo">Profile Picture</label>
         <input id="photo" type="file" accept="image/*">
-        <div class="field-help">Optimized for iOS/Android native contacts and fits within Google Sheet cells.</div>
+        <div class="field-help">Optimized for iOS/Android native contacts and Google Sheet storage.</div>
       </div>
 
       <button class="btn primary full" id="generate">Save to Google Sheet & Generate QR</button>
@@ -192,11 +253,12 @@
               <th>Avatar</th>
               <th>Name</th>
               <th>Slug</th>
+              <th>Theme</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="profilesTableBody">
-            <tr><td colspan="4">Loading profiles...</td></tr>
+            <tr><td colspan="5">Loading profiles...</td></tr>
           </tbody>
         </table>
       </div>
@@ -215,6 +277,7 @@ let currentVCard = "";
 let currentProfileUrl = "";
 let currentMode = "online";
 let cachedPhotoBase64 = "";
+let cachedLogoBase64 = "";
 
 let rawGoogleIdToken = localStorage.getItem("qcard_auth_token") || "";
 let loggedInUserEmail = localStorage.getItem("qcard_auth_email") || "";
@@ -231,7 +294,6 @@ function parseJwt(token) {
   return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
 }
 
-
 window.handleCredentialResponse = function(response) {
   rawGoogleIdToken = response.credential;
   localStorage.setItem("qcard_auth_token", rawGoogleIdToken);
@@ -242,29 +304,13 @@ window.handleCredentialResponse = function(response) {
   initAuthUI();
 };
 
-function isTokenExpired(token) {
-  if (!token) return true;
-  try {
-    const payload = parseJwt(token);
-    const now = Math.floor(Date.now() / 1000);
-    return payload.exp && payload.exp < now;
-  } catch (e) {
-    return true;
-  }
-}
-
 function initAuthUI() {
-  if (rawGoogleIdToken && !isTokenExpired(rawGoogleIdToken)) {
+  if (rawGoogleIdToken && loggedInUserEmail) {
     $("authOverlay").classList.add("hidden");
     $("userBar").classList.remove("hidden");
     $("currentUserEmail").textContent = loggedInUserEmail;
     loadProfilesTable();
   } else {
-    // Token missing or expired: show login overlay
-    localStorage.removeItem("qcard_auth_token");
-    localStorage.removeItem("qcard_auth_email");
-    rawGoogleIdToken = "";
-    loggedInUserEmail = "";
     $("authOverlay").classList.remove("hidden");
     $("userBar").classList.add("hidden");
   }
@@ -355,7 +401,7 @@ function getProfileUrl(slug) {
   return `${baseUrl}?id=${encodeURIComponent(slug)}`;
 }
 
-function processImageToVCardBase64(file, maxSize = 720, quality = 0.9) {
+function processImageToVCardBase64(file, maxSize = 720, quality = 0.75) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
     const reader = new FileReader();
@@ -397,10 +443,12 @@ function createVCard(profile, options = {}) {
   const nameParts = String(profile.name || "").trim().split(/\s+/).filter(Boolean);
   const firstName = nameParts.shift() || "";
   const lastName = nameParts.join(" ");
-  const addressLines = [profile.address1, profile.address2, profile.address3]
-    .filter(Boolean)
-    .map((address, index) => `ADR;TYPE=${index === 0 ? "HOME" : index === 1 ? "WORK" : "OTHER"}:;;${escapeVCard(address)};;;;`);
-  
+
+  const addresses = [];
+  if (profile.address1) addresses.push(`ADR;TYPE=${escapeVCard(profile.address1Label || 'HOME')}:;;${escapeVCard(profile.address1)};;;;`);
+  if (profile.address2) addresses.push(`ADR;TYPE=${escapeVCard(profile.address2Label || 'WORK')}:;;${escapeVCard(profile.address2)};;;;`);
+  if (profile.address3) addresses.push(`ADR;TYPE=${escapeVCard(profile.address3Label || 'OTHER')}:;;${escapeVCard(profile.address3)};;;;`);
+
   const includePhoto = options.includePhoto !== false;
   let photoTag = "";
   if (includePhoto && profile.photo && profile.photo.includes(",")) {
@@ -417,13 +465,17 @@ function createVCard(profile, options = {}) {
     "BEGIN:VCARD", "VERSION:3.0",
     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
     `FN:${escapeVCard(profile.name)}`,
+    profile.dob ? `BDAY:${escapeVCard(profile.dob)}` : "",
     profile.jobTitle ? `TITLE:${escapeVCard(profile.jobTitle)}` : "",
     profile.company ? `ORG:${escapeVCard(profile.company)}` : "",
     profile.phone ? `TEL;TYPE=VOICE:${escapeVCard(profile.phone)}` : "",
     profile.mobile ? `TEL;TYPE=CELL:${escapeVCard(profile.mobile)}` : "",
-    profile.email ? `EMAIL:${escapeVCard(profile.email)}` : "",
-    ...addressLines,
+    profile.email ? `EMAIL;TYPE=INTERNET:${escapeVCard(profile.email)}` : "",
+    profile.companyEmail ? `EMAIL;TYPE=WORK:${escapeVCard(profile.companyEmail)}` : "",
+    profile.companyPhone ? `TEL;TYPE=WORK:${escapeVCard(profile.companyPhone)}` : "",
+    ...addresses,
     profile.website ? `URL:${escapeVCard(profile.website)}` : "",
+    profile.companyWebsite ? `URL;TYPE=WORK:${escapeVCard(profile.companyWebsite)}` : "",
     ...socialLines,
     profile.about ? `NOTE:${escapeVCard(profile.about)}` : "",
     profile.additionalInformation ? `X-ADDITIONAL-INFORMATION:${escapeVCard(profile.additionalInformation)}` : "",
@@ -462,14 +514,25 @@ function buildProfile() {
 
   return {
     id: slug,
+    theme: safeValue("theme") || "dark",
     name,
+    dob: safeValue("dob"),
     jobTitle: safeValue("jobTitle"),
     company: safeValue("company"),
+    companyWebsite: normalizeUrl(safeValue("companyWebsite")),
+    companyEmail: safeValue("companyEmail"),
+    companyPhone: safeValue("companyPhone"),
+    companyContactPerson: safeValue("companyContactPerson"),
+    companyJoiningDate: safeValue("companyJoiningDate"),
+    companyLogo: cachedLogoBase64,
     phone: safeValue("phone"),
     mobile: safeValue("mobile"),
     email: safeValue("email"),
+    address1Label: safeValue("address1Label") || "Address 01",
     address1: safeValue("address1"),
+    address2Label: safeValue("address2Label") || "Address 02",
     address2: safeValue("address2"),
+    address3Label: safeValue("address3Label") || "Address 03",
     address3: safeValue("address3"),
     website: normalizeUrl(safeValue("website")),
     about: safeValue("about"),
@@ -497,9 +560,14 @@ async function generate() {
   $("onlineResult").classList.add("hidden");
 
   try {
-    const file = $("photo").files[0];
-    if (file) {
-      cachedPhotoBase64 = await processImageToVCardBase64(file);
+    const photoFile = $("photo").files[0];
+    if (photoFile) {
+      cachedPhotoBase64 = await processImageToVCardBase64(photoFile);
+    }
+
+    const logoFile = $("companyLogo").files[0];
+    if (logoFile) {
+      cachedLogoBase64 = await processImageToVCardBase64(logoFile, 400, 0.7);
     }
 
     const profile = buildProfile();
@@ -584,7 +652,7 @@ async function loadProfilesTable() {
     tbody.innerHTML = "";
 
     if (!json.data || json.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4">No profiles found for your account.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5">No profiles found for your account.</td></tr>';
       return;
     }
 
@@ -596,6 +664,7 @@ async function loadProfilesTable() {
         <td><img src="${avatarSrc}" class="table-avatar"></td>
         <td><strong>${p.name || ''}</strong></td>
         <td><code>${p.id}</code></td>
+        <td><span class="edit-tag" style="margin-left:0;">${p.theme || 'dark'}</span></td>
         <td>
           <div class="action-btns">
             <button class="btn small-btn primary" onclick='editProfile(${JSON.stringify(p)})'>Edit</button>
@@ -606,22 +675,35 @@ async function loadProfilesTable() {
       tbody.appendChild(tr);
     });
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="4" style="color:red;">Error loading profiles from Sheet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="color:red;">Error loading profiles from Sheet.</td></tr>';
   }
 }
 
 window.editProfile = function(profile) {
   isEditMode = true;
   $("slug").value = profile.id;
+  $("theme").value = profile.theme || "dark";
   $("name").value = profile.name || "";
+  $("dob").value = profile.dob ? profile.dob.split("T")[0] : "";
   $("jobTitle").value = profile.jobTitle || "";
   $("company").value = profile.company || "";
+  $("companyWebsite").value = profile.companyWebsite || "";
+  $("companyEmail").value = profile.companyEmail || "";
+  $("companyPhone").value = profile.companyPhone || "";
+  $("companyContactPerson").value = profile.companyContactPerson || "";
+  $("companyJoiningDate").value = profile.companyJoiningDate ? profile.companyJoiningDate.split("T")[0] : "";
+
   $("phone").value = profile.phone || "";
   $("mobile").value = profile.mobile || "";
   $("email").value = profile.email || "";
+
+  $("address1Label").value = profile.address1Label || "";
   $("address1").value = profile.address1 || "";
+  $("address2Label").value = profile.address2Label || "";
   $("address2").value = profile.address2 || "";
+  $("address3Label").value = profile.address3Label || "";
   $("address3").value = profile.address3 || "";
+
   $("website").value = profile.website || "";
   $("about").value = profile.about || "";
   $("additionalInformation").value = profile.additionalInformation || "";
@@ -636,6 +718,8 @@ window.editProfile = function(profile) {
   $("github").value = profile.github || "";
 
   cachedPhotoBase64 = profile.photo || "";
+  cachedLogoBase64 = profile.companyLogo || "";
+
   if (cachedPhotoBase64) {
     $("previewPhoto").src = cachedPhotoBase64;
     $("previewPhoto").classList.remove("hidden");
@@ -674,6 +758,7 @@ window.deleteProfile = async function(id) {
 function resetForm() {
   document.querySelectorAll(".generator-grid input, .generator-grid textarea").forEach(i => i.value = "");
   cachedPhotoBase64 = "";
+  cachedLogoBase64 = "";
   isEditMode = false;
   isCustomSlugManuallyEdited = false;
   currentRandomSuffix = generateRandom3Char();
