@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Marcus Vance - Cardiology Specialist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #ccfbf1; display: flex; justify-content: center; min-height: 100vh; padding: 20px 10px; color: #134e4a; }
+        .card-container { width: 100%; max-width: 420px; background: #ffffff; border-radius: 32px; overflow: hidden; box-shadow: 0 20px 40px rgba(13,148,136,0.15); border: 1.5px solid #99f6e4; }
+        
+        .clinic-header { background: #0f766e; color: white; padding: 24px 20px; text-align: center; }
+        .clinic-name { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #99f6e4; }
+        
+        .doctor-hero { padding: 24px 20px 10px; text-align: center; }
+        .doc-avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; border: 4px solid #ccfbf1; margin-bottom: 12px; }
+        .doc-name { font-size: 22px; font-weight: 800; color: #115e59; }
+        .doc-spec { font-size: 13px; font-weight: 600; color: #0d9488; margin-top: 2px; }
+        .doc-creds { font-size: 11px; color: #64748b; margin-top: 4px; }
+        
+        .appointment-cta { margin: 16px 20px; padding: 14px; background: #0d9488; color: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 8px 20px rgba(13,148,136,0.25); }
+        
+        .contact-card-box { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+        .c-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #f0fdfa; border: 1px solid #ccfbf1; border-radius: 14px; text-decoration: none; color: #134e4a; font-size: 13px; font-weight: 600; }
+        .ci-icon { width: 32px; height: 32px; border-radius: 10px; background: #ccfbf1; color: #0d9488; display: flex; align-items: center; justify-content: center; }
+        .ci-icon svg { width: 16px; height: 16px; }
+        
+        .save-vcf { width: 100%; padding: 14px; background: #134e4a; color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="clinic-header">
+            <div class="clinic-name">St. Jude Medical Institute</div>
+        </div>
+
+        <div class="doctor-hero">
+            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80" alt="Doctor" class="doc-avatar">
+            <h1 class="doc-name">Dr. Marcus Vance, MD</h1>
+            <div class="doc-spec">Senior Consultant Cardiologist</div>
+            <div class="doc-creds">MBBS, MD (Cardiology), FACC • 15+ Yrs Exp</div>
+        </div>
+
+        <a href="https://calendly.com" target="_blank" class="appointment-cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Book Clinic Appointment
+        </a>
+
+        <div class="contact-card-box">
+            <a href="tel:+16175550143" class="c-item">
+                <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                <div>+1 (617) 555-0143 (Office Desk)</div>
+            </a>
+            <a href="mailto:dr.vance@stjudemedical.org" class="c-item">
+                <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                <div>dr.vance@stjudemedical.org</div>
+            </a>
+            <a href="https://maps.google.com" target="_blank" class="c-item">
+                <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                <div>Suite 400, Boston Medical Plaza, MA</div>
+            </a>
+            <a href="https://stjudemedical.org" target="_blank" class="c-item">
+                <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                <div>www.stjudemedical.org</div>
+            </a>
+            
+            <button class="save-vcf" onclick="downloadVCF('Dr. Marcus Vance', '+16175550143', 'dr.vance@stjudemedical.org', 'Senior Consultant Cardiologist', 'St. Jude Medical Institute', 'https://stjudemedical.org', 'Boston, MA')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg> Save Doctor Contact
+            </button>
+        </div>
+    </div>
+
+    <script>
+        
+function downloadVCF(name, phone, email, title, org, website, address) {
+    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${org}\nTITLE:${title}\nTEL;TYPE=CELL:${phone}\nEMAIL;TYPE=WORK:${email}\nURL:${website}\nADR;TYPE=WORK:;;${address};;;;\nEND:VCARD`;
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const newLink = document.createElement('a');
+    newLink.download = `${name.replace(/\s+/g, '_')}_contact.vcf`;
+    newLink.href = url;
+    newLink.click();
+    URL.revokeObjectURL(url);
+}
+
+function shareProfile(title, url) {
+    if (navigator.share) {
+        navigator.share({ title: title, url: url || window.location.href }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url || window.location.href);
+        alert('Profile link copied to clipboard!');
+    }
+}
+
+    </script>
+</body>
+</html>

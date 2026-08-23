@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Mercer - Web3 & Fintech Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+        body { background: #07090e; display: flex; justify-content: center; min-height: 100vh; padding: 20px 10px; color: #e2e8f0; }
+        .card-container { width: 100%; max-width: 420px; background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(20px); border-radius: 32px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative; }
+        
+        .glow-sphere { position: absolute; width: 220px; height: 220px; background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(0,0,0,0) 70%); top: -60px; right: -60px; pointer-events: none; }
+        .glow-sphere-2 { position: absolute; width: 180px; height: 180px; background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, rgba(0,0,0,0) 70%); bottom: 40px; left: -40px; pointer-events: none; }
+        
+        .top-nav { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .brand-tag { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: #10b981; letter-spacing: 1px; text-transform: uppercase; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981; }
+        
+        .hero { text-align: center; padding: 30px 20px 10px; }
+        .avatar-ring { width: 110px; height: 110px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #10b981, #06b6d4); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+        .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #0d131f; }
+        
+        .hero-name { font-size: 24px; font-weight: 700; color: #ffffff; }
+        .hero-title { font-size: 14px; color: #94a3b8; margin-top: 4px; }
+        .company-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #38bdf8; margin-top: 10px; }
+        
+        .quick-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 16px 20px; }
+        .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 12px 8px; border-radius: 16px; text-align: center; }
+        .stat-num { font-size: 16px; font-weight: 700; color: #10b981; }
+        .stat-lbl { font-size: 10px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+        
+        .links-group { padding: 10px 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+        .glass-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; text-decoration: none; color: #f1f5f9; transition: 0.3s; }
+        .glass-row:hover { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.4); transform: translateX(4px); }
+        .gl-left { display: flex; align-items: center; gap: 14px; }
+        .gl-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); color: #10b981; display: flex; align-items: center; justify-content: center; }
+        .gl-icon svg { width: 18px; height: 18px; }
+        .gl-title { font-size: 13px; font-weight: 600; }
+        .gl-sub { font-size: 11px; color: #64748b; }
+        
+        .cta-box { padding: 0 20px 24px; display: flex; gap: 10px; }
+        .glow-btn { flex: 1; padding: 14px; background: #10b981; color: #022c22; font-weight: 700; font-size: 14px; border: none; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+        .glow-btn svg { width: 18px; height: 18px; }
+        .icon-btn { width: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .icon-btn svg { width: 20px; height: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="glow-sphere"></div>
+        <div class="glow-sphere-2"></div>
+
+        <div class="top-nav">
+            <div class="brand-tag"><span class="status-dot"></span> Available for Advisory</div>
+            <div class="brand-tag" style="color: #94a3b8; font-size: 11px;">vCard 3.0</div>
+        </div>
+
+        <div class="hero">
+            <div class="avatar-ring">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80" alt="Avatar" class="avatar-img">
+            </div>
+            <h1 class="hero-name">Alex Mercer</h1>
+            <p class="hero-title">Chief Strategy Officer & Tokenomics Lead</p>
+            <div class="company-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="22.01"></line><line x1="15" y1="22" x2="15" y2="22.01"></line><line x1="9" y1="6" x2="9" y2="6.01"></line><line x1="15" y1="6" x2="15" y2="6.01"></line><line x1="9" y1="10" x2="9" y2="10.01"></line><line x1="15" y1="10" x2="15" y2="10.01"></line><line x1="9" y1="14" x2="9" y2="14.01"></line><line x1="15" y1="14" x2="15" y2="14.01"></line><line x1="9" y1="18" x2="9" y2="18.01"></line><line x1="15" y1="18" x2="15" y2="18.01"></line></svg> Aetherium Labs • Singapore</div>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-num">$120M+</div>
+                <div class="stat-lbl">TVL Managed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">14+</div>
+                <div class="stat-lbl">DeFi Protocols</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">99.9%</div>
+                <div class="stat-lbl">Security Score</div>
+            </div>
+        </div>
+
+        <div class="links-group">
+            <a href="tel:+6587654321" class="glass-row">
+                <div class="gl-left">
+                    <div class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                    <div><div class="gl-title">Direct Mobile</div><div class="gl-sub">+65 8765 4321</div></div>
+                </div>
+                <div style="color: #64748b;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+            </a>
+            <a href="mailto:alex@aetheriumlabs.io" class="glass-row">
+                <div class="gl-left">
+                    <div class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                    <div><div class="gl-title">Encrypted Email</div><div class="gl-sub">alex@aetheriumlabs.io</div></div>
+                </div>
+                <div style="color: #64748b;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+            </a>
+            <a href="https://t.me/alexmercer" target="_blank" class="glass-row">
+                <div class="gl-left">
+                    <div class="gl-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></div>
+                    <div><div class="gl-title">Telegram / Signal</div><div class="gl-sub">@alexmercer_eth</div></div>
+                </div>
+                <div style="color: #64748b;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+            </a>
+            <a href="https://linkedin.com" target="_blank" class="glass-row">
+                <div class="gl-left">
+                    <div class="gl-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
+                    <div><div class="gl-title">LinkedIn Profile</div><div class="gl-sub">12k Followers</div></div>
+                </div>
+                <div style="color: #64748b;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+            </a>
+        </div>
+
+        <div class="cta-box">
+            <button class="glow-btn" onclick="downloadVCF('Alex Mercer', '+6587654321', 'alex@aetheriumlabs.io', 'Chief Strategy Officer', 'Aetherium Labs', 'https://aetheriumlabs.io', 'Singapore')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg> Save to Contacts
+            </button>
+            <div class="icon-btn" onclick="shareProfile('Alex Mercer Contact Card')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></div>
+        </div>
+    </div>
+
+    <script>
+        
+function downloadVCF(name, phone, email, title, org, website, address) {
+    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${org}\nTITLE:${title}\nTEL;TYPE=CELL:${phone}\nEMAIL;TYPE=WORK:${email}\nURL:${website}\nADR;TYPE=WORK:;;${address};;;;\nEND:VCARD`;
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const newLink = document.createElement('a');
+    newLink.download = `${name.replace(/\s+/g, '_')}_contact.vcf`;
+    newLink.href = url;
+    newLink.click();
+    URL.revokeObjectURL(url);
+}
+
+function shareProfile(title, url) {
+    if (navigator.share) {
+        navigator.share({ title: title, url: url || window.location.href }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url || window.location.href);
+        alert('Profile link copied to clipboard!');
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -34,7 +34,7 @@
 <script>
 "use strict";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec";
 
 const app = document.getElementById("app");
 const params = new URLSearchParams(window.location.search);
@@ -154,7 +154,7 @@ const SOCIAL_META = {
   github: {label:"GitHub", icon:"⌨"}
 };
 
-function socialLinks(profile) {
+function generateSocialLinksHtml(profile) {
   return Object.keys(SOCIAL_META).filter(key => profile[key]).map(key => {
     const meta = SOCIAL_META[key];
     const url = normalizeWebsite(profile[key]);
@@ -164,103 +164,71 @@ function socialLinks(profile) {
   }).join("");
 }
 
+// Client-Side {{}} Template Renderer
+function renderTemplate(templateString, context) {
+  let output = templateString;
+
+  // Handle Conditionals: {{#if key}} ... {{/if}} and {{#if !key}} ... {{/if}}
+  output = output.replace(/{{#if\s+(!)?(\w+)}}([\s\S]*?){{\/if}}/g, (match, notFlag, key, content) => {
+    const val = context[key];
+    const isTruthy = Boolean(val && String(val).trim() !== "");
+    const condition = notFlag ? !isTruthy : isTruthy;
+    return condition ? content : "";
+  });
+
+  // Handle Interpolation: {{key}}
+  output = output.replace(/{{(\w+)}}/g, (match, key) => {
+    return context[key] !== undefined ? context[key] : "";
+  });
+
+  return output;
+}
+
 function renderProfile(profile) {
   if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
+  // Apply Theme
   if (profile.theme === "light") {
     document.body.classList.add("theme-light");
   } else {
     document.body.classList.remove("theme-light");
   }
 
-  const phoneLink = profile.phone
-    ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.phone)}">${escapeHTML(profile.phone)}</a></div>` : "";
-  const mobileLink = profile.mobile
-    ? `<div class="contact-row"><span>📱</span><a href="tel:${escapeHTML(profile.mobile)}">${escapeHTML(profile.mobile)}</a></div>` : "";
-  const emailLink = profile.email
-    ? `<div class="contact-row"><span>✉️</span><a href="mailto:${escapeHTML(profile.email)}">${escapeHTML(profile.email)}</a></div>` : "";
-  const websiteLink = profile.website
-    ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">${escapeHTML(normalizeWebsite(profile.website))}</a></div>` : "";
-  const dobRow = profile.dob
-    ? `<div class="contact-row"><span>🎂</span><span>${escapeHTML(profile.dob.split("T")[0])}</span></div>` : "";
-  const bloodRow = profile.bloodGroup
-    ? `<div class="contact-row"><span>🩸</span><span>Blood Group: <strong>${escapeHTML(profile.bloodGroup)}</strong></span></div>` : "";
+  const socialLinksHtml = generateSocialLinksHtml(profile);
 
-  const hasJobSection = profile.company || profile.companyWebsite || profile.companyEmail || profile.companyPhone || profile.companyContactPerson || profile.companyJoiningDate;
-  let jobSectionHtml = "";
-  if (hasJobSection) {
-    const logoHtml = profile.companyLogo ? `<img src="${escapeHTML(profile.companyLogo)}" class="company-logo" alt="Logo">` : "";
-    const compName = profile.company ? `<div class="contact-row"><span>🏢</span><strong>${logoHtml}${escapeHTML(profile.company)}</strong></div>` : "";
-    const compWeb = profile.companyWebsite ? `<div class="contact-row"><span>🌐</span><a href="${escapeHTML(normalizeWebsite(profile.companyWebsite))}" target="_blank" rel="noopener">${escapeHTML(normalizeWebsite(profile.companyWebsite))}</a></div>` : "";
-    const compEmail = profile.companyEmail ? `<div class="contact-row"><span>✉️</span><a href="mailto:${escapeHTML(profile.companyEmail)}">${escapeHTML(profile.companyEmail)}</a></div>` : "";
-    const compPhone = profile.companyPhone ? `<div class="contact-row"><span>📞</span><a href="tel:${escapeHTML(profile.companyPhone)}">${escapeHTML(profile.companyPhone)}</a></div>` : "";
-    const compPerson = profile.companyContactPerson ? `<div class="contact-row"><span>👤</span><span>Contact: ${escapeHTML(profile.companyContactPerson)}</span></div>` : "";
-    const compJoining = profile.companyJoiningDate ? `<div class="contact-row"><span>📅</span><span>Joined: ${escapeHTML(profile.companyJoiningDate.split("T")[0])}</span></div>` : "";
+  // Template Context Object
+  const context = {
+    ...profile,
+    dob: profile.dob ? profile.dob.split("T")[0] : "",
+    companyJoiningDate: profile.companyJoiningDate ? profile.companyJoiningDate.split("T")[0] : "",
+    firstChar: escapeHTML((profile.name || "?").charAt(0).toUpperCase()),
+    hasSocials: Boolean(socialLinksHtml),
+    socialLinksHtml: socialLinksHtml
+  };
 
-    jobSectionHtml = `
-      <section class="profile-section">
-        <h3>Job & Company Details</h3>
-        ${compName}${compWeb}${compEmail}${compPhone}${compPerson}${compJoining}
-      </section>
-    `;
-  }
-
-  const hasAddress = profile.address1 || profile.address2 || profile.address3;
-  let addressHtml = "";
-  if (hasAddress) {
-    const a1 = profile.address1 ? `<div style="margin-bottom:8px;"><strong>${escapeHTML(profile.address1Label || 'Address 01')}:</strong><br>${escapeHTML(profile.address1)}</div>` : "";
-    const a2 = profile.address2 ? `<div style="margin-bottom:8px;"><strong>${escapeHTML(profile.address2Label || 'Address 02')}:</strong><br>${escapeHTML(profile.address2)}</div>` : "";
-    const a3 = profile.address3 ? `<div><strong>${escapeHTML(profile.address3Label || 'Address 03')}:</strong><br>${escapeHTML(profile.address3)}</div>` : "";
-
-    addressHtml = `
-      <section class="profile-section">
-        <h3>Address</h3>
-        ${a1}${a2}${a3}
-      </section>
-    `;
-  }
-
-  const about = profile.about
-    ? `<section class="profile-section"><h3>About</h3><p>${escapeHTML(profile.about)}</p></section>` : "";
-  const additional = profile.additionalInformation
-    ? `<section class="profile-section"><h3>Additional Information</h3><div>${escapeHTML(profile.additionalInformation)}</div></section>` : "";
-  const socials = socialLinks(profile)
-    ? `<section class="profile-section"><h3>Social Media</h3><div class="social-links">${socialLinks(profile)}</div></section>` : "";
-
-  app.innerHTML = `
+  // Default fallback if no template HTML stored in Sheet
+  const fallbackTemplate = `
     <div class="profile-page">
       <main class="profile">
         <div class="profile-badge">DIGITAL CONTACT</div>
-        ${profile.photo
-          ? `<img class="profile-avatar" src="${escapeHTML(profile.photo)}" alt="${escapeHTML(profile.name)}">`
-          : `<div class="profile-avatar profile-avatar-placeholder">${escapeHTML((profile.name || "?").charAt(0).toUpperCase())}</div>`}
-        <h1>${escapeHTML(profile.name)}</h1>
-        <div class="title">${escapeHTML(profile.jobTitle || '')}</div>
-        ${profile.company ? `<div class="company">${escapeHTML(profile.company)}</div>` : ""}
-        
+        {{#if photo}}<img class="profile-avatar" src="{{photo}}" alt="{{name}}">{{/if}}
+        {{#if !photo}}<div class="profile-avatar profile-avatar-placeholder">{{firstChar}}</div>{{/if}}
+        <h1>{{name}}</h1>
+        <div class="title">{{jobTitle}}</div>
+        <div class="company">{{company}}</div>
         <div class="profile-actions">
           <button id="saveContact" class="btn success">💾 Save Contact</button>
-          ${profile.mobile ? `<a class="btn primary" href="tel:${escapeHTML(profile.mobile)}">📱 Mobile</a>` : (profile.phone ? `<a class="btn primary" href="tel:${escapeHTML(profile.phone)}">📞 Call</a>` : "")}
-          ${profile.email ? `<a class="btn secondary" href="mailto:${escapeHTML(profile.email)}">✉️ Email</a>` : ""}
-          ${profile.website ? `<a class="btn dark" href="${escapeHTML(normalizeWebsite(profile.website))}" target="_blank" rel="noopener">🌐 Website</a>` : ""}
         </div>
-
-        <section class="profile-section">
-          <h3>Personal Contact</h3>
-          ${phoneLink}${mobileLink}${emailLink}${websiteLink}${dobRow}${bloodRow}
-        </section>
-
-        ${jobSectionHtml}
-        ${addressHtml}
-        ${about}
-        ${additional}
-        ${socials}
-        <div class="profile-footer">Powered by <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;">Shamim4s</a></div>
+        <div class="profile-footer">Powered by Shamim4s</div>
       </main>
-    </div>`;
+    </div>
+  `;
 
-  document.getElementById("saveContact").addEventListener("click", () => saveContact(profile));
+  const templateToUse = profile.templateHtml || fallbackTemplate;
+  app.innerHTML = renderTemplate(templateToUse, context);
+
+  document.getElementById("saveContact")?.addEventListener("click", () => saveContact(profile));
 }
 
 async function render() {

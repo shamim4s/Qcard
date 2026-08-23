@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qcard by Shamim4s - Generator</title>
 <link rel="stylesheet" href="style.css">
-<!-- Google Sign-In SDK -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   .auth-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
@@ -22,7 +21,6 @@
 </head>
 <body>
 
-<!-- Google Auth Modal -->
 <div id="authOverlay" class="auth-overlay">
   <div class="auth-box">
     <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" class="eyebrow" style="text-decoration:none;">Qcard by Shamim4s</a>
@@ -30,7 +28,7 @@
     <p class="muted" style="margin-bottom: 20px;">Sign in with Google to manage and edit your accessible profiles.</p>
     
     <div id="g_id_onload"
-         data-client_id="378132733460-p0ptv54u1m3buaetfimuoo6iua43b1b5.apps.googleusercontent.com"
+         data-client_id="PASTE_YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com"
          data-callback="handleCredentialResponse"
          data-auto_prompt="false">
     </div>
@@ -65,6 +63,13 @@
   <div class="generator-grid">
     <div class="card">
       <h2 id="formTitle">Contact Information</h2>
+
+      <div class="form-group">
+        <label for="templateId">Design Layout (from Sheet)</label>
+        <select id="templateId" style="width:100%; background:#0b1329; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text);">
+          <option value="classic-card">Classic Qcard (Default)</option>
+        </select>
+      </div>
 
       <div class="form-group">
         <label for="theme">Profile Theme</label>
@@ -268,12 +273,13 @@
               <th>Avatar</th>
               <th>Name</th>
               <th>Slug</th>
+              <th>Template</th>
               <th>Theme</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="profilesTableBody">
-            <tr><td colspan="5">Loading profiles...</td></tr>
+            <tr><td colspan="6">Loading profiles...</td></tr>
           </tbody>
         </table>
       </div>
@@ -285,7 +291,7 @@
 <script>
 "use strict";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEu_YG7FOobkwoqEdmuHU1QfEww9m2Jv209jOksykwceli4Nu45uG9h92QUEvD6epd/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_ID/exec";
 
 let currentProfile = null;
 let currentVCard = "";
@@ -319,11 +325,36 @@ window.handleCredentialResponse = function(response) {
   initAuthUI();
 };
 
+async function loadTemplatesDropdown() {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "get_templates", origin: window.location.href }),
+      redirect: "follow"
+    });
+    const json = await res.json();
+    if (json.status === "success" && json.data.length > 0) {
+      const select = $("templateId");
+      select.innerHTML = "";
+      json.data.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.templateId;
+        opt.textContent = t.templateName;
+        select.appendChild(opt);
+      });
+    }
+  } catch (e) {
+    console.error("Could not load templates: ", e);
+  }
+}
+
 function initAuthUI() {
   if (rawGoogleIdToken && loggedInUserEmail) {
     $("authOverlay").classList.add("hidden");
     $("userBar").classList.remove("hidden");
     $("currentUserEmail").textContent = loggedInUserEmail;
+    loadTemplatesDropdown();
     loadProfilesTable();
   } else {
     $("authOverlay").classList.remove("hidden");
@@ -543,6 +574,7 @@ function buildProfile() {
 
   return {
     id: slug,
+    templateId: safeValue("templateId") || "classic-card",
     theme: safeValue("theme") || "dark",
     name,
     dob: safeValue("dob"),
@@ -682,7 +714,7 @@ async function loadProfilesTable() {
     tbody.innerHTML = "";
 
     if (!json.data || json.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5">No profiles found for your account.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6">No profiles found for your account.</td></tr>';
       return;
     }
 
@@ -694,6 +726,7 @@ async function loadProfilesTable() {
         <td><img src="${avatarSrc}" class="table-avatar"></td>
         <td><strong>${p.name || ''}</strong></td>
         <td><code>${p.id}</code></td>
+        <td><small>${p.templateId || 'classic-card'}</small></td>
         <td><span class="edit-tag" style="margin-left:0;">${p.theme || 'dark'}</span></td>
         <td>
           <div class="action-btns">
@@ -705,13 +738,14 @@ async function loadProfilesTable() {
       tbody.appendChild(tr);
     });
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="5" style="color:red;">Error loading profiles from Sheet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="color:red;">Error loading profiles from Sheet.</td></tr>';
   }
 }
 
 window.editProfile = function(profile) {
   isEditMode = true;
   $("slug").value = profile.id;
+  $("templateId").value = profile.templateId || "classic-card";
   $("theme").value = profile.theme || "dark";
   $("name").value = profile.name || "";
   $("dob").value = profile.dob ? profile.dob.split("T")[0] : "";
@@ -844,6 +878,7 @@ $("copyURL").addEventListener("click", async () => {
   }
 });
 
+// Initialization
 setMode("online");
 currentRandomSuffix = generateRandom3Char();
 updateRealtimeSlug();

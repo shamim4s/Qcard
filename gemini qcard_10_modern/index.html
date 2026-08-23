@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital vCard Studio - 10 Premium UI Designs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #0b0f19; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        header { background: #111827; border-bottom: 1px solid #1f2937; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-badge { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; }
+        .title-box h1 { font-size: 20px; font-weight: 800; }
+        .title-box p { font-size: 13px; color: #94a3b8; }
+        
+        .main-layout { display: flex; flex: 1; height: calc(100vh - 82px); overflow: hidden; }
+        
+        /* Sidebar list */
+        .sidebar { width: 380px; background: #111827; border-right: 1px solid #1f2937; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .sidebar-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 1px; margin-bottom: 4px; }
+        
+        .theme-card { background: #1f2937; border: 1px solid #374151; border-radius: 16px; padding: 16px; cursor: pointer; transition: 0.2s; }
+        .theme-card:hover { background: #283548; border-color: #3b82f6; }
+        .theme-card.active { background: #1e3a8a; border-color: #60a5fa; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+        
+        .tc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .tc-num { font-size: 11px; font-weight: 800; color: #60a5fa; background: rgba(59,130,246,0.15); padding: 2px 8px; border-radius: 6px; }
+        .tc-cat { font-size: 11px; color: #94a3b8; font-weight: 600; }
+        .tc-title { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+        .tc-desc { font-size: 12px; color: #94a3b8; line-height: 1.4; }
+        
+        /* Preview Workspace */
+        .preview-area { flex: 1; background: #0b0f19; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; position: relative; overflow-y: auto; }
+        
+        .preview-bar { width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .open-tab-btn { color: #60a5fa; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; background: #1f2937; padding: 8px 14px; border-radius: 10px; border: 1px solid #374151; }
+        .open-tab-btn:hover { background: #374151; }
+        
+        /* Mobile Frame Mockup */
+        .mockup-frame { width: 100%; max-width: 420px; height: 820px; background: #000; border-radius: 46px; border: 8px solid #2d3748; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 0 1px #4a5568; overflow: hidden; position: relative; }
+        .mockup-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 110px; height: 24px; background: #1a202c; border-radius: 12px; z-index: 10; display: flex; align-items: center; justify-content: center; }
+        .mockup-camera { width: 10px; height: 10px; background: #0d1117; border-radius: 50%; }
+        
+        .iframe-preview { width: 100%; height: 100%; border: none; background: white; }
+        
+        @media (max-width: 900px) {
+            .main-layout { flex-direction: column; height: auto; }
+            .sidebar { width: 100%; height: 320px; }
+            .mockup-frame { height: 750px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <div class="logo-badge">⚡</div>
+            <div class="title-box">
+                <h1>Digital vCard Design Studio</h1>
+                <p>10 Ready-to-use modern HTML templates with downloadable .vcf contacts</p>
+            </div>
+        </div>
+        <div style="font-size: 13px; color: #94a3b8;">
+            Select any template on the left to preview instantly
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="sidebar">
+            <div class="sidebar-title">10 Unique UI Styles</div>
+            
+            <div class="theme-card active" onclick="loadTemplate('vcard_01_corporate_blue.html', 'Corporate Executive Blue', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 01</span>
+                    <span class="tc-cat">Corporate & Enterprise</span>
+                </div>
+                <div class="tc-title">Corporate Executive Blue</div>
+                <div class="tc-desc">Curved navy header, dual logo & avatar layout, sleek contact pill badges, expertise tags, and sticky bottom navigation bar (matching Reference Screenshot 1).</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_02_popipro_modern.html', 'Popipro Modern SaaS (Sky Blue)', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 02</span>
+                    <span class="tc-cat">SaaS & Tech Innovator</span>
+                </div>
+                <div class="tc-title">Popipro Modern SaaS (Sky Blue)</div>
+                <div class="tc-desc">Directly inspired by Popipro UI: Pill action buttons (Add Contact, Share, Reviews, Appointment), sleek modern cards with navigation arrows, and circular social badges.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_03_dark_glassmorphism.html', 'Dark Cyber Glassmorphism', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 03</span>
+                    <span class="tc-cat">Fintech & Web3 Tech</span>
+                </div>
+                <div class="tc-title">Dark Cyber Glassmorphism</div>
+                <div class="tc-desc">Dark obsidian mode with glowing neon cyan/emerald accents, frosted glass morphism, cryptocurrency payment quick-copy, live status indicator, and dynamic QR trigger.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_04_luxury_gold_editorial.html', 'Editorial Luxury & Real Estate (Champagne Gold)', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 04</span>
+                    <span class="tc-cat">Luxury Real Estate & Legal</span>
+                </div>
+                <div class="tc-title">Editorial Luxury & Real Estate (Champagne Gold)</div>
+                <div class="tc-desc">High-end serif typography, warm champagne gold borders, dual-column contact details, property portfolio badge, and refined editorial aesthetic.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_05_sunset_gradient_creative.html', 'Creative Sunset Gradient & Tabs', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 05</span>
+                    <span class="tc-cat">Creative Studio & Marketing</span>
+                </div>
+                <div class="tc-title">Creative Sunset Gradient & Tabs</div>
+                <div class="tc-desc">Vibrant violet-to-coral mesh gradient header, floating 3D avatar card, interactive tab switching (Overview / Portfolio / Booking), and direct social buttons.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_06_bento_grid_slate.html', 'Bento Grid Nordic Slate', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 06</span>
+                    <span class="tc-cat">Modern Modular UI</span>
+                </div>
+                <div class="tc-title">Bento Grid Nordic Slate</div>
+                <div class="tc-desc">Apple-inspired Bento Grid layout: Modular tiles for avatar, direct phone action, map preview, working hours, and social hubs.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_07_neo_brutalism.html', 'Neo-Brutalism Creative Card', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 07</span>
+                    <span class="tc-cat">Trendy Designer & Youth Brand</span>
+                </div>
+                <div class="tc-title">Neo-Brutalism Creative Card</div>
+                <div class="tc-desc">High contrast retro neo-brutalism design with bold 2px black borders, drop shadows (4px 4px), sticker badges, and vibrant yellow/lilac accent blocks.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_08_biolink_pro_indigo.html', 'Bio-Link Pro Midnight', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 08</span>
+                    <span class="tc-cat">Influencer & Consultant</span>
+                </div>
+                <div class="tc-title">Bio-Link Pro Midnight</div>
+                <div class="tc-desc">Rich Linktree-style card layout: Verified account badge, social counter, WhatsApp direct-chat CTA, portfolio card, and sticky share drawer.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_09_medical_wellness_teal.html', 'Medical & Wellness Mint Teal', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 09</span>
+                    <span class="tc-cat">Healthcare & Doctors</span>
+                </div>
+                <div class="tc-title">Medical & Wellness Mint Teal</div>
+                <div class="tc-desc">Clean clinical mint-teal theme, hospital/clinic affiliation badge, appointment booking button, direct emergency call button, and doctor credentials.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_10_startup_founder_pitch.html', 'Startup Founder & Pitch Deck (Carbon Amber)', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Template 010</span>
+                    <span class="tc-cat">Founders & Investors</span>
+                </div>
+                <div class="tc-title">Startup Founder & Pitch Deck (Carbon Amber)</div>
+                <div class="tc-desc">Investor-ready card: Live pitch deck link, company traction stats ($2.4M ARR), one-click meeting scheduler, and high-impact dark carbon theme.</div>
+            </div>
+            
+        </div>
+
+        <div class="preview-area">
+            <div class="preview-bar">
+                <span id="currentTemplateName" style="font-weight: 700; font-size: 15px; color: #f1f5f9;">Corporate Executive Blue</span>
+                <a id="openTabBtn" href="vcard_01_corporate_blue.html" target="_blank" class="open-tab-btn">
+                    Open Fullscreen ↗
+                </a>
+            </div>
+
+            <div class="mockup-frame">
+                <div class="mockup-notch">
+                    <div class="mockup-camera"></div>
+                </div>
+                <iframe id="previewIframe" src="vcard_01_corporate_blue.html" class="iframe-preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadTemplate(fileName, title, cardElem) {
+            document.getElementById('previewIframe').src = fileName;
+            document.getElementById('openTabBtn').href = fileName;
+            document.getElementById('currentTemplateName').textContent = title;
+            
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            cardElem.classList.add('active');
+        }
+    </script>
+</body>
+</html>

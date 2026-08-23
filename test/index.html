@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Modern Digital VCard UI Designs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: #1e40af;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: #e2e8f0;
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', sans-serif;
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 1.25rem;
+            margin-bottom: 60px;
+        }
+        .section {
+            margin-bottom: 80px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .section-header h2 {
+            font-size: 1.75rem;
+            margin: 0;
+        }
+        .demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        .card {
+            background: #1e2937;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -15px rgb(96 165 250 / 0.3);
+        }
+        .demo-frame {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: inset 0 0 0 1px #cbd5e1;
+            height: 620px;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-mock {
+            width: 100%;
+            height: 100%;
+            background: #f8fafc;
+            border-radius: 42px;
+            padding: 12px;
+            box-shadow: 0 0 0 14px #1e2937;
+            position: relative;
+            overflow: hidden;
+        }
+        .status-bar {
+            height: 38px;
+            background: #1e2937;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 11px;
+            color: #64748b;
+            justify-content: space-between;
+        }
+        .app-header {
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .app-header::after {
+            content: '⋯';
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .content {
+            padding: 16px 20px;
+            background: white;
+            height: calc(100% - 110px);
+            overflow-y: auto;
+        }
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.3);
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .avatar::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #93c5fd, #60a5fa);
+            z-index: -1;
+        }
+        .name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e2937;
+            margin-bottom: 4px;
+        }
+        .tag {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            display: inline-block;
+        }
+        .role {
+            color: #64748b;
+            font-size: 14px;
+            margin: 6px 0 16px;
+        }
+        .company {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .company-logo {
+            width: 38px;
+            height: 38px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e40af;
+            border: 3px solid #e0f2fe;
+        }
+        .info-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #475569;
+        }
+        .info-item svg {
+            width: 20px;
+            height: 20px;
+            color: #64748b;
+        }
+        .expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .tag-pill {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+        }
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #1e40af;
+            color: white;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        .about {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+        .footer-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 62px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 10px;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .footer-bar span {
+            flex: 1;
+            text-align: center;
+        }
+        .demo-label {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.9);
+            color: #1e40af;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            z-index: 10;
+        }
+        .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>10 Modern Digital VCard UI Designs</h1>
+        <p class="subtitle">All designs are fully responsive, mobile-first, and optimized for viewing on any browser or device</p>
+        
+        <!-- DESIGN 1 - Gradient Hero -->
+        <div class="section">
+            <div class="section-header">
+                <h2>1. Gradient Hero • Modern Minimal</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#22c55e; color:white;">S</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                                <div style="font-size:18px;">⋯</div>
+                            </div>
+                            <div class="content" style="padding:32px 20px; text-align:center;">
+                                <div style="width:96px; height:96px; margin:0 auto 24px; background:rgba(255,255,255,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:42px; font-weight:700;">SS</div>
+                                <div style="font-size:26px; font-weight:700; margin-bottom:8px;">Shesha Shiv Mohanty</div>
+                                <div style="background:rgba(255,255,255,0.25); display:inline-block; padding:6px 24px; border-radius:9999px; font-size:13px;">AI Driven • Future Focused</div>
+                                
+                                <div style="margin-top:40px; font-size:15px; opacity:0.95; line-height:1.4;">
+                                    Entrepreneur with expertise in AI, Real Estate, Fintech, Staffing &amp; Numerology.<br>
+                                    Founder of AI Talent Engine.
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 1 • Gradient Hero</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 2 - Card Stack -->
+        <div class="section">
+            <div class="section-header">
+                <h2>2. Card Stack • Clean Minimal</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock" style="background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 100%);">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#eab308; color:#78350f;">SSM</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:20px 0;">
+                                <div style="text-align:center; margin-bottom:20px;">
+                                    <div style="width:88px; height:88px; margin:0 auto; background:#fefce8; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; border:6px solid #facc15;">SS</div>
+                                </div>
+                                <div style="text-align:center;">
+                                    <div style="font-size:21px; font-weight:700; color:#1e2937;">Shesha Shiv Mohanty</div>
+                                    <div style="color:#64748b; font-size:13px;">AI Driven | Future Focused</div>
+                                </div>
+                                
+                                <div style="background:#fff; border-radius:16px; padding:16px; margin:20px 0; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1);">
+                                    <div class="info-item"><span style="font-size:18px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                    <div class="info-item"><span style="font-size:18px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:18px;">✉</span> shesha@ssminnovations.com</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                    <div class="btn btn-secondary">Share</div>
+                                </div>
+                                
+                                <div class="about">
+                                    Entrepreneur with expertise in AI, Real Estate, Fintech, Staffing &amp; Numerology.<br>
+                                    Founder of AI Talent Engine, building the future with innovation and impact.
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 2 • Card Stack</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 3 - Side Panel -->
+        <div class="section">
+            <div class="section-header">
+                <h2>3. Side Panel • Professional</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#8b5cf6; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="display:flex; height:100%;">
+                                <!-- Sidebar -->
+                                <div style="width:36%; background: linear-gradient(180deg, #1e3a8a, #0f172a); color:white; padding:24px 16px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                                    <div class="company-logo" style="font-size:28px; background:white; color:#1e3a8a;">SS</div>
+                                    <div style="margin-top:12px; text-align:center;">
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px;">AI Driven • Future Focused</div>
+                                    </div>
+                                    <div style="margin-top:32px; font-size:13px; text-align:center; line-height:1.5;">
+                                        A I M L<br>
+                                        Real Estate<br>
+                                        Fintech<br>
+                                        Staffing<br>
+                                        Numerology<br>
+                                        AI Talent Engine
+                                    </div>
+                                </div>
+                                <!-- Main content -->
+                                <div style="width:64%; padding:24px; overflow-y:auto;">
+                                    <div style="margin-bottom:20px;">
+                                        <div style="font-size:13px; color:#64748b; margin-bottom:4px;">+91 98765 43210</div>
+                                        <div style="font-size:13px; color:#64748b;">shesha@ssminnovations.com</div>
+                                    </div>
+                                    <div style="margin-bottom:20px;">
+                                        <div style="font-size:13px; color:#64748b;">www.ssminnovations.com</div>
+                                    </div>
+                                    <div style="margin-bottom:20px;">
+                                        <div style="font-size:13px; color:#64748b;">Bhubaneswar, Odisha, India</div>
+                                    </div>
+                                    
+                                    <div class="expertise">
+                                        <div class="tag-pill">Artificial Intelligence</div>
+                                        <div class="tag-pill">Real Estate</div>
+                                        <div class="tag-pill">Fintech</div>
+                                    </div>
+                                    <div class="expertise">
+                                        <div class="tag-pill">Staffing</div>
+                                        <div class="tag-pill">Numerology</div>
+                                        <div class="tag-pill">AI Talent Engine</div>
+                                    </div>
+                                    
+                                    <div class="buttons" style="margin-top:24px;">
+                                        <div class="btn btn-primary" style="background:#1e3a8a;">Save Contact</div>
+                                        <div class="btn btn-secondary">Share</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 3 • Side Panel</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 4 - Horizontal Scroll -->
+        <div class="section">
+            <div class="section-header">
+                <h2>4. Horizontal Scroll • Dynamic</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#ec4899; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:20px 0; overflow-x:auto; white-space:nowrap; display:flex; gap:20px;">
+                                <!-- Profile -->
+                                <div style="width:320px; padding:0 20px; flex-shrink:0;">
+                                    <div style="text-align:center;">
+                                        <div class="avatar" style="width:100px; height:100px; font-size:36px;">SS</div>
+                                        <div style="font-size:22px; font-weight:700; margin:12px 0;">Shesha Shiv Mohanty</div>
+                                        <div style="color:#64748b; font-size:13px;">AI Driven • Future Focused</div>
+                                    </div>
+                                    
+                                    <div style="margin:24px 0 16px; display:flex; gap:12px; justify-content:center;">
+                                        <div style="background:#ec4899; color:white; font-size:12px; padding:5px 16px; border-radius:9999px;">A I M L</div>
+                                        <div style="background:#ec4899; color:white; font-size:12px; padding:5px 16px; border-radius:9999px;">Real Estate</div>
+                                    </div>
+                                    <div style="display:flex; gap:12px; justify-content:center;">
+                                        <div style="background:#ec4899; color:white; font-size:12px; padding:5px 16px; border-radius:9999px;">Fintech</div>
+                                        <div style="background:#ec4899; color:white; font-size:12px; padding:5px 16px; border-radius:9999px;">Staffing</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Contact info -->
+                                <div style="width:320px; flex-shrink:0; padding:20px; background:#f8fafc; border-radius:20px;">
+                                    <div style="font-size:13px; color:#64748b; margin-bottom:6px;">📞 +91 98765 43210</div>
+                                    <div style="font-size:13px; color:#64748b; margin-bottom:6px;">✉ shesha@ssminnovations.com</div>
+                                    <div style="font-size:13px; color:#64748b; margin-bottom:6px;">🌐 www.ssminnovations.com</div>
+                                    <div style="font-size:13px; color:#64748b;">📍 Bhubaneswar, Odisha, India</div>
+                                    
+                                    <div style="margin-top:24px;">
+                                        <div style="font-size:13px; color:#64748b; margin-bottom:8px;">Social</div>
+                                        <div style="display:flex; gap:12px;">
+                                            <div style="width:32px; height:32px; background:#1da1f2; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:13px;">𝕏</div>
+                                            <div style="width:32px; height:32px; background:#e1306c; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:13px;">𝕀</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="buttons" style="margin-top:32px;">
+                                        <div class="btn btn-primary" style="background:#1da1f2;">Save Contact</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 4 • Horizontal Scroll</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 5 - Bottom Navigation Focus -->
+        <div class="section">
+            <div class="section-header">
+                <h2>5. Bottom Navigation Focus • Interactive</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#14b8a6; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:24px;">
+                                <div style="text-align:center; margin-bottom:24px;">
+                                    <div style="width:100px; height:100px; margin:0 auto; background:#14b8a6; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:700; color:white;">SS</div>
+                                </div>
+                                <div style="text-align:center;">
+                                    <div style="font-size:22px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                    <div style="color:#14b8a6; font-size:13px; margin:4px 0;">AI Driven • Future Focused</div>
+                                </div>
+                                
+                                <div class="info-grid">
+                                    <div class="info-item"><span style="font-size:20px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:20px;">✉</span> shesha@ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:20px;">🌐</span> www.ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:20px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                    <div class="btn btn-secondary">Share</div>
+                                </div>
+                                
+                                <div class="about">
+                                    Entrepreneur with expertise in AI, Real Estate, Fintech, Staffing &amp; Numerology.<br>
+                                    Founder of AI Talent Engine.
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 5 • Bottom Navigation Focus</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 6 - Top Logo -->
+        <div class="section">
+            <div class="section-header">
+                <h2>6. Top Logo • Premium</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#ec4899; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:20px 0;">
+                                <div style="text-align:center; margin-bottom:24px;">
+                                    <div style="width:82px; height:82px; margin:0 auto; background:#ec4899; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:white; box-shadow:0 4px 15px -3px rgb(236 72 169 / 0.4);">SS</div>
+                                </div>
+                                <div style="text-align:center;">
+                                    <div style="font-size:22px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                    <div style="color:#64748b; font-size:13px;">AI Driven • Future Focused</div>
+                                </div>
+                                
+                                <div class="info-grid" style="margin:24px 0;">
+                                    <div class="info-item"><span style="font-size:18px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                    <div class="info-item"><span style="font-size:18px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:18px;">✉</span> shesha@ssminnovations.com</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 6 • Top Logo</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 7 - Left Aligned -->
+        <div class="section">
+            <div class="section-header">
+                <h2>7. Left Aligned • Trustworthy</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#eab308; color:#78350f;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:20px;">
+                                <div style="display:flex; align-items:center; gap:20px; margin-bottom:24px;">
+                                    <div style="width:88px; height:88px; background:#fefce8; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; color:#78350f; flex-shrink:0;">SS</div>
+                                    <div>
+                                        <div style="font-size:21px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="color:#eab308; font-size:13px;">AI Driven • Future Focused</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-grid">
+                                    <div class="info-item"><span style="font-size:18px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:18px;">✉</span> shesha@ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:18px;">🌐</span> www.ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:18px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons" style="margin-top:24px;">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 7 • Left Aligned</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 8 - Full Width Image -->
+        <div class="section">
+            <div class="section-header">
+                <h2>8. Full Width Image • Bold</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#22c55e; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:0;">
+                                <!-- Fake header image -->
+                                <div style="height:240px; background: linear-gradient(90deg, #22c55e, #86efac); display:flex; align-items:center; justify-content:center; font-size:48px; font-weight:700; color:white; position:relative;">
+                                    <div style="text-align:center;">
+                                        <div style="font-size:18px; opacity:0.9;">SSM INNOVATIONS</div>
+                                        <div style="font-size:42px; font-weight:700;">AI Driven</div>
+                                    </div>
+                                </div>
+                                <div class="profile" style="margin-top:-48px;">
+                                    <div style="width:92px; height:92px; border:6px solid white; border-radius:50%; background:#22c55e; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; color:white;">SS</div>
+                                </div>
+                                <div style="text-align:center; padding:0 20px;">
+                                    <div style="font-size:22px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                    <div style="color:#64748b; font-size:13px;">Founder • AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="info-grid" style="margin:24px 20px;">
+                                    <div class="info-item"><span style="font-size:18px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:18px;">✉</span> shesha@ssminnovations.com</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                </div>
+                                <div class="expertise">
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons" style="margin:20px 20px;">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 8 • Full Width Image</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 9 - Dark Mode -->
+        <div class="section">
+            <div class="section-header">
+                <h2>9. Dark Mode • Elegant</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock" style="background:#0f172a; color:#e2e8f0;">
+                            <div class="status-bar" style="background:#1e2937; color:#64748b;">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header" style="background:#1e2937; color:white;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#64748b; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.7;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:24px;">
+                                <div style="text-align:center;">
+                                    <div style="width:96px; height:96px; margin:0 auto; background:#1e2937; border:3px solid #64748b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:700;">SS</div>
+                                </div>
+                                <div style="text-align:center; margin:24px 0;">
+                                    <div style="font-size:22px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                    <div style="color:#94a3b8; font-size:13px;">AI Driven • Future Focused</div>
+                                </div>
+                                
+                                <div class="info-grid">
+                                    <div class="info-item"><span style="font-size:20px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                    <div class="info-item"><span style="font-size:20px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:20px;">✉</span> shesha@ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:20px;">🌐</span> www.ssminnovations.com</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <div class="btn btn-primary" style="background:#64748b;">Save Contact</div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 9 • Dark Mode</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN 10 - Classic Clean -->
+        <div class="section">
+            <div class="section-header">
+                <h2>10. Classic Clean • Timeless</h2>
+            </div>
+            <div class="demo">
+                <div class="card">
+                    <div class="demo-frame">
+                        <div class="phone-mock">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>Digital Profile</span>
+                                <span>•••</span>
+                            </div>
+                            <div class="app-header">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div class="company-logo" style="background:#6366f1; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:15px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="font-size:12px; opacity:0.9;">Entrepreneur</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content" style="padding:24px;">
+                                <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+                                    <div style="width:78px; height:78px; background:#6366f1; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:white;">SS</div>
+                                    <div>
+                                        <div style="font-size:22px; font-weight:700;">Shesha Shiv Mohanty</div>
+                                        <div style="color:#6366f1; font-size:13px;">AI Driven • Future Focused</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="about">
+                                    Entrepreneur with expertise in AI, Real Estate, Fintech, Staffing &amp; Numerology.<br><br>
+                                    Founder of AI Talent Engine, building the future with innovation and impact.
+                                </div>
+                                
+                                <div class="info-grid" style="margin:24px 0;">
+                                    <div class="info-item"><span style="font-size:18px;">📍</span> Bhubaneswar, Odisha, India</div>
+                                    <div class="info-item"><span style="font-size:18px;">📞</span> +91 98765 43210</div>
+                                    <div class="info-item"><span style="font-size:18px;">✉</span> shesha@ssminnovations.com</div>
+                                    <div class="info-item"><span style="font-size:18px;">🌐</span> www.ssminnovations.com</div>
+                                </div>
+                                
+                                <div class="expertise">
+                                    <div class="tag-pill">Artificial Intelligence</div>
+                                    <div class="tag-pill">Real Estate</div>
+                                    <div class="tag-pill">Fintech</div>
+                                    <div class="tag-pill">Staffing</div>
+                                    <div class="tag-pill">Numerology</div>
+                                    <div class="tag-pill">AI Talent Engine</div>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <div class="btn btn-primary">Save Contact</div>
+                                </div>
+                            </div>
+                            <div class="footer-bar">
+                                <span>Call</span>
+                                <span>Email</span>
+                                <span>Website</span>
+                                <span>Location</span>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">Design 10 • Classic Clean</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

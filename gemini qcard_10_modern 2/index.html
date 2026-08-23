@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Executive Blue vCard Studio - 10 New Looks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #070e18; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        header { background: #0c1626; border-bottom: 1px solid #1e2e45; padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .logo-area { display: flex; align-items: center; gap: 14px; }
+        .logo-badge { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0056b3, #0284c7); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; box-shadow: 0 4px 15px rgba(0,86,179,0.4); }
+        .title-box h1 { font-size: 19px; font-weight: 800; color: #ffffff; }
+        .title-box p { font-size: 13px; color: #94a3b8; }
+        
+        .main-layout { display: flex; flex: 1; height: calc(100vh - 78px); overflow: hidden; }
+        
+        /* Sidebar list */
+        .sidebar { width: 390px; background: #0c1626; border-right: 1px solid #1e2e45; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .sidebar-title { font-size: 12px; font-weight: 800; text-transform: uppercase; color: #38bdf8; letter-spacing: 1.2px; margin-bottom: 4px; }
+        
+        .theme-card { background: #132137; border: 1px solid #1e3352; border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.2s ease; }
+        .theme-card:hover { background: #1a2c47; border-color: #0284c7; transform: translateX(3px); }
+        .theme-card.active { background: #0f3460; border-color: #38bdf8; box-shadow: 0 0 20px rgba(56,189,248,0.25); }
+        
+        .tc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .tc-num { font-size: 11px; font-weight: 800; color: #38bdf8; background: rgba(56,189,248,0.15); padding: 3px 8px; border-radius: 6px; }
+        .tc-cat { font-size: 11px; color: #94a3b8; font-weight: 600; }
+        .tc-title { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+        .tc-desc { font-size: 12px; color: #94a3b8; line-height: 1.45; }
+        
+        /* Preview Workspace */
+        .preview-area { flex: 1; background: #070e18; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; overflow-y: auto; }
+        
+        .preview-bar { width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .open-tab-btn { color: #38bdf8; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; background: #132137; padding: 8px 14px; border-radius: 10px; border: 1px solid #1e3352; transition: 0.2s; }
+        .open-tab-btn:hover { background: #1e3352; }
+        
+        /* Mobile Frame Mockup */
+        .mockup-frame { width: 100%; max-width: 420px; height: 830px; background: #000; border-radius: 46px; border: 8px solid #1e293b; box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 0 1px #334155; overflow: hidden; position: relative; }
+        .mockup-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 110px; height: 24px; background: #0f172a; border-radius: 12px; z-index: 10; display: flex; align-items: center; justify-content: center; }
+        .mockup-camera { width: 10px; height: 10px; background: #000; border-radius: 50%; }
+        
+        .iframe-preview { width: 100%; height: 100%; border: none; background: white; }
+        
+        @media (max-width: 900px) {
+            .main-layout { flex-direction: column; height: auto; }
+            .sidebar { width: 100%; height: 320px; }
+            .mockup-frame { height: 750px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <div class="logo-badge">SSM</div>
+            <div class="title-box">
+                <h1>Corporate Executive Blue Studio</h1>
+                <p>10 Professional Layouts with Company Logo, Curved Headers & .vcf Contact Saving</p>
+            </div>
+        </div>
+        <div style="font-size: 13px; color: #94a3b8;">
+            Select any layout from the sidebar to preview
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="sidebar">
+            <div class="sidebar-title">10 Corporate Blue Designs</div>
+            
+            <div class="theme-card active" onclick="loadTemplate('vcard_01_sapphire_executive.html', '01. Classic Sapphire Executive', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 01</span>
+                    <span class="tc-cat">Curved Wave • Deep Ocean</span>
+                </div>
+                <div class="tc-title">01. Classic Sapphire Executive</div>
+                <div class="tc-desc">Standard corporate curved wave with rich sapphire gradient, blue accent pills, and SSM Innovations branding.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_02_royal_navy_gold.html', '02. Royal Navy & Gold Crest', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 02</span>
+                    <span class="tc-cat">Corporate Luxury • Prestige</span>
+                </div>
+                <div class="tc-title">02. Royal Navy & Gold Crest</div>
+                <div class="tc-desc">Midnight Navy background header with warm gold role badge, luxury crest logo, and refined navy accents.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_03_cyan_tech_executive.html', '03. Electric Cobalt & Cyan Tech', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 03</span>
+                    <span class="tc-cat">Tech Enterprise • AI & Cloud</span>
+                </div>
+                <div class="tc-title">03. Electric Cobalt & Cyan Tech</div>
+                <div class="tc-desc">High-tech vibrant cobalt header with glowing cyan accent ring, dual-tone badges, and modern enterprise contrast.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_04_top_logo_banner.html', '04. Top Header Logo Crest', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 04</span>
+                    <span class="tc-cat">Logo on Top Header</span>
+                </div>
+                <div class="tc-title">04. Top Header Logo Crest</div>
+                <div class="tc-desc">Places the SSM Innovations corporate emblem prominently inside the curved top blue header bar alongside the profile.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_05_slate_midnight_executive.html', '05. Slate & Dark Navy Dual Tone', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 05</span>
+                    <span class="tc-cat">Dark Executive UI</span>
+                </div>
+                <div class="tc-title">05. Slate & Dark Navy Dual Tone</div>
+                <div class="tc-desc">Dark slate luxury shell with deep navy curved banner, polished white text, and glowing royal blue action cards.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_06_steel_blue_minimal.html', '06. Steel Blue Clean Enterprise', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 06</span>
+                    <span class="tc-cat">Clean Line Minimalist</span>
+                </div>
+                <div class="tc-title">06. Steel Blue Clean Enterprise</div>
+                <div class="tc-desc">Minimalist steel blue palette, geometric curved cutouts, ultra-crisp contact typography, and sleek corporate branding.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_07_indigo_corporate_crest.html', '07. Indigo Blue Executive', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 07</span>
+                    <span class="tc-cat">Vibrant Indigo Theme</span>
+                </div>
+                <div class="tc-title">07. Indigo Blue Executive</div>
+                <div class="tc-desc">Deep indigo and royal purple gradient banner with dual badges, crisp white card body, and vibrant blue action triggers.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_08_ocean_gradient_flow.html', '08. Pacific Ocean Aqua Gradient', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 08</span>
+                    <span class="tc-cat">Aqua Marine Flow</span>
+                </div>
+                <div class="tc-title">08. Pacific Ocean Aqua Gradient</div>
+                <div class="tc-desc">Rich Pacific aqua-marine header gradient, dual tone icons, and modern corporate badges.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_09_card_within_card_blue.html', '09. Floating White Card Structure', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 09</span>
+                    <span class="tc-cat">Card-in-Card Architectural</span>
+                </div>
+                <div class="tc-title">09. Floating White Card Structure</div>
+                <div class="tc-desc">Full-bleed Royal Blue top canvas with an inset floating white profile card, elevated corporate logo badge, and crisp layout.</div>
+            </div>
+            
+            <div class="theme-card " onclick="loadTemplate('vcard_10_midnight_prestige_gold_trim.html', '10. Executive Sapphire & Gold Trim', this)">
+                <div class="tc-header">
+                    <span class="tc-num">Option 010</span>
+                    <span class="tc-cat">Royal Sapphire Deluxe</span>
+                </div>
+                <div class="tc-title">10. Executive Sapphire & Gold Trim</div>
+                <div class="tc-desc">Vibrant sapphire blue combined with delicate champagne gold trim lines around the company box and role badges.</div>
+            </div>
+            
+        </div>
+
+        <div class="preview-area">
+            <div class="preview-bar">
+                <span id="currentTemplateName" style="font-weight: 700; font-size: 15px; color: #f1f5f9;">01. Classic Sapphire Executive</span>
+                <a id="openTabBtn" href="vcard_01_sapphire_executive.html" target="_blank" class="open-tab-btn">
+                    Open Fullscreen ↗
+                </a>
+            </div>
+
+            <div class="mockup-frame">
+                <div class="mockup-notch">
+                    <div class="mockup-camera"></div>
+                </div>
+                <iframe id="previewIframe" src="vcard_01_sapphire_executive.html" class="iframe-preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadTemplate(fileName, title, cardElem) {
+            document.getElementById('previewIframe').src = fileName;
+            document.getElementById('openTabBtn').href = fileName;
+            document.getElementById('currentTemplateName').textContent = title;
+            
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            cardElem.classList.add('active');
+        }
+    </script>
+</body>
+</html>
