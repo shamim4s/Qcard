@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Profile - Qcard by Shamim4s</title>
 <link rel="stylesheet" href="style.css">
+<!-- html2pdf.js for vector-grade PDF download -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   .theme-light {
     --bg: #f1f5f9;
@@ -121,6 +123,18 @@ function saveContact(profile) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+function savePDF(profile) {
+  const element = document.getElementById("pdf-content") || document.querySelector(".card-container") || document.body;
+  const opt = {
+    margin:       [10, 10, 10, 10],
+    filename:     `${(profile.name || profile.id || 'contact').replace(/\s+/g, '_')}_profile.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
 async function loadProfile() {
   if (!id) {
     window.location.href = "admin.html";
@@ -164,11 +178,9 @@ function generateSocialLinksHtml(profile) {
   }).join("");
 }
 
-// Client-Side {{}} Template Renderer
 function renderTemplate(templateString, context) {
   let output = templateString;
 
-  // Handle Conditionals: {{#if key}} ... {{/if}} and {{#if !key}} ... {{/if}}
   output = output.replace(/{{#if\s+(!)?(\w+)}}([\s\S]*?){{\/if}}/g, (match, notFlag, key, content) => {
     const val = context[key];
     const isTruthy = Boolean(val && String(val).trim() !== "");
@@ -176,7 +188,6 @@ function renderTemplate(templateString, context) {
     return condition ? content : "";
   });
 
-  // Handle Interpolation: {{key}}
   output = output.replace(/{{(\w+)}}/g, (match, key) => {
     return context[key] !== undefined ? context[key] : "";
   });
@@ -188,7 +199,6 @@ function renderProfile(profile) {
   if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
 
-  // Apply Theme
   if (profile.theme === "light") {
     document.body.classList.add("theme-light");
   } else {
@@ -197,7 +207,6 @@ function renderProfile(profile) {
 
   const socialLinksHtml = generateSocialLinksHtml(profile);
 
-  // Template Context Object
   const context = {
     ...profile,
     dob: profile.dob ? profile.dob.split("T")[0] : "",
@@ -207,28 +216,21 @@ function renderProfile(profile) {
     socialLinksHtml: socialLinksHtml
   };
 
-  // Default fallback if no template HTML stored in Sheet
-  const fallbackTemplate = `
+  const templateToUse = profile.templateHtml || `
     <div class="profile-page">
       <main class="profile">
-        <div class="profile-badge">DIGITAL CONTACT</div>
-        {{#if photo}}<img class="profile-avatar" src="{{photo}}" alt="{{name}}">{{/if}}
-        {{#if !photo}}<div class="profile-avatar profile-avatar-placeholder">{{firstChar}}</div>{{/if}}
         <h1>{{name}}</h1>
         <div class="title">{{jobTitle}}</div>
-        <div class="company">{{company}}</div>
-        <div class="profile-actions">
-          <button id="saveContact" class="btn success">💾 Save Contact</button>
-        </div>
-        <div class="profile-footer">Powered by Shamim4s</div>
+        <button id="saveContact" class="btn success full">💾 Save Contact</button>
+        <button id="savePdf" class="btn secondary full" style="margin-top:8px;">📄 Save PDF</button>
       </main>
     </div>
   `;
 
-  const templateToUse = profile.templateHtml || fallbackTemplate;
   app.innerHTML = renderTemplate(templateToUse, context);
 
   document.getElementById("saveContact")?.addEventListener("click", () => saveContact(profile));
+  document.getElementById("savePdf")?.addEventListener("click", () => savePDF(profile));
 }
 
 async function render() {
