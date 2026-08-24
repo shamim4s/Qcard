@@ -208,6 +208,8 @@
         <div class="social-input-grid">
           <input id="linkedin" placeholder="LinkedIn URL">
           <input id="wechat" placeholder="WeChat URL">
+          <input id="telegram" placeholder="Telegram URL">
+          <input id="discord" placeholder="Discord URL">
           <input id="facebook" placeholder="Facebook URL">
           <input id="instagram" placeholder="Instagram URL">
           <input id="x" placeholder="X (formerly Twitter) URL">
@@ -513,9 +515,9 @@ function createVCard(profile, options = {}) {
   }
 
   const socialLines = [
-    ["LinkedIn", profile.linkedin], ["WeChat", profile.wechat], ["Facebook", profile.facebook],
-    ["Instagram", profile.instagram], ["X", profile.x], ["TikTok", profile.tiktok],
-    ["YouTube", profile.youtube], ["GitHub", profile.github]
+    ["LinkedIn", profile.linkedin], ["WeChat", profile.wechat], ["Telegram", profile.telegram],
+    ["Discord", profile.discord], ["Facebook", profile.facebook], ["Instagram", profile.instagram],
+    ["X", profile.x], ["TikTok", profile.tiktok], ["YouTube", profile.youtube], ["GitHub", profile.github]
   ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
 
   const bdayTag = profile.dob ? `BDAY:${formatVCardDate(profile.dob)}` : "";
@@ -606,6 +608,8 @@ function buildProfile() {
     additionalInformation: safeValue("additionalInformation"),
     linkedin: normalizeUrl(safeValue("linkedin")),
     wechat: normalizeUrl(safeValue("wechat")),
+    telegram: normalizeUrl(safeValue("telegram")),
+    discord: normalizeUrl(safeValue("discord")),
     facebook: normalizeUrl(safeValue("facebook")),
     instagram: normalizeUrl(safeValue("instagram")),
     x: normalizeUrl(safeValue("x")),
@@ -780,6 +784,8 @@ window.editProfile = function(profile) {
 
   $("linkedin").value = profile.linkedin || "";
   $("wechat").value = profile.wechat || "";
+  $("telegram").value = profile.telegram || "";
+  $("discord").value = profile.discord || "";
   $("facebook").value = profile.facebook || "";
   $("instagram").value = profile.instagram || "";
   $("x").value = profile.x || "";
@@ -883,6 +889,7 @@ $("copyURL").addEventListener("click", async () => {
   }
 });
 
+// Initialization
 setMode("online");
 currentRandomSuffix = generateRandom3Char();
 updateRealtimeSlug();
