@@ -158,22 +158,21 @@ async function loadProfile() {
 }
 
 const SOCIAL_META = {
-  linkedin: {label:"LinkedIn", icon:"in"},
-  wechat: {label:"WeChat", icon:"W"},
-  facebook: {label:"Facebook", icon:"f"},
-  instagram: {label:"Instagram", icon:"◎"},
-  x: {label:"X", icon:"𝕏"},
-  tiktok: {label:"TikTok", icon:"♪"},
-  youtube: {label:"YouTube", icon:"▶"},
-  github: {label:"GitHub", icon:"⌨"}
+  facebook:  { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-facebook.svg", label: "Facebook" },
+  github:    { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-github.svg", label: "GitHub" },
+  instagram: { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-instagram.svg", label: "Instagram" },
+  linkedin:  { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-linkedin.svg", label: "LinkedIn" },
+  tiktok:    { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-tiktok.svg", label: "TikTok" },
+  x:         { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-x.svg", label: "X" },
+  youtube:   { url: "https://raw.githubusercontent.com/shamim4s/Qcard/refs/heads/master/svg/tc-youtube.svg", label: "YouTube" }
 };
 
 function generateSocialLinksHtml(profile) {
   return Object.keys(SOCIAL_META).filter(key => profile[key]).map(key => {
     const meta = SOCIAL_META[key];
-    const url = normalizeWebsite(profile[key]);
-    return `<a class="social-link social-${key}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" aria-label="${meta.label}" title="${meta.label}">
-      <span class="social-icon">${meta.icon}</span><span>${meta.label}</span>
+    const targetUrl = normalizeWebsite(profile[key]);
+    return `<a href="${escapeHTML(targetUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${meta.label}" title="${meta.label}" style="display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:5px; overflow:hidden; transition:transform 0.2s;">
+      <img src="${meta.url}" alt="${meta.label}" style="width:100%; height:100%; object-fit:contain; border-radius:5px; display:block;">
     </a>`;
   }).join("");
 }
