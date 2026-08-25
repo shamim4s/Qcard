@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" width="100%" height="100%">
+  <rect width="600" height="1000" fill="#ffffff"/>
+  <!-- Top Right Navy Accent Blocks -->
+  <path d="M370,0 L600,0 L600,420 L570,420 L570,30 L370,30 Z" fill="#2d5c88"/>
+  <rect x="585" y="440" width="15" height="240" fill="#2d5c88"/>
+  <!-- Top Left Red Accent Bar -->
+  <path d="M30,30 L90,30 L90,40 L40,40 L40,340 L30,340 Z" fill="#e84c3d"/>
+  <rect x="30" y="390" width="10" height="130" fill="#e84c3d"/>
+  <!-- Bottom Left Red Corner -->
+  <path d="M0,960 L120,960 L120,1000 L0,1000 Z" fill="#e84c3d"/>
+  <path d="M30,580 L40,580 L40,940 L570,940 L570,900 L580,900 L580,950 L30,950 Z" fill="#e84c3d"/>
+</svg>

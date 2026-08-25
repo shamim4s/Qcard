@@ -53,7 +53,7 @@
   /* Card Lift & Thumbnail Zoom on Hover */
   .template-card:hover { 
     border-color: var(--primary); 
-    transform: translateY(-4px) scale(1.03); 
+    transform: translateY(-4px) scale(3.03); 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
   }
 
@@ -593,10 +593,85 @@ function formatVCardDate(dateString) {
   return /^\d{8}$/.test(cleaned) ? cleaned : "";
 }
 
+// function createVCard(profile, options = {}) {
+//   const nameParts = String(profile.name || "").trim().split(/\s+/).filter(Boolean);
+//   const firstName = nameParts.shift() || "";
+//   const lastName = nameParts.join(" ");
+
+//   const addresses = [];
+//   if (profile.address1) addresses.push(`ADR;TYPE=${escapeVCard(profile.address1Label || 'HOME')}:;;${escapeVCard(profile.address1)};;;;`);
+//   if (profile.address2) addresses.push(`ADR;TYPE=${escapeVCard(profile.address2Label || 'WORK')}:;;${escapeVCard(profile.address2)};;;;`);
+//   if (profile.address3) addresses.push(`ADR;TYPE=${escapeVCard(profile.address3Label || 'OTHER')}:;;${escapeVCard(profile.address3)};;;;`);
+
+//   const includePhoto = options.includePhoto !== false;
+//   let photoTag = "";
+//   if (includePhoto && profile.photo && profile.photo.includes(",")) {
+//     photoTag = `PHOTO;ENCODING=b;TYPE=JPEG:${profile.photo.split(",")[1]}`;
+//   }
+
+//   const socialLines = [
+//     ["LinkedIn", profile.linkedin], ["WeChat", profile.wechat], ["Telegram", profile.telegram],
+//     ["Discord", profile.discord], ["Facebook", profile.facebook], ["Instagram", profile.instagram],
+//     ["X", profile.x], ["TikTok", profile.tiktok], ["YouTube", profile.youtube], ["GitHub", profile.github]
+//   ].filter(([, url]) => url).map(([name, url]) => `X-SOCIALPROFILE;TYPE=${name}:${escapeVCard(url)}`);
+
+//   const bdayTag = profile.dob ? `BDAY:${formatVCardDate(profile.dob)}` : "";
+
+//   const noteParts = [];
+//   if (profile.bloodGroup) noteParts.push(`Blood Group: ${profile.bloodGroup}`);
+//   if (profile.about) noteParts.push(profile.about);
+//   const noteTag = noteParts.length > 0 ? `NOTE:${escapeVCard(noteParts.join(" | "))}` : "";
+
+//   return [
+//     "BEGIN:VCARD", "VERSION:3.0",
+//     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
+//     `FN:${escapeVCard(profile.name)}`,
+//     bdayTag,
+//     profile.bloodGroup ? `X-BLOOD-GROUP:${escapeVCard(profile.bloodGroup)}` : "",
+//     profile.jobTitle ? `TITLE:${escapeVCard(profile.jobTitle)}` : "",
+//     profile.company ? `ORG:${escapeVCard(profile.company)}` : "",
+//     profile.phone ? `TEL;TYPE=VOICE:${escapeVCard(profile.phone)}` : "",
+//     profile.mobile ? `TEL;TYPE=CELL:${escapeVCard(profile.mobile)}` : "",
+//     profile.email ? `EMAIL;TYPE=INTERNET:${escapeVCard(profile.email)}` : "",
+//     profile.companyEmail ? `EMAIL;TYPE=WORK:${escapeVCard(profile.companyEmail)}` : "",
+//     profile.companyPhone ? `TEL;TYPE=WORK:${escapeVCard(profile.companyPhone)}` : "",
+//     ...addresses,
+//     profile.website ? `URL:${escapeVCard(profile.website)}` : "",
+//     profile.companyWebsite ? `URL;TYPE=WORK:${escapeVCard(profile.companyWebsite)}` : "",
+//     ...socialLines,
+//     noteTag,
+//     profile.additionalInformation ? `X-ADDITIONAL-INFORMATION:${escapeVCard(profile.additionalInformation)}` : "",
+//     photoTag,
+//     "END:VCARD"
+//   ].filter(Boolean).join("\r\n");
+// }
+
+
+
+function formatVCardPhoto(base64Data) {
+  if (!base64Data || typeof base64Data !== 'string') return '';
+  
+  // Extract raw base64 data if prefixed with data URI scheme
+  let cleanBase64 = base64Data;
+  if (cleanBase64.includes(',')) {
+    cleanBase64 = cleanBase64.split(',')[1];
+  }
+  
+  // Clean whitespace/newlines
+  cleanBase64 = cleanBase64.replace(/[\r\n\s]/g, '');
+  
+  if (!cleanBase64) return '';
+
+  // vCard 3.0 standard: PHOTO;ENCODING=b;TYPE=JPEG:<base64>
+  // Soft line break with leading space for strict iOS parser compatibility
+  const chunks = cleanBase64.match(/.{1,72}/g) || [];
+  return `PHOTO;ENCODING=b;TYPE=JPEG:\r\n ${chunks.join('\r\n ')}`;
+}
+
 function createVCard(profile, options = {}) {
-  const nameParts = String(profile.name || "").trim().split(/\s+/).filter(Boolean);
-  const firstName = nameParts.shift() || "";
-  const lastName = nameParts.join(" ");
+  const nameParts = String(profile.name || '').trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts.shift() || '';
+  const lastName = nameParts.join(' ');
 
   const addresses = [];
   if (profile.address1) addresses.push(`ADR;TYPE=${escapeVCard(profile.address1Label || 'HOME')}:;;${escapeVCard(profile.address1)};;;;`);
@@ -605,8 +680,8 @@ function createVCard(profile, options = {}) {
 
   const includePhoto = options.includePhoto !== false;
   let photoTag = "";
-  if (includePhoto && profile.photo && profile.photo.includes(",")) {
-    photoTag = `PHOTO;ENCODING=b;TYPE=JPEG:${profile.photo.split(",")[1]}`;
+  if (includePhoto && profile.photo) {
+    photoTag = formatVCardPhoto(profile.photo);
   }
 
   const socialLines = [
@@ -623,7 +698,8 @@ function createVCard(profile, options = {}) {
   const noteTag = noteParts.length > 0 ? `NOTE:${escapeVCard(noteParts.join(" | "))}` : "";
 
   return [
-    "BEGIN:VCARD", "VERSION:3.0",
+    "BEGIN:VCARD",
+    "VERSION:3.0",
     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
     `FN:${escapeVCard(profile.name)}`,
     bdayTag,

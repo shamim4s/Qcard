@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" width="100%" height="100%">
+  <rect width="600" height="1000" fill="#ffffff"/>
+  <!-- Top Left Swooshes -->
+  <path d="M0,0 L600,0 C420,10 280,40 180,100 C80,160 30,240 0,310 Z" fill="#002d62"/>
+  <path d="M0,0 L400,0 C280,20 180,70 110,140 C40,210 10,270 0,340 Z" fill="#00a8e8" opacity="0.9"/>
+  <!-- Bottom Right Swooshes -->
+  <path d="M600,1000 L0,1000 C180,990 320,960 420,900 C520,840 570,760 600,690 Z" fill="#002d62"/>
+  <path d="M600,1000 L200,1000 C320,980 420,930 490,860 C560,790 590,730 600,660 Z" fill="#00a8e8" opacity="0.9"/>
+</svg>
