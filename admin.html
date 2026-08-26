@@ -696,10 +696,15 @@ function createVCard(profile, options = {}) {
   if (profile.bloodGroup) noteParts.push(`Blood Group: ${profile.bloodGroup}`);
   if (profile.about) noteParts.push(profile.about);
   const noteTag = noteParts.length > 0 ? `NOTE:${escapeVCard(noteParts.join(" | "))}` : "";
+  
+  const nowIso = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  const uniqueContactUid = `urn:uuid:qcard-${profile.id}`;
 
   return [
     "BEGIN:VCARD",
     "VERSION:3.0",
+    `UID:${uniqueContactUid}`,
+    `REV:${nowIso}`,
     `N:${escapeVCard(lastName)};${escapeVCard(firstName)};;;`,
     `FN:${escapeVCard(profile.name)}`,
     bdayTag,
