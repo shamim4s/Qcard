@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johan Smith ID Card</title>
+    <!-- Montserrat provides the perfect geometric, modern sans-serif look -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d1d5db; /* Grey presentation background */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * Proportions scaled to standard CR80 vertical dimensions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Geometric Patterns
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Foreground Content Wrapper
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo Section (Top Right) */
+        .logo-area {
+            position: absolute;
+            top: 45px;
+            right: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .logo-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo-tagline {
+            font-size: 8px;
+            font-weight: 600;
+            color: #888888;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Profile Picture (Diamond Shape) */
+        .profile-shadow-wrapper {
+            position: absolute;
+            top: 150px;
+            left: 150px; /* Centered horizontally: 600/2 - 300/2 = 150 */
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.15));
+        }
+
+        .profile-border {
+            width: 300px;
+            height: 300px;
+            background-color: #ffffff;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-img {
+            width: 275px;
+            height: 275px;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            background-color: #e2e8f0;
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            position: absolute;
+            top: 560px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        
+        .name-first {
+            color: #1a1a1a;
+            font-weight: 800;
+        }
+        
+        .name-last {
+            color: #1b5aab; /* Vibrant Blue */
+            font-weight: 800;
+        }
+
+        .user-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #a0a0a0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 50px;
+            height: 2px;
+            background-color: #e5e5e5;
+            margin-top: 25px;
+        }
+
+        /* Details Information Grid */
+        .details-wrapper {
+            position: absolute;
+            top: 680px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 80px 20px auto;
+            row-gap: 14px;
+            font-size: 13px;
+            align-items: center;
+        }
+
+        .detail-label {
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #888888;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+
+        .detail-colon {
+            text-align: center;
+            color: #888888;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333333;
+            text-align: left;
+            letter-spacing: 0.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- Top-Left Dark Blue Corner Triangle -->
+                <polygon points="0,0 200,0 0,200" fill="#1b5aab" />
+                
+                <!-- Top-Left Main Blue Diagonal Band -->
+                <polygon points="260,0 560,0 0,560 0,260" fill="#1b5aab" />
+                
+                <!-- Middle-Right Dark Grey/Black Triangle -->
+                <polygon points="600,260 440,420 600,580" fill="#2a2a2a" />
+                
+                <!-- Middle-Right Main Blue Triangle -->
+                <polygon points="600,600 400,800 600,1000" fill="#1b5aab" />
+                
+                <!-- Bottom-Left Dark Grey/Black Triangle -->
+                <polygon points="0,820 130,950 0,950" fill="#2a2a2a" />
+                
+                <!-- Bottom-Right Light Grey Accent Band -->
+                <polygon points="600,800 450,950 390,950 600,740" fill="#f0f2f5" />
+                
+                <!-- Bottom-Right Small Blue Corner Triangle -->
+                <polygon points="600,850 500,950 600,950" fill="#1b5aab" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="logo-area">
+                <!-- Abstract Interlocking Stylized 'O' Logo SVG -->
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100">
+                        <path d="M 20,35 L 60,35 A 15,15 0 0,1 75,50 L 75,65 A 15,15 0 0,1 60,80 L 20,80 A 15,15 0 0,1 5,65 L 5,50 A 15,15 0 0,1 20,35 Z" fill="none" stroke="#1b5aab" stroke-width="12" />
+                        <path d="M 40,20 L 80,20 A 15,15 0 0,1 95,35 L 95,50 A 15,15 0 0,1 80,65 L 40,65 A 15,15 0 0,1 25,50 L 25,35 A 15,15 0 0,1 40,20 Z" fill="none" stroke="#1b5aab" stroke-width="12" />
+                    </svg>
+                </div>
+                <div class="logo-title">COMPANY</div>
+                <div class="logo-tagline">TAGLINE GOES HERE</div>
+            </div>
+
+            <!-- Profile Picture (Diamond shape using clip-path) -->
+            <div class="profile-shadow-wrapper">
+                <div class="profile-border">
+                    <div class="profile-img">
+                        <!-- High-quality placeholder matching the professional vibe -->
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Johan Smith">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">
+                    <span class="name-first">JOHAN</span> <span class="name-last">SMITH</span>
+                </div>
+                <div class="user-title">WEB DEVELOPER</div>
+                <div class="divider"></div>
+            </div>
+
+            <!-- Information Grid -->
+            <div class="details-wrapper">
+                <div class="details-grid">
+                    <div class="detail-label">ID NO</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">235656446546</div>
+
+                    <div class="detail-label">DOB</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">25-12-2021</div>
+
+                    <div class="detail-label">BLOOD</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">B+</div>
+
+                    <div class="detail-label">PHONE</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">+123 456 7890</div>
+
+                    <div class="detail-label">EMAIL</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">infour@email.com</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

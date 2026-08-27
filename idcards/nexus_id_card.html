@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Global Solutions ID Card</title>
+    <!-- Using Roboto Slab for the name and Montserrat for the clean sans-serif text -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d8dee3;
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SVG Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Foreground Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo */
+        .header-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 45px;
+            width: 100%;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .logo-title {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 19px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 10px solid #ffffff;
+            position: absolute;
+            top: 170px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 310px; /* Adjust based on profile pic */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-family: 'Roboto Slab', serif;
+            font-size: 42px;
+            color: #0b1335;
+            margin-bottom: 12px;
+        }
+        
+        .user-name-bold {
+            font-weight: 900;
+        }
+        
+        .user-name-light {
+            font-weight: 400;
+        }
+
+        .user-title-box {
+            background-color: #008be5;
+            color: #ffffff;
+            padding: 8px 25px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        /* Details Table */
+        .info-table {
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            gap: 2px;
+            background-color: #ffffff; /* Forms the white borders */
+            border: 2px solid #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            width: 85%;
+            margin-top: 30px;
+        }
+
+        .info-table div {
+            background-color: #e5f1f9; /* Light blue cells */
+            padding: 12px 15px;
+            font-size: 17px;
+            color: #0b1335; /* Dark navy text */
+            display: flex;
+            align-items: center;
+        }
+
+        .info-table .label {
+            font-weight: 700;
+        }
+
+        .info-table .value {
+            font-weight: 500;
+        }
+
+        /* QR Code */
+        .qr-container {
+            position: absolute;
+            bottom: 50px;
+            left: 45px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .qr-container img {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                <!-- TOP BRIGHT BLUE LAYER (Behind Navy) -->
+                <!-- Left swoop -->
+                <path d="M 0,160 Q 150,220 300,280 L 0,280 Z" fill="#008be5" />
+                <!-- Right large angular drop -->
+                <path d="M 300,280 L 600,140 L 600,550 L 300,280 Z" fill="#008be5" />
+                
+                <!-- TOP DARK NAVY BASE -->
+                <!-- V shape dropping in the center -->
+                <path d="M 0,0 L 600,0 L 600,140 L 300,280 L 0,160 Z" fill="#050f3b" />
+
+                <!-- BOTTOM WAVES -->
+                <!-- Bright Blue Wave (Behind Navy) -->
+                <path d="M 300,950 Q 450,850 600,900 L 600,950 Z" fill="#008be5" />
+                <!-- Dark Navy Bottom Wave -->
+                <path d="M 0,950 L 600,950 L 600,920 Q 450,840 300,890 Q 150,940 0,850 Z" fill="#050f3b" />
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="header-area">
+                <!-- Recreating the Nexus Logo -->
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#008be5" stroke-width="10"/>
+                        <!-- Inner stylized swooshes -->
+                        <path d="M 35,65 C 25,45 45,25 65,35" fill="none" stroke="#008be5" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M 65,35 C 75,55 55,75 35,65" fill="none" stroke="#008be5" stroke-width="8" stroke-linecap="round"/>
+                        <!-- Center dot -->
+                        <circle cx="50" cy="50" r="6" fill="#008be5"/>
+                    </svg>
+                </div>
+                <div class="logo-text-group">
+                    <div class="logo-title">NEXUS GLOBAL</div>
+                    <div class="logo-subtitle">SOLUTIONS PVT. LTD.</div>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">
+                    <span class="user-name-bold">JONATHAN</span> <span class="user-name-light">REED</span>
+                </div>
+                <div class="user-title-box">Senior Project Manager</div>
+            </div>
+
+            <!-- Details Grid / Table -->
+            <div class="info-table">
+                <div class="label">Department:</div>
+                <div class="value">Operations & Strategy</div>
+
+                <div class="label">Employee ID:</div>
+                <div class="value">NGS-0925-047</div>
+
+                <div class="label">Date of Joining:</div>
+                <div class="value">12 March 2021</div>
+
+                <div class="label">Contact:</div>
+                <div class="value">+1 212 555 7842</div>
+
+                <div class="label">Email:</div>
+                <div class="value">jr@nexusglobal.com</div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NGS-0925-047-Jonathan-Reed" alt="QR Code">
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Geometric V ID Card</title>
+    <!-- Using Montserrat for the clean, professional, geometric sans-serif aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d1d5db; /* Grey presentation background */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff; /* Base white background */
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Sharp V Bands
+         */
+        .bg-shapes-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 
+         * CSS Background Shapes for Rotated Rounded Elements
+         */
+        .css-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Left side white cutout with border */
+        .left-pill-cutout {
+            position: absolute;
+            left: -80px;
+            top: 380px;
+            width: 160px;
+            height: 300px;
+            background-color: #ffffff;
+            border: 4px solid #233e5c; /* Mid-blue border */
+            border-radius: 40px;
+            transform: rotate(-45deg);
+        }
+
+        /* Bottom left cyan corner triangle */
+        .bottom-left-cyan {
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 200px;
+            height: 200px;
+            background-color: #00c0eb;
+            transform: rotate(45deg);
+        }
+
+        /* Bottom right shapes */
+        .bottom-right-outline {
+            position: absolute;
+            right: -20px;
+            bottom: -50px;
+            width: 160px;
+            height: 280px;
+            border: 4px solid #233e5c;
+            border-radius: 35px;
+            transform: rotate(-45deg);
+        }
+
+        .bottom-right-cyan {
+            position: absolute;
+            right: -100px;
+            bottom: -100px;
+            width: 220px;
+            height: 220px;
+            background-color: #00c0eb;
+            border-radius: 30px;
+            transform: rotate(-45deg);
+        }
+
+        .bottom-right-navy {
+            position: absolute;
+            right: -160px;
+            bottom: -180px;
+            width: 250px;
+            height: 250px;
+            background-color: #172535;
+            border-radius: 40px;
+            transform: rotate(-45deg);
+        }
+
+        /* 
+         * Foreground Content 
+         */
+        .content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo */
+        .header-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #00c0eb;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+        }
+
+        .logo-icon-inner {
+            width: 10px;
+            height: 10px;
+            background-color: #172535;
+            border-radius: 50%;
+        }
+
+        .logo-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 260px;
+            height: 320px;
+            border: 15px solid #ffffff; /* Thick white border */
+            position: absolute;
+            top: 130px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #e2e8f0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title Pills) */
+        .typography-area {
+            position: absolute;
+            top: 560px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .name-pill {
+            background-color: #172535; /* Dark Navy */
+            color: #ffffff;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .title-pill {
+            background-color: #00c0eb; /* Cyan */
+            color: #ffffff;
+            padding: 10px 35px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 5px solid #ffffff; /* Creates the white cutout effect overlapping the name pill */
+            margin-top: -22px; /* Pulls it up to overlap the name pill */
+            z-index: 3;
+        }
+
+        /* Footer Details */
+        .footer-area {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .qr-container {
+            width: 100px;
+            height: 100px;
+        }
+
+        .qr-container img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .date-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            color: #172535;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric SVG V-Bands -->
+        <div class="bg-shapes-svg">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- LAYER 1: Cyan V Band (Bottom-most V layer) -->
+                <!-- Dropping down to center y=680 -->
+                <polygon points="0,0 600,0 600,380 300,680 0,380" fill="#00c0eb" />
+                
+                <!-- LAYER 2: Mid-Blue V Band -->
+                <!-- Dropping down to center y=550 -->
+                <polygon points="0,0 600,0 600,250 300,550 0,250" fill="#233e5c" />
+                
+                <!-- LAYER 3: Dark Navy V Band (Top-most V layer) -->
+                <!-- Dropping down to center y=420 -->
+                <polygon points="0,0 600,0 600,120 300,420 0,120" fill="#172535" />
+
+            </svg>
+        </div>
+
+        <!-- Rotated CSS Geometric Shapes -->
+        <div class="css-shapes">
+            <div class="left-pill-cutout"></div>
+            
+            <div class="bottom-left-cyan"></div>
+            
+            <div class="bottom-right-navy"></div>
+            <div class="bottom-right-cyan"></div>
+            <div class="bottom-right-outline"></div>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="header-area">
+                <div class="logo-icon">
+                    <div class="logo-icon-inner"></div>
+                </div>
+                <div class="logo-title">COMPANY</div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <!-- High-quality placeholder matching the professional vibe -->
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Typography Pills -->
+            <div class="typography-area">
+                <div class="name-pill">YOUR NAME</div>
+                <div class="title-pill">JOB POSITION</div>
+            </div>
+
+            <!-- Footer Details -->
+            <div class="footer-area">
+                <div class="qr-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=01-01-2018" alt="QR Code">
+                </div>
+                <div class="date-details">
+                    <div>Join: 01-01-2018</div>
+                    <div>Expire:12-2022</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- LAYER 1: Cyan V Band (Bottom-most V layer) -->
+                <!-- Dropping down to center y=680 -->
+                <polygon points="0,0 600,0 600,380 300,680 0,380" fill="#00c0eb" />
+                
+                <!-- LAYER 2: Mid-Blue V Band -->
+                <!-- Dropping down to center y=550 -->
+                <polygon points="0,0 600,0 600,250 300,550 0,250" fill="#233e5c" />
+                
+                <!-- LAYER 3: Dark Navy V Band (Top-most V layer) -->
+                <!-- Dropping down to center y=420 -->
+                <polygon points="0,0 600,0 600,120 300,420 0,120" fill="#172535" />
+
+            </svg>

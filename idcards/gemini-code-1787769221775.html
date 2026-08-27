@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card - Design 06</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #dbe1e8;
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Exact Proportions Requested (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            border-radius: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Symmetrical Side Waves
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Main Content Layout 
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding-top: 50px;
+        }
+
+        /* Header / Logo */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-box {
+            background-color: #17a2a2; /* Bright Teal Logo Box */
+            color: #ffffff;
+            width: 85px;
+            height: 85px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(23, 162, 162, 0.3);
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0c2340; 
+            letter-spacing: 0.5px;
+        }
+
+        .company-tagline {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            letter-spacing: 3.5px;
+            margin-top: 5px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            border: 12px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+            background-color: #f1f5f9;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* User Info */
+        .user-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0c2340;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .user-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: #0c2340;
+            margin-bottom: 40px;
+        }
+
+        /* Contact Details Grid */
+        .details-container {
+            width: 75%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-left: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            font-size: 19px;
+            color: #1e293b;
+        }
+
+        .detail-icon-box {
+            width: 32px;
+            height: 32px;
+            background-color: #17a2a2; /* Bright Teal Icon Circles */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(23, 162, 162, 0.2);
+        }
+
+        .detail-icon {
+            width: 16px;
+            height: 16px;
+            fill: #ffffff;
+        }
+
+        .detail-label {
+            width: 80px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .detail-separator {
+            margin-right: 18px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Footer (No background block for 06) */
+        .footer {
+            color: #0b5e5e; /* Deep Teal text */
+            text-align: center;
+            padding: 25px 0;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Exact Symmetrical Swooshes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- TOP CORNER ACCENTS -->
+                <!-- Top Left -->
+                <path d="M 0,0 L 150,0 C 70,30 20,70 0,150 Z" fill="#17a2a2" opacity="0.8" />
+                <!-- Top Right -->
+                <path d="M 600,0 L 450,0 C 530,30 580,70 600,150 Z" fill="#17a2a2" opacity="0.8" />
+
+                <!-- LEFT Symmetrical Wave Layers (Creates 3D Depth) -->
+                <!-- Dark Base -->
+                <path d="M 0,200 C 250,300 250,650 0,750 Z" fill="#0b5e5e" />
+                <!-- Medium Layer -->
+                <path d="M 0,250 C 180,330 180,620 0,700 Z" fill="#17a2a2" />
+                <!-- Light Highlights -->
+                <path d="M 0,300 C 100,370 100,580 0,650 Z" fill="#30e3e3" opacity="0.7" />
+
+                <!-- RIGHT Symmetrical Wave Layers (Creates 3D Depth) -->
+                <!-- Dark Base -->
+                <path d="M 600,200 C 350,300 350,650 600,750 Z" fill="#0b5e5e" />
+                <!-- Medium Layer -->
+                <path d="M 600,250 C 420,330 420,620 600,700 Z" fill="#17a2a2" />
+                <!-- Light Highlights -->
+                <path d="M 600,300 C 500,370 500,580 600,650 Z" fill="#30e3e3" opacity="0.7" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            <!-- Header section -->
+            <div class="logo-container">
+                <div class="logo-box">NX</div>
+                <div class="company-name">NEXORA GROUP</div>
+                <div class="company-tagline">PEOPLE • PERFORMANCE • PROGRESS</div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Name and Title -->
+            <div class="user-name">ALISHBA AMNA</div>
+            <div class="user-title">Graphic Designer</div>
+
+            <!-- Details Section -->
+            <div class="details-container">
+                <div class="detail-row">
+                    <!-- ID Icon -->
+                    <div class="detail-icon-box">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm4 12H8v-1c0-2 4-3.1 4-3.1s4 1.1 4 3.1v1z"/></svg>
+                    </div>
+                    <span class="detail-label">ID</span>
+                    <span class="detail-separator">:</span>
+                    <span class="detail-value">NXG-4587</span>
+                </div>
+                <div class="detail-row">
+                    <!-- Email Icon -->
+                    <div class="detail-icon-box">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    </div>
+                    <span class="detail-label">Email</span>
+                    <span class="detail-separator">:</span>
+                    <span class="detail-value">alishba@nexora.com</span>
+                </div>
+                <div class="detail-row">
+                    <!-- Phone Icon -->
+                    <div class="detail-icon-box">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    </div>
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-separator">:</span>
+                    <span class="detail-value">+123 456 7890</span>
+                </div>
+                <div class="detail-row">
+                    <!-- Department Icon -->
+                    <div class="detail-icon-box">
+                        <svg class="detail-icon" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                    </div>
+                    <span class="detail-label">Dept</span>
+                    <span class="detail-separator">:</span>
+                    <span class="detail-value">Design Department</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Text -->
+        <div class="footer">
+            www.nexoragroup.com
+        </div>
+    </div>
+
+</body>
+</html>

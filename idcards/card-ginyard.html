@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ginyard International Co. ID Card</title>
+    <!-- Using Montserrat to match the clean, professional sans-serif in the image -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e8ecef; /* Subtle background for presentation */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #213043; /* Dark Navy Base */
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Layered Curves
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Foreground Content Wrapper
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header / Logo Section (Top) */
+        .header-area {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            padding-right: 20px;
+        }
+
+        .logo-icon {
+            width: 65px;
+            height: 65px;
+            margin-right: 15px;
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .logo-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .logo-tagline {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 20px solid #00b9d9; /* Thick Cyan Border perfectly matching the top BG */
+            background-color: #e2e8f0; 
+            position: absolute;
+            top: 150px; /* Overlaps the cyan and dark sections */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 475px; /* Push content below profile pic */
+            text-align: center;
+        }
+
+        .user-name {
+            font-size: 40px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-title {
+            font-size: 19px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-top: 15px;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+        }
+
+        /* Details Information Grid */
+        .details-wrapper {
+            width: 80%;
+            margin-top: 60px;
+            padding-left: 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 100px 30px auto;
+            row-gap: 20px;
+            font-size: 22px;
+            font-weight: 400;
+            color: #ffffff;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-label {
+            text-align: left;
+        }
+
+        .detail-colon {
+            text-align: center;
+        }
+
+        .detail-value {
+            text-align: left;
+        }
+
+        /* Barcode Area */
+        .barcode-container {
+            width: 85%;
+            height: 110px;
+            margin-top: 70px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+        }
+
+        .bar {
+            background-color: #000000;
+            height: 100%;
+        }
+
+        /* Barcode Width Utility Classes */
+        .w-1 { width: 3px; }
+        .w-2 { width: 5px; }
+        .w-3 { width: 8px; }
+        .w-4 { width: 11px; }
+        .w-5 { width: 14px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                <!-- White Cutout Band -->
+                <path d="M 0,0 L 600,0 L 600,320 Q 300,410 0,320 Z" fill="#ffffff" />
+                
+                <!-- Main Cyan Top Layer -->
+                <path d="M 0,0 L 600,0 L 600,290 Q 300,380 0,290 Z" fill="#00b9d9" />
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="header-area">
+                <!-- Recreating the Buildings Logo in SVG -->
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="46" fill="none" stroke="#ffffff" stroke-width="4"/>
+                        <!-- Left Building -->
+                        <path d="M 23,75 L 23,38 L 38,28 L 38,75 Z" fill="#ffffff" />
+                        <!-- Center Building -->
+                        <path d="M 42,75 L 42,15 L 58,15 L 58,75 Z" fill="#ffffff" />
+                        <!-- Right Building -->
+                        <path d="M 62,75 L 62,35 L 77,45 L 77,75 Z" fill="#ffffff" />
+                        <!-- Cyan Window Cutouts -->
+                        <line x1="30" y1="45" x2="30" y2="75" stroke="#00b9d9" stroke-width="3" />
+                        <line x1="50" y1="28" x2="50" y2="75" stroke="#00b9d9" stroke-width="4" />
+                        <line x1="70" y1="52" x2="70" y2="75" stroke="#00b9d9" stroke-width="3" />
+                    </svg>
+                </div>
+                <div class="logo-text-group">
+                    <div class="logo-title">Ginyard</div>
+                    <div class="logo-tagline">International Co.</div>
+                </div>
+            </div>
+
+            <!-- Profile Placeholder -->
+            <div class="profile-pic">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">Shawn Garcia</div>
+                <div class="user-title">Marketing</div>
+            </div>
+
+            <!-- Information Grid -->
+            <div class="details-wrapper">
+                <div class="details-grid">
+                    <div class="detail-label">ID No</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">1234567890</div>
+
+                    <div class="detail-label">E-mail</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">hello@reallygreatsite.com</div>
+
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">+123-456-7890</div>
+                </div>
+            </div>
+
+            <!-- Barcode Box -->
+            <div class="barcode-container">
+                <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-4"></div>
+                <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+                <div class="bar w-1"></div><div class="bar w-2"></div><div class="bar w-5"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-4"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-1"></div><div class="bar w-4"></div><div class="bar w-2"></div>
+                <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-4"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-1"></div><div class="bar w-3"></div><div class="bar w-2"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

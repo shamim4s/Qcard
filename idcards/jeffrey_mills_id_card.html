@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeffrey Mills ID Card</title>
+    <!-- Using Montserrat for the clean, bold, geometric sans-serif aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e5e7eb;
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SVG Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Foreground Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo */
+        .logo-area {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            color: #ffffff;
+        }
+
+        .logo-subtitle {
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: -5px;
+        }
+
+        .logo-title {
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            border: 12px solid #ffffff;
+            position: absolute;
+            top: 220px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #e2e8f0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            position: absolute;
+            top: 700px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 42px;
+            font-weight: 900;
+            color: #00cbf4; /* Bright Cyan */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .user-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #88929b; /* Light Slate Gray */
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- LAYER 1: Dark Slate Base -->
+                <!-- Covers the top and dips into an inverted 'V' in the middle -->
+                <polygon points="0,0 600,0 600,680 300,510 0,680" fill="#2c3e50" />
+                
+                <!-- LAYER 2: Bright Cyan Main Diagonal -->
+                <!-- Sweeps from top-right to lower-left -->
+                <polygon points="0,0 600,0 600,180 0,580" fill="#00cbf4" />
+                
+                <!-- LAYER 3: Mid-Teal Top-Right Accent -->
+                <!-- Intersecting geometric triangle -->
+                <polygon points="250,0 600,0 600,380" fill="#0a9cbd" />
+                
+                <!-- LAYER 4: Dark Slate Top-Right Accent -->
+                <polygon points="450,0 600,0 600,120" fill="#2c3e50" />
+                
+                <!-- LAYER 5: Mid-Teal Top-Left Accent -->
+                <polygon points="0,0 200,0 0,250" fill="#0a9cbd" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="logo-area">
+                <div class="logo-subtitle">title goes here</div>
+                <div class="logo-title">logo</div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <!-- High-quality professional placeholder -->
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Jeffrey Mills">
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">JEFFREY MILLS</div>
+                <div class="user-title">Founder & CEO</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

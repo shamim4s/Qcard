@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate ID Card</title>
+    <!-- Using Montserrat for clean elements and Oswald for the condensed name -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d1d5db; /* Grey presentation background */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SVG Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Foreground Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header Area */
+        .header-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .company-name {
+            font-size: 34px;
+            font-weight: 800;
+            color: #044b8a; /* Dark Blue */
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .company-slogan {
+            font-size: 15px;
+            font-weight: 500;
+            color: #00b4eb; /* Cyan */
+            letter-spacing: 1.5px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            border: 8px solid #044b8a; /* Dark Blue Border */
+            position: absolute;
+            top: 175px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f1f5f9; /* Light grey placeholder */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 3;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 410px; /* Adjust spacing to clear profile pic */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 52px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .user-title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-top: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Details Block */
+        .info-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 85px 25px auto;
+            row-gap: 20px;
+            font-size: 18px;
+            color: #ffffff;
+            align-items: center;
+        }
+
+        .info-label {
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .info-colon {
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .info-value {
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                <defs>
+                    <!-- Silver/Grey Gradient for the middle wave -->
+                    <linearGradient id="silverWave" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#baced6" />
+                        <stop offset="50%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="#c1d0d9" />
+                    </linearGradient>
+                    
+                    <!-- Diagonal Stripes Pattern for the Dark Blue background -->
+                    <pattern id="diagonalStripes" width="20" height="20" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                        <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,0,0,0.08)" stroke-width="10" />
+                    </pattern>
+                </defs>
+
+                <!-- LAYER 1: Cyan Top Wave -->
+                <path d="M 0,80 C 150,420 400,380 600,200 L 600,950 L 0,950 Z" fill="#00b4eb" />
+                
+                <!-- LAYER 2: Silver/Grey Middle Wave -->
+                <path d="M 0,150 C 180,480 430,420 600,270 L 600,950 L 0,950 Z" fill="url(#silverWave)" />
+                
+                <!-- LAYER 3: Dark Blue Base Wave -->
+                <path d="M 0,250 C 220,550 460,460 600,320 L 600,950 L 0,950 Z" fill="#044b8a" />
+                
+                <!-- LAYER 4: Striped Pattern Overlay -->
+                <!-- Identical path to the Dark Blue Base, adding the texture -->
+                <path d="M 0,250 C 220,550 460,460 600,320 L 600,950 L 0,950 Z" fill="url(#diagonalStripes)" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header area -->
+            <div class="header-area">
+                <div class="company-name">COMPANY NAME</div>
+                <div class="company-slogan">SLOGAN GOES HERE</div>
+            </div>
+
+            <!-- Profile Picture Placeholder -->
+            <div class="profile-pic">
+                <!-- Using an empty div to mirror the grey placeholder in the image -->
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">DAVID ANDREWS</div>
+                <div class="user-title">DIRECTOR</div>
+            </div>
+
+            <!-- Details Block -->
+            <div class="info-wrapper">
+                <div class="info-grid">
+                    <div class="info-label">ID</div>
+                    <div class="info-colon">:</div>
+                    <div class="info-value">123 000 000 000</div>
+
+                    <div class="info-label">Blood</div>
+                    <div class="info-colon">:</div>
+                    <div class="info-value">AB</div>
+
+                    <div class="info-label">Email</div>
+                    <div class="info-colon">:</div>
+                    <div class="info-value">sample@gmail.com</div>
+
+                    <div class="info-label">Phone</div>
+                    <div class="info-colon">:</div>
+                    <div class="info-value">100 000 000 00</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

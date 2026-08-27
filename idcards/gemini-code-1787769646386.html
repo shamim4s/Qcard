@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card - Modern Wave</title>
+    <!-- Using Roboto/Arial style font to closely match the clean sans-serif in the image -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #c7d2d9; /* Neutral background for the page */
+            font-family: 'Roboto', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Exact Proportions Requested (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #f7f9fa; /* Light grey/white top background */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Layered Waves
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Main Content Layout 
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .company-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0d549b; /* Dark Blue */
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .slogan {
+            font-size: 18px;
+            font-weight: 400;
+            color: #009ce0; /* Light Blue */
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            border: 10px solid #009be2; /* Matches the light blue wave */
+            overflow: hidden;
+            background-color: #e2e8f0;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* User Info Section */
+        .user-info {
+            text-align: center;
+            margin-top: 30px;
+            color: #ffffff;
+        }
+
+        .user-name {
+            font-size: 38px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .user-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        /* Aligned Details Grid */
+        .details-wrapper {
+            width: 100%;
+            padding-left: 140px; /* Adjust left padding to center the grid perfectly */
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 85px 25px auto;
+            row-gap: 8px;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-label {
+            text-align: left;
+        }
+
+        .detail-colon {
+            text-align: center;
+        }
+
+        .detail-value {
+            text-align: left;
+        }
+        
+        .spacer {
+            height: 15px; /* Creates the gap before Phone/Email */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Exact Overlapping SVG Curves -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                <!-- Light Blue Accent Wave -->
+                <!-- Sweeps from lower-left to upper-right -->
+                <path d="M 0,520 C 200,400 400,280 600,200 L 600,950 L 0,950 Z" fill="#009be2" />
+                
+                <!-- Main Dark Blue Bottom Background -->
+                <!-- Slightly lower than the light blue one to reveal the accent border -->
+                <path d="M 0,550 C 200,430 400,310 600,230 L 600,950 L 0,950 Z" fill="#0e6ab1" />
+            </svg>
+        </div>
+
+        <div class="content">
+            <!-- Header section -->
+            <div class="header">
+                <div class="company-name">COMPANY NAME</div>
+                <div class="slogan">SLOGAN GOSE HERE</div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Name and Title -->
+            <div class="user-info">
+                <div class="user-name">Alishba Amna</div>
+                <div class="user-title">Graphic Designer</div>
+            </div>
+
+            <!-- Details Section -->
+            <div class="details-wrapper">
+                <div class="details-grid">
+                    <div class="detail-label">Code</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">+00000000</div>
+
+                    <div class="detail-label">Blood</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">A+</div>
+
+                    <div class="detail-label">DOB</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">Date-Month-Year</div>
+
+                    <div class="detail-label">Join</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">Date-Month-Year</div>
+
+                    <div class="detail-label">Expire</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">Date-Month-Year</div>
+
+                    <!-- Spacing gap as seen in the image -->
+                    <div class="spacer"></div>
+                    <div class="spacer"></div>
+                    <div class="spacer"></div>
+
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">+000 000 000</div>
+
+                    <div class="detail-label">E-mail</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">alishba@gmail.com</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abstract Flat Blue ID Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d1d5db; /* Grey presentation background */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * Proportions scaled to standard CR80 vertical dimensions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px; /* Subtle rounding for physical card look */
+        }
+
+        /* 
+         * SVG Background for Exact Geometric Shapes & Waves
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Foreground Content Wrapper
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Logo Section (Top Left) */
+        .logo-area {
+            position: absolute;
+            top: 60px;
+            left: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .logo-tagline {
+            font-size: 11px;
+            font-weight: 400;
+            color: #cbd5e1;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 12px solid #27aae1; /* Bright Blue Border */
+            background-color: #c4c4c4; /* Grey Background */
+            position: absolute;
+            top: 270px; /* Perfectly aligned to straddle the waves */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-pic svg {
+            width: 85%;
+            height: 85%;
+            transform: translateY(10px); /* Centers the silhouette beautifully */
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 520px; /* Pushes content below the profile picture */
+            text-align: center;
+        }
+
+        .user-name {
+            font-size: 38px;
+            font-weight: 800;
+            color: #273240;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .user-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #5b6770;
+            margin-top: 5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Details Information Grid */
+        .details-wrapper {
+            width: 65%;
+            margin-top: 45px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 80px 40px auto;
+            row-gap: 15px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #4a5568;
+            align-items: center;
+        }
+
+        .detail-label {
+            text-transform: uppercase;
+            color: #273240;
+        }
+
+        .detail-dash {
+            text-align: center;
+        }
+
+        .detail-value {
+            text-transform: uppercase;
+        }
+
+        /* Barcode Area */
+        .barcode-container {
+            width: 70%;
+            height: 60px;
+            border: 3px solid #27aae1;
+            margin-top: 45px;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            background-color: #ffffff;
+        }
+
+        .bar {
+            background-color: #273240;
+            height: 100%;
+        }
+
+        /* Barcode Width Utility Classes */
+        .w-1 { width: 2px; }
+        .w-2 { width: 4px; }
+        .w-3 { width: 6px; }
+        .w-4 { width: 8px; }
+
+        /* Solid Footer Strip */
+        .footer {
+            height: 40px;
+            background-color: #27aae1;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- TOP RIGHT GEOMETRY -->
+                <!-- Small Dark Navy Triangle -->
+                <polygon points="510,0 600,0 600,90" fill="#273240" />
+                <!-- Thick Bright Blue Diagonal Stripe -->
+                <polygon points="360,0 510,0 600,90 600,240" fill="#27aae1" />
+
+                <!-- LEFT SIDE SWOOPING WAVES -->
+                <!-- Layer 1: Bottom Light Blue Wave -->
+                <path d="M 0,0 L 320,0 L 500,180 C 400,450 200,550 0,480 Z" fill="#27aae1" />
+                <!-- Layer 2: Middle Medium Blue Wave -->
+                <path d="M 0,0 L 320,0 L 470,150 C 350,350 150,450 0,350 Z" fill="#005fa3" />
+                <!-- Layer 3: Top Dark Navy Base -->
+                <path d="M 0,0 L 320,0 L 440,120 C 300,280 100,350 0,250 Z" fill="#273240" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Logo area replicating the concentric circular C-shape -->
+            <div class="logo-area">
+                <svg width="60" height="60" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="16" fill="none" stroke="#27aae1" stroke-width="8" stroke-dasharray="75 25" stroke-dashoffset="15" stroke-linecap="round"/>
+                    <circle cx="25" cy="25" r="6" fill="#27aae1" />
+                    <circle cx="43" cy="36" r="4" fill="#27aae1" />
+                </svg>
+                <div class="logo-text">Logo</div>
+                <div class="logo-tagline">Tagline Goes Here</div>
+            </div>
+
+            <!-- Profile Placeholder (Exact Silhouette Match) -->
+            <div class="profile-pic">
+                <svg viewBox="0 0 100 100">
+                    <path d="M50,15 C38,15 32,25 32,40 C32,55 38,63 50,63 C62,63 68,55 68,40 C68,25 62,15 50,15 Z M50,67 C35,67 25,77 15,95 L85,95 C75,77 65,67 50,67 Z" fill="#303841"/>
+                </svg>
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">Your Name</div>
+                <div class="user-title">Your Position</div>
+            </div>
+
+            <!-- Information Grid -->
+            <div class="details-wrapper">
+                <div class="details-grid">
+                    <div class="detail-label">ID</div>
+                    <div class="detail-dash">-</div>
+                    <div class="detail-value">00000000</div>
+
+                    <div class="detail-label">DOB</div>
+                    <div class="detail-dash">-</div>
+                    <div class="detail-value">DD/MM/YY</div>
+
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-dash">-</div>
+                    <div class="detail-value">000-0000-0000</div>
+
+                    <div class="detail-label">Email</div>
+                    <div class="detail-dash">-</div>
+                    <div class="detail-value">youremail@here.com</div>
+                </div>
+            </div>
+
+            <!-- Simulated Barcode Box -->
+            <div class="barcode-container">
+                <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-4"></div>
+                <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+                <div class="bar w-1"></div><div class="bar w-2"></div><div class="bar w-4"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-4"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-1"></div><div class="bar w-4"></div><div class="bar w-2"></div>
+                <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+            </div>
+
+        </div>
+
+        <!-- Base Footer Strip -->
+        <div class="footer"></div>
+
+    </div>
+
+</body>
+</html>

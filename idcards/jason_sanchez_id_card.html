@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Manager ID Card</title>
+    <!-- Using Montserrat for the clean, professional geometric sans-serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e5e7eb;
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SVG Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Foreground Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo */
+        .header-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .logo-icon {
+            width: 65px;
+            height: 65px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .logo-title {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+            font-weight: 500;
+            color: #a8d5eb;
+            letter-spacing: 2px;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            border: 8px solid #24587a; /* Dark Blue Border */
+            position: absolute;
+            top: 230px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f1f5f9;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 400px; /* Adjust spacing to clear profile pic */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 34px;
+            font-weight: 800;
+            color: #24587a; /* Dark Navy Blue */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .user-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #42a1cf; /* Light Blue */
+            margin-top: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Details Block */
+        .info-grid {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 85px 20px auto;
+            row-gap: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #24587a;
+            align-items: center;
+        }
+
+        .info-label {
+            text-align: left;
+        }
+
+        .info-colon {
+            text-align: center;
+        }
+
+        .info-value {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        /* Barcode Area */
+        .barcode-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .barcode-bars {
+            height: 70px;
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bar {
+            background-color: #3f4e5a;
+            height: 100%;
+        }
+
+        /* Barcode Width Classes */
+        .w-1 { width: 2px; }
+        .w-2 { width: 4px; }
+        .w-3 { width: 6px; }
+        .w-4 { width: 8px; }
+        .w-5 { width: 10px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- Bottom Layer: Light Blue Swoosh -->
+                <path d="M 0,350 C 150,550 400,250 600,550 L 600,0 L 0,0 Z" fill="#2ab0e1" />
+                
+                <!-- Middle Layer: Bright Blue Swoosh -->
+                <path d="M 0,250 C 200,550 450,200 600,450 L 600,0 L 0,0 Z" fill="#0077b6" />
+                
+                <!-- Top Layer: Dark Blue Main Swoosh -->
+                <path d="M 0,150 C 200,450 450,150 600,350 L 600,0 L 0,0 Z" fill="#24587a" />
+                
+                <!-- Top-Left Corner Accent: Dark Blue Swoop -->
+                <path d="M 0,550 C 150,450 200,100 0,0 Z" fill="#24587a" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="header-area">
+                <!-- Recreating the Stylized 'A' Logo SVG -->
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100">
+                        <!-- Background Circle Highlight -->
+                        <path d="M 50,10 A 40,40 0 0,1 90,50 L 10,50 A 40,40 0 0,1 50,10 Z" fill="#a8d5eb" opacity="0.3" />
+                        <!-- Left Leg of A -->
+                        <path d="M 50,15 L 20,80 C 20,80 30,70 40,80 L 50,40 Z" fill="#a8d5eb" />
+                        <!-- Right Leg & Crossbar of A -->
+                        <path d="M 50,15 L 80,80 C 80,80 70,70 60,80 L 35,50 L 55,50 Z" fill="#ffffff" />
+                    </svg>
+                </div>
+                <div class="logo-text-group">
+                    <div class="logo-title">LOGO TEXT</div>
+                    <div class="logo-subtitle">BUSINESS TAGLINE</div>
+                </div>
+            </div>
+
+            <!-- Profile Picture Placeholder -->
+            <div class="profile-pic">
+                <!-- Recreating the illustrated avatar feel with a placeholder -->
+                <img src="https://img.freepik.com/premium-vector/businessman-avatar-illustration-vector-design_370082-969.jpg?w=600" alt="Jason Sanchez">
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">JASON SANCHEZ</div>
+                <div class="user-title">CORPORATE MANAGER</div>
+            </div>
+
+            <!-- Details Block -->
+            <div class="info-grid">
+                <div class="info-label">ID No</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">00000000</div>
+
+                <div class="info-label">Blood</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">A+</div>
+
+                <div class="info-label">Email</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">mail@domain.com</div>
+
+                <div class="info-label">Phone</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">000-000-00</div>
+            </div>
+
+            <!-- Barcode Area -->
+            <div class="barcode-container">
+                <div class="barcode-bars">
+                    <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-4"></div>
+                    <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+                    <div class="bar w-1"></div><div class="bar w-5"></div><div class="bar w-2"></div>
+                    <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                    <div class="bar w-4"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                    <div class="bar w-2"></div><div class="bar w-5"></div><div class="bar w-1"></div>
+                    <div class="bar w-1"></div><div class="bar w-4"></div><div class="bar w-2"></div>
+                    <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                    <div class="bar w-4"></div><div class="bar w-2"></div><div class="bar w-3"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

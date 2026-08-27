@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" width="100%" height="100%">
+  <rect width="600" height="1000" fill="#ffffff"/>
+  <!-- Top Diagonal Dark Navy Block -->
+  <path d="M0,0 L400,0 L600,240 L600,380 L0,380 Z" fill="#1b2a47"/>
+  <!-- Cyan Accent Diagonal Stripes -->
+  <polygon points="240,0 420,0 600,210 600,380 440,380 140,0" fill="#00a3e0"/>
+  <!-- Flowing Bottom Layer Arc -->
+  <path d="M0,280 C200,280 150,490 0,490 Z" fill="#00a3e0" opacity="0.85"/>
+  <!-- Bottom Solid Cyan Bar -->
+  <rect x="0" y="920" width="600" height="80" fill="#38b6ff"/>
+</svg>

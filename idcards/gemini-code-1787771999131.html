@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphicsFamily ID Card</title>
+    <!-- Using Montserrat for the clean, professional aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #d1d5db;
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Main Card Container
+         * CR80 Proportions (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Hole Punch */
+        .hole-punch {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 25px;
+            background-color: #b0b0b0;
+            border-radius: 50%;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+
+        /* SVG Background Shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Foreground Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Header / Logo */
+        .header-area {
+            position: absolute;
+            top: 50px;
+            left: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text {
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-text span {
+            color: #a0a0a0;
+            font-weight: 600;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 10px solid #2a8ec4; /* Vibrant Blue Border */
+            position: absolute;
+            top: 190px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 480px; /* Pushes text below profile picture */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-name {
+            font-size: 46px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .name-first {
+            color: #000000;
+            font-weight: 800;
+        }
+        
+        .name-last {
+            color: #2a8ec4; /* Matching Blue */
+            font-weight: 400;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: #333333;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .title-container::before,
+        .title-container::after {
+            content: '';
+            width: 35px;
+            height: 2px;
+            background-color: #333333;
+        }
+
+        /* Details Block */
+        .info-grid {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 80px 20px auto;
+            row-gap: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            align-items: center;
+        }
+
+        .info-label {
+            text-align: left;
+        }
+
+        .info-colon {
+            text-align: center;
+        }
+
+        .info-value {
+            text-align: right;
+            font-weight: 500;
+            color: #555555;
+        }
+
+        /* Barcode Area */
+        .barcode-container {
+            margin-top: 35px;
+            position: relative;
+            width: 70%;
+            border: 2px solid #000000;
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .bar {
+            background-color: #000000;
+            height: 100%;
+        }
+
+        /* Barcode Width Classes */
+        .w-1 { width: 2px; }
+        .w-2 { width: 4px; }
+        .w-3 { width: 6px; }
+        .w-4 { width: 8px; }
+
+        /* The PIN text interrupts the bottom border */
+        .barcode-text {
+            position: absolute;
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            padding: 0 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer URL */
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+            letter-spacing: 0.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <div class="hole-punch"></div>
+
+        <!-- Precision Geometric Background Shapes -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- SIDE BLUE CURVES -->
+                
+                <!-- Left Dark Blue Base -->
+                <path d="M 0,250 Q 250,500 0,800 Z" fill="#1b6096" />
+                <!-- Left Light Blue Highlight -->
+                <path d="M 0,350 Q 180,500 0,700 Z" fill="#2a8ec4" />
+
+                <!-- Right Dark Blue Base -->
+                <path d="M 600,250 Q 350,500 600,800 Z" fill="#1b6096" />
+                <!-- Right Light Blue Highlight -->
+                <path d="M 600,350 Q 420,500 600,700 Z" fill="#2a8ec4" />
+
+                <!-- TOP BLACK 'V' SHAPE DROPDOWN -->
+                <!-- Dark Grey Inner Drop Shadow Layer -->
+                <path d="M 0,0 L 600,0 L 600,280 L 390,480 Q 300,560 210,480 L 0,280 Z" fill="#1c2124" />
+                <!-- Pure Black Front Layer -->
+                <path d="M 0,0 L 600,0 L 600,250 L 370,450 Q 300,520 230,450 L 0,250 Z" fill="#0a0a0a" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Header/Logo area -->
+            <div class="header-area">
+                <!-- Recreating the GraphicsFamily abstract colorful logo -->
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100">
+                        <!-- Left Orange/Yellow U-shape -->
+                        <path d="M 30,10 L 30,70 Q 30,90 50,90 Q 70,90 70,70 L 70,55" fill="none" stroke="url(#orangeGrad)" stroke-width="15" stroke-linecap="round"/>
+                        <!-- Top Red Dot -->
+                        <circle cx="30" cy="15" r="10" fill="#d93b3b" />
+                        <!-- Right Purple/Cyan overlay shape -->
+                        <path d="M 70,40 L 70,70" fill="none" stroke="#2a8ec4" stroke-width="15" stroke-linecap="round"/>
+                        <circle cx="70" cy="35" r="10" fill="#295bb8" />
+                        <circle cx="70" cy="80" r="10" fill="#2a8ec4" />
+                        
+                        <defs>
+                            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#e66825" />
+                                <stop offset="100%" stop-color="#e6c425" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">GRAPHICS<span>FAMILY</span></div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="profile-pic">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Profile Picture">
+            </div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">
+                    <span class="name-first">Angel</span> <span class="name-last">Rose</span>
+                </div>
+                <div class="title-container">Graphic Designer</div>
+            </div>
+
+            <!-- Details Block -->
+            <div class="info-grid">
+                <div class="info-label">ID No</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">0000012345678910</div>
+
+                <div class="info-label">Phone</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">+880 1931 034992</div>
+
+                <div class="info-label">Blood</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">B+</div>
+
+                <div class="info-label">E-mail</div>
+                <div class="info-colon">:</div>
+                <div class="info-value">example@gmail.com</div>
+            </div>
+
+            <!-- Barcode Area -->
+            <div class="barcode-container">
+                <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-4"></div>
+                <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+                <div class="bar w-1"></div><div class="bar w-2"></div><div class="bar w-4"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-4"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-2"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+                <div class="bar w-1"></div><div class="bar w-4"></div><div class="bar w-2"></div>
+                <div class="bar w-3"></div><div class="bar w-1"></div><div class="bar w-2"></div>
+                <div class="bar w-4"></div>
+                
+                <div class="barcode-text">PIN : 4905602</div>
+            </div>
+
+            <!-- Footer URL -->
+            <div class="footer">www.graphicsfamily.com</div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Professional ID Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #6b7075; /* Background for presentation matching the image edge */
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+        }
+
+        /* 
+         * Exact Proportions Requested (600x950)
+         */
+        .id-card {
+            width: 600px;
+            height: 950px;
+            background-color: #ffffff; /* Middle section background */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * SVG Background for Exact Layered Waves
+         */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-shapes svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+         * Main Content Layout 
+         */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Logo Section (Top Left) */
+        .logo-area {
+            position: absolute;
+            top: 65px;
+            left: 55px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 26px;
+            height: 26px;
+            background-color: #cfd3d6;
+            transform: rotate(45deg);
+            margin-bottom: 20px;
+        }
+
+        .logo-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .logo-tagline {
+            font-size: 10px;
+            font-weight: 400;
+            color: #aeb4b8;
+            letter-spacing: 2.5px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 12px solid #ffffff;
+            background-color: #c0c3c7; /* Light grey placeholder */
+            position: relative;
+            margin-top: 170px; /* Positions perfectly over the grey wave */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Typography Block (Name & Title) */
+        .typography-area {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        .user-name {
+            font-size: 34px;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: 0.5px;
+        }
+
+        .user-title {
+            font-size: 21px;
+            font-weight: 400;
+            color: #111827;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Details Information Grid */
+        .details-wrapper {
+            width: 65%;
+            margin-top: 45px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 80px 30px auto;
+            row-gap: 22px;
+            font-size: 20px;
+            font-weight: 500;
+            color: #111827;
+            align-items: center;
+        }
+
+        .detail-label {
+            text-align: left;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-colon {
+            text-align: center;
+        }
+
+        .detail-value {
+            text-align: left;
+            letter-spacing: 0.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        
+        <!-- Precision Geometric S-Curves & Borders -->
+        <div class="bg-shapes">
+            <svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- ================= TOP SHAPES ================= -->
+                
+                <!-- Orange Stroke Outline (Drawn behind the grey fill to create a perfect outer border) -->
+                <path d="M 0,380 C 100,240 220,440 350,440 C 480,440 550,290 600,240 L 600,0 L 0,0 Z" 
+                      fill="none" stroke="#e88b00" stroke-width="14" />
+                
+                <!-- Dark Grey Base Layer -->
+                <path d="M 0,380 C 100,240 220,440 350,440 C 480,440 550,290 600,240 L 600,0 L 0,0 Z" 
+                      fill="#4a4c4f" />
+                
+                <!-- Orange Diagonal Triangle (Drawn on top of the grey) -->
+                <polygon points="280,0 600,0 600,245" fill="#e88b00" />
+                
+                
+                <!-- ================= BOTTOM SHAPES ================= -->
+                
+                <!-- Orange Stroke Outline -->
+                <path d="M 0,860 C 120,740 250,760 400,850 C 500,910 600,830 600,830 L 600,950 L 0,950 Z" 
+                      fill="none" stroke="#e88b00" stroke-width="14" />
+                
+                <!-- Dark Grey Base Layer -->
+                <path d="M 0,860 C 120,740 250,760 400,850 C 500,910 600,830 600,830 L 600,950 L 0,950 Z" 
+                      fill="#4a4c4f" />
+
+            </svg>
+        </div>
+
+        <div class="content">
+            
+            <!-- Logo area with vertical alignment -->
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <div class="logo-title">COMPANY</div>
+                <!-- Preserving the specific spelling from the original design image -->
+                <div class="logo-tagline">TAG LINE GOSE HERE</div>
+            </div>
+
+            <!-- Profile Picture Placeholder -->
+            <div class="profile-pic"></div>
+
+            <!-- Typography -->
+            <div class="typography-area">
+                <div class="user-name">Your Name Here</div>
+                <div class="user-title">Job Position</div>
+            </div>
+
+            <!-- Information Grid -->
+            <div class="details-wrapper">
+                <div class="details-grid">
+                    <div class="detail-label">ID</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">AA-083333</div>
+
+                    <div class="detail-label">DOB</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">MM/DD/YY</div>
+
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">123456789001</div>
+
+                    <div class="detail-label">Email</div>
+                    <div class="detail-colon">:</div>
+                    <div class="detail-value">You Mail Address</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
