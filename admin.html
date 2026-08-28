@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qcard by Shamim4s - Generator</title>
 <link rel="stylesheet" href="style.css">
-<!-- Google Sign-In SDK -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   .auth-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
@@ -18,6 +17,14 @@
   .edit-tag { background: #fffae6; color: #8a6d3b; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 10px; }
   .section-divider { font-size: 14px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
   .input-grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
+
+  /* Generator Grid Layout */
+  .generator-grid {
+    display: grid;
+    grid-template-columns: 6.7in 4in;
+    gap: 20px;
+    justify-content: center;
+  }
 
   /* Custom Template Grid Styling */
   .template-grid { 
@@ -77,7 +84,6 @@
 </head>
 <body>
 
-<!-- Google Auth Modal -->
 <div id="authOverlay" class="auth-overlay">
   <div class="auth-box">
     <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" class="eyebrow" style="text-decoration:none;">Qcard by Shamim4s</a>
@@ -167,7 +173,6 @@
         <input id="company" placeholder="Company name">
       </div>
 
-      <!-- CompanyTitle Field directly below Company Name -->
       <div class="form-group">
         <label for="companyTitle">Company Title</label>
         <input id="companyTitle" placeholder="Chartered Accountants / Solutions Pvt. Ltd.">
@@ -286,7 +291,6 @@
         <div class="field-help">Optimized for iOS/Android native contacts and Google Sheet storage.</div>
       </div>
 
-      <!-- Theme & Layout Selectors -->
       <div class="section-divider">Design & Theme Appearance</div>
 
       <div class="form-group">
@@ -348,14 +352,11 @@
             <tr>
               <th>Avatar</th>
               <th>Name</th>
-              <th>Slug</th>
-              <th>Layout</th>
-              <th>ID Card</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="profilesTableBody">
-            <tr><td colspan="6">Loading profiles...</td></tr>
+            <tr><td colspan="3">Loading profiles...</td></tr>
           </tbody>
         </table>
       </div>
@@ -521,7 +522,7 @@ function generateRandom3Char() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < 3; i++) {
-    result += chars.length ? chars.charAt(Math.floor(Math.random() * chars.length)) : "";
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
 }
@@ -791,7 +792,6 @@ async function generate() {
     const currentSlug = normalizeSlug(safeValue("slug")) || generateRandom3Char();
     currentProfileUrl = getProfileUrl(currentSlug);
 
-    // Generate local QR Code with qrcode.min.js
     const qrPayload = currentMode === "online"
       ? currentProfileUrl
       : "BEGIN:VCARD\r\nVERSION:3.0\r\nFN:" + safeValue("name") + "\r\nTEL:" + safeValue("mobile") + "\r\nEND:VCARD";
@@ -873,7 +873,7 @@ async function loadProfilesTable() {
     tbody.innerHTML = "";
 
     if (!json.data || json.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6">No profiles found for your account.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="3">No profiles found for your account.</td></tr>';
       return;
     }
 
@@ -884,9 +884,6 @@ async function loadProfilesTable() {
       tr.innerHTML = `
         <td><img src="${avatarSrc}" class="table-avatar"></td>
         <td><strong>${p.name || ''}</strong></td>
-        <td><code>${p.id}</code></td>
-        <td><small>${p.templateId || 'modern-template-blue'}</small></td>
-        <td><small>${p.cardName || 'None'}</small></td>
         <td>
           <div class="action-btns">
             <button class="btn small-btn primary" onclick='editProfile(${JSON.stringify(p)})'>Edit</button>
@@ -897,7 +894,7 @@ async function loadProfilesTable() {
       tbody.appendChild(tr);
     });
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="6" style="color:red;">Error loading profiles from Sheet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" style="color:red;">Error loading profiles from Sheet.</td></tr>';
   }
 }
 
