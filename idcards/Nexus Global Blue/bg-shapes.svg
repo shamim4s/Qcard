@@ -1,0 +1,17 @@
+<svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                <!-- TOP BRIGHT BLUE LAYER (Behind Navy) -->
+                <!-- Left swoop -->
+                <path d="M 0,160 Q 150,220 300,280 L 0,280 Z" fill="#008be5"></path>
+                <!-- Right large angular drop -->
+                <path d="M 300,280 L 600,140 L 600,550 L 300,280 Z" fill="#008be5"></path>
+                
+                <!-- TOP DARK NAVY BASE -->
+                <!-- V shape dropping in the center -->
+                <path d="M 0,0 L 600,0 L 600,140 L 300,280 L 0,160 Z" fill="#050f3b"></path>
+
+                <!-- BOTTOM WAVES -->
+                <!-- Bright Blue Wave (Behind Navy) -->
+                <path d="M 300,950 Q 450,850 600,900 L 600,950 Z" fill="#008be5"></path>
+                <!-- Dark Navy Bottom Wave -->
+                <path d="M 0,950 L 600,950 L 600,920 Q 450,840 300,890 Q 150,940 0,850 Z" fill="#050f3b"></path>
+            </svg>
