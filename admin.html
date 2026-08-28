@@ -23,7 +23,7 @@
   .template-grid { 
     display: flex; 
     flex-wrap: wrap;
-    gap: 8px; 
+    gap: 12px; 
     margin-top: 8px; 
   }
 
@@ -37,14 +37,18 @@
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    width: 90px;
+    width: 105px;
     overflow: hidden;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease, z-index 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    z-index: 1;
   }
 
   .template-card:hover { 
-    transform: scale(1.05); 
+    transform: scale(2.05); 
     border-color: var(--primary);
+    z-index: 99;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.6);
   }
 
   .template-card.active { 
@@ -55,7 +59,7 @@
 
   .template-thumb { 
     width: 100%; 
-    height: 55px; 
+    height: 156px; 
     object-fit: cover; 
     border-radius: 4px; 
     margin-bottom: 4px; 
@@ -189,9 +193,9 @@
       </div>
 
       <div class="form-group">
-        <label for="companyLogo">Company Logo</label>
+        <label for="companyLogo">Company Logo (Transparent Supported)</label>
         <input id="companyLogo" type="file" accept="image/*">
-        <div class="field-help">Uploaded logo is automatically resized and encoded.</div>
+        <div class="field-help">PNG transparency is fully preserved for modern logo rendering.</div>
       </div>
 
       <div class="section-divider">Personal Contact Details</div>
@@ -564,7 +568,8 @@ function getProfileUrl(slug) {
   return `${baseUrl}?id=${encodeURIComponent(slug)}`;
 }
 
-function processImageToVCardBase64(file, maxSize = 720, quality = 0.75) {
+// Transparent-aware image processor
+function processImageToVCardBase64(file, maxSize = 720, quality = 0.8, keepTransparency = false) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
     const reader = new FileReader();
@@ -584,10 +589,17 @@ function processImageToVCardBase64(file, maxSize = 720, quality = 0.75) {
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        
+        if (keepTransparency || file.type.includes('png') || file.type.includes('svg')) {
+          ctx.clearRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/png'));
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        }
       };
       img.onerror = () => reject(new Error("Could not read image."));
       img.src = e.target.result;
@@ -761,12 +773,13 @@ async function generate() {
   try {
     const photoFile = $("photo").files[0];
     if (photoFile) {
-      cachedPhotoBase64 = await processImageToVCardBase64(photoFile);
+      cachedPhotoBase64 = await processImageToVCardBase64(photoFile, 720, 0.75, false);
     }
 
     const logoFile = $("companyLogo").files[0];
     if (logoFile) {
-      cachedLogoBase64 = await processImageToVCardBase64(logoFile, 400, 0.7);
+      // Keep transparency for company logos
+      cachedLogoBase64 = await processImageToVCardBase64(logoFile, 500, 0.8, true);
     }
 
     const profile = buildProfile();
