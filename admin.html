@@ -27,6 +27,32 @@
     justify-content: center;
   }
 
+  /* Distinct Section Separation Boxes */
+  .design-block-container {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .design-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .design-block-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
   /* Custom Template & ID-Card Grid Styling */
   .template-grid { 
     display: flex; 
@@ -293,20 +319,24 @@
         <div class="field-help">Optimized for iOS/Android native contacts and Google Sheet storage.</div>
       </div>
 
-      <!-- Theme & Layout Selectors -->
       <div class="section-divider">Design & Theme Appearance</div>
 
-      <div class="form-group">
-        <label>Design Layout (from Sheet)</label>
+      <!-- 1. Design Layout Block -->
+      <div class="design-block-container" style="border-left: 4px solid var(--primary);">
+        <div class="design-block-header">
+          <span class="design-block-title">📱 Profile Design Layout (From Design Sheet)</span>
+        </div>
         <input type="hidden" id="templateId" value="modern-template-blue">
         <div id="templateGrid" class="template-grid">
           <div style="font-size:12px; color:var(--text-muted);">Loading layouts from sheet...</div>
         </div>
       </div>
 
-      <!-- Visual ID-Card Layout Grid -->
-      <div class="form-group">
-        <label>ID-Card Design Layout (from ID-Card Sheet)</label>
+      <!-- 2. ID-Card Design Layout Block -->
+      <div class="design-block-container" style="border-left: 4px solid #38bdf8;">
+        <div class="design-block-header">
+          <span class="design-block-title" style="color: #38bdf8;">🪪 ID-Card Layout (From ID-Card Sheet)</span>
+        </div>
         <input type="hidden" id="cardName" value="">
         <div id="idCardGrid" class="template-grid">
           <div style="font-size:12px; color:var(--text-muted);">Loading ID cards from sheet...</div>
