@@ -19,7 +19,7 @@
   .section-divider { font-size: 14px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
   .input-grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
 
-  /* User Specified CSS Customizations */
+  /* Custom Template Grid Styling */
   .template-grid { 
     display: flex; 
     flex-wrap: wrap;
@@ -167,6 +167,12 @@
         <input id="company" placeholder="Company name">
       </div>
 
+      <!-- CompanyTitle Field directly below Company Name -->
+      <div class="form-group">
+        <label for="companyTitle">Company Title</label>
+        <input id="companyTitle" placeholder="Chartered Accountants / Solutions Pvt. Ltd.">
+      </div>
+
       <div class="form-group">
         <label for="companyWebsite">Company Website</label>
         <input id="companyWebsite" placeholder="www.company.com">
@@ -193,7 +199,7 @@
       </div>
 
       <div class="form-group">
-        <label for="companyLogo">Company Logo (Transparent Supported)</label>
+        <label for="companyLogo">Company Logo</label>
         <input id="companyLogo" type="file" accept="image/*">
         <div class="field-help">PNG transparency is fully preserved for modern logo rendering.</div>
       </div>
@@ -515,7 +521,7 @@ function generateRandom3Char() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < 3; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += chars.length ? chars.charAt(Math.floor(Math.random() * chars.length)) : "";
   }
   return result;
 }
@@ -568,7 +574,6 @@ function getProfileUrl(slug) {
   return `${baseUrl}?id=${encodeURIComponent(slug)}`;
 }
 
-// Transparent-aware image processor
 function processImageToVCardBase64(file, maxSize = 720, quality = 0.8, keepTransparency = false) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
@@ -711,7 +716,7 @@ function generateQR(payload) {
   }
 }
 
-function buildProfile() {
+function buildProfile(generatedQrBase64) {
   if (!safeValue("slug")) updateRealtimeSlug();
   const name = safeValue("name");
   const slug = normalizeSlug(safeValue("slug"));
@@ -728,6 +733,7 @@ function buildProfile() {
     bloodGroup: safeValue("bloodGroup"),
     jobTitle: safeValue("jobTitle"),
     company: safeValue("company"),
+    companyTitle: safeValue("companyTitle"),
     companyWebsite: normalizeUrl(safeValue("companyWebsite")),
     companyEmail: safeValue("companyEmail"),
     companyPhone: safeValue("companyPhone"),
@@ -756,7 +762,8 @@ function buildProfile() {
     tiktok: normalizeUrl(safeValue("tiktok")),
     youtube: normalizeUrl(safeValue("youtube")),
     github: normalizeUrl(safeValue("github")),
-    photo: cachedPhotoBase64
+    photo: cachedPhotoBase64,
+    qrCode: generatedQrBase64 || ""
   };
 }
 
@@ -778,14 +785,22 @@ async function generate() {
 
     const logoFile = $("companyLogo").files[0];
     if (logoFile) {
-      // Keep transparency for company logos
       cachedLogoBase64 = await processImageToVCardBase64(logoFile, 500, 0.8, true);
     }
 
-    const profile = buildProfile();
+    const currentSlug = normalizeSlug(safeValue("slug")) || generateRandom3Char();
+    currentProfileUrl = getProfileUrl(currentSlug);
+
+    // Generate local QR Code with qrcode.min.js
+    const qrPayload = currentMode === "online"
+      ? currentProfileUrl
+      : "BEGIN:VCARD\r\nVERSION:3.0\r\nFN:" + safeValue("name") + "\r\nTEL:" + safeValue("mobile") + "\r\nEND:VCARD";
+
+    const qrBase64DataUrl = generateQR(qrPayload);
+
+    const profile = buildProfile(qrBase64DataUrl);
     currentProfile = profile;
     currentVCard = createVCard(profile);
-    currentProfileUrl = getProfileUrl(profile.id);
 
     $("previewName").textContent = profile.name;
     $("previewJob").textContent = profile.jobTitle || "";
@@ -798,12 +813,6 @@ async function generate() {
       $("previewPhoto").removeAttribute("src");
       $("previewPhoto").classList.add("hidden");
     }
-
-    const qrPayload = currentMode === "online"
-      ? currentProfileUrl
-      : createVCard(profile, { includePhoto: false });
-
-    generateQR(qrPayload);
 
     if (currentMode === "online") {
       $("profileUrl").textContent = currentProfileUrl;
@@ -903,6 +912,7 @@ window.editProfile = function(profile) {
   $("bloodGroup").value = profile.bloodGroup || "";
   $("jobTitle").value = profile.jobTitle || "";
   $("company").value = profile.company || "";
+  $("companyTitle").value = profile.companyTitle || "";
   $("companyWebsite").value = profile.companyWebsite || "";
   $("companyEmail").value = profile.companyEmail || "";
   $("companyPhone").value = profile.companyPhone || "";

@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="style.css">
 <!-- html2pdf.js for vector-grade PDF download -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- Offline QR Code Generator -->
+<script src="qrcode.min.js"></script>
 <!-- ID Card Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Slab:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -215,6 +217,23 @@ function renderTemplate(templateString, context) {
   return output;
 }
 
+function generateOfflineQrBase64(url) {
+  try {
+    if (window.qrcode) {
+      if (qrcode.stringToBytesFuncs && qrcode.stringToBytesFuncs["UTF-8"]) {
+        qrcode.stringToBytes = qrcode.stringToBytesFuncs["UTF-8"];
+      }
+      const qr = qrcode(0, "L");
+      qr.addData(url);
+      qr.make();
+      return qr.createDataURL(6, 0);
+    }
+  } catch(e) {
+    console.warn("QR code generation error", e);
+  }
+  return "";
+}
+
 function renderProfile(profile) {
   if (!profile) return;
   document.title = (profile.name || "Contact") + " - Qcard by Shamim4s";
@@ -226,8 +245,9 @@ function renderProfile(profile) {
   }
 
   const socialLinksHtml = generateSocialLinksHtml(profile);
-  const currentUrl = window.location.href;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(currentUrl)}`;
+  
+  // Fallback to offline generated QR if sheet cell was empty
+  const qrCodeData = profile.qrCode || generateOfflineQrBase64(window.location.href);
 
   const context = {
     ...profile,
@@ -236,7 +256,7 @@ function renderProfile(profile) {
     firstChar: escapeHTML((profile.name || "?").charAt(0).toUpperCase()),
     hasSocials: Boolean(socialLinksHtml),
     socialLinksHtml: socialLinksHtml,
-    qrCodeUrl: qrCodeUrl
+    qrCode: qrCodeData
   };
 
   const mainTemplate = profile.templateHtml || `
@@ -250,7 +270,7 @@ function renderProfile(profile) {
 
   let renderedHtml = renderTemplate(mainTemplate, context);
 
-  // If user selected an ID Card theme, render and append it inside the printable card
+  // If user selected an ID Card theme, render and append it inside the printable card container
   if (profile.idCardHtml) {
     const renderedIdCard = renderTemplate(profile.idCardHtml, context);
     if (renderedHtml.includes('id="pdf-content"')) {
