@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qcard by Shamim4s - Generator</title>
 <link rel="stylesheet" href="style.css">
+<!-- Google Sign-In SDK -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   .auth-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999; }
@@ -26,7 +27,7 @@
     justify-content: center;
   }
 
-  /* Custom Template Grid Styling */
+  /* Custom Template & ID-Card Grid Styling */
   .template-grid { 
     display: flex; 
     flex-wrap: wrap;
@@ -84,6 +85,7 @@
 </head>
 <body>
 
+<!-- Google Auth Modal -->
 <div id="authOverlay" class="auth-overlay">
   <div class="auth-box">
     <a href="https://shamim4s.github.io/" target="_blank" rel="noopener" class="eyebrow" style="text-decoration:none;">Qcard by Shamim4s</a>
@@ -291,6 +293,7 @@
         <div class="field-help">Optimized for iOS/Android native contacts and Google Sheet storage.</div>
       </div>
 
+      <!-- Theme & Layout Selectors -->
       <div class="section-divider">Design & Theme Appearance</div>
 
       <div class="form-group">
@@ -301,11 +304,13 @@
         </div>
       </div>
 
+      <!-- Visual ID-Card Layout Grid -->
       <div class="form-group">
-        <label for="cardName">ID-Card Design Layout (from ID-Card Sheet)</label>
-        <select id="cardName" style="width:100%; background:#0b1329; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text);">
-          <option value="">None (Disable ID Card)</option>
-        </select>
+        <label>ID-Card Design Layout (from ID-Card Sheet)</label>
+        <input type="hidden" id="cardName" value="">
+        <div id="idCardGrid" class="template-grid">
+          <div style="font-size:12px; color:var(--text-muted);">Loading ID cards from sheet...</div>
+        </div>
       </div>
 
       <div class="form-group">
@@ -432,7 +437,7 @@ async function loadTemplatesGrid() {
         `;
 
         card.addEventListener("click", () => {
-          document.querySelectorAll(".template-card").forEach(c => c.classList.remove("active"));
+          document.querySelectorAll("#templateGrid .template-card").forEach(c => c.classList.remove("active"));
           card.classList.add("active");
           $("templateId").value = t.templateId;
         });
@@ -445,7 +450,7 @@ async function loadTemplatesGrid() {
   }
 }
 
-async function loadIdCardsDropdown() {
+async function loadIdCardsGrid() {
   try {
     const res = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
@@ -454,14 +459,48 @@ async function loadIdCardsDropdown() {
       redirect: "follow"
     });
     const json = await res.json();
-    if (json.status === "success" && json.data.length > 0) {
-      const select = $("cardName");
-      select.innerHTML = '<option value="">None (Disable ID Card)</option>';
+    if (json.status === "success") {
+      const container = $("idCardGrid");
+      container.innerHTML = "";
+      
+      const currentSelected = $("cardName").value || "";
+
+      // Default "None" Card Option
+      const noneCard = document.createElement("div");
+      noneCard.className = `template-card ${!currentSelected ? 'active' : ''}`;
+      noneCard.dataset.name = "";
+      noneCard.innerHTML = `
+        <div class="template-thumb" style="display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:12px; font-weight:bold;">🚫 None</div>
+        <span class="template-title">Disable ID Card</span>
+      `;
+      noneCard.addEventListener("click", () => {
+        document.querySelectorAll("#idCardGrid .template-card").forEach(c => c.classList.remove("active"));
+        noneCard.classList.add("active");
+        $("cardName").value = "";
+      });
+      container.appendChild(noneCard);
+
       json.data.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.cardName;
-        opt.textContent = c.cardName;
-        select.appendChild(opt);
+        const card = document.createElement("div");
+        const isSelected = c.cardName === currentSelected;
+        
+        card.className = `template-card ${isSelected ? 'active' : ''}`;
+        card.dataset.name = c.cardName;
+
+        const thumbSrc = c.thumbnail || 'https://via.placeholder.com/120x80?text=ID+Card';
+
+        card.innerHTML = `
+          <img src="${thumbSrc}" class="template-thumb" alt="${c.cardName}">
+          <span class="template-title">${c.cardName}</span>
+        `;
+
+        card.addEventListener("click", () => {
+          document.querySelectorAll("#idCardGrid .template-card").forEach(el => el.classList.remove("active"));
+          card.classList.add("active");
+          $("cardName").value = c.cardName;
+        });
+
+        container.appendChild(card);
       });
     }
   } catch (e) {
@@ -471,8 +510,15 @@ async function loadIdCardsDropdown() {
 
 function selectTemplateById(id) {
   $("templateId").value = id;
-  document.querySelectorAll(".template-card").forEach(c => {
+  document.querySelectorAll("#templateGrid .template-card").forEach(c => {
     c.classList.toggle("active", c.dataset.id === id);
+  });
+}
+
+function selectIdCardByName(name) {
+  $("cardName").value = name || "";
+  document.querySelectorAll("#idCardGrid .template-card").forEach(c => {
+    c.classList.toggle("active", c.dataset.name === (name || ""));
   });
 }
 
@@ -482,7 +528,7 @@ function initAuthUI() {
     $("userBar").classList.remove("hidden");
     $("currentUserEmail").textContent = loggedInUserEmail;
     loadTemplatesGrid();
-    loadIdCardsDropdown();
+    loadIdCardsGrid();
     loadProfilesTable();
   } else {
     $("authOverlay").classList.remove("hidden");
@@ -902,7 +948,7 @@ window.editProfile = function(profile) {
   isEditMode = true;
   $("slug").value = profile.id;
   selectTemplateById(profile.templateId || "modern-template-blue");
-  $("cardName").value = profile.cardName || "";
+  selectIdCardByName(profile.cardName || "");
   $("theme").value = profile.theme || "light";
   $("name").value = profile.name || "";
   $("dob").value = profile.dob ? profile.dob.split("T")[0] : "";
@@ -990,7 +1036,7 @@ function resetForm() {
   updateRealtimeSlug();
   
   $("theme").value = "light";
-  $("cardName").value = "";
+  selectIdCardByName("");
   selectTemplateById("modern-template-blue");
 
   $("previewPhoto").classList.add("hidden");
