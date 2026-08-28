@@ -1,0 +1,21 @@
+<svg svg xmlns=httpwww.w3.org2000svg viewBox="0 0 600 950" preserveAspectRatio="none">
+                
+                <!-- LAYER 1: Dark Slate Base -->
+                <!-- Covers the top and dips into an inverted 'V' in the middle -->
+                <polygon points="0,0 600,0 600,680 300,510 0,680" fill="#2c3e50"></polygon>
+                
+                <!-- LAYER 2: Bright Cyan Main Diagonal -->
+                <!-- Sweeps from top-right to lower-left -->
+                <polygon points="0,0 600,0 600,180 0,580" fill="#00cbf4"></polygon>
+                
+                <!-- LAYER 3: Mid-Teal Top-Right Accent -->
+                <!-- Intersecting geometric triangle -->
+                <polygon points="250,0 600,0 600,380" fill="#0a9cbd"></polygon>
+                
+                <!-- LAYER 4: Dark Slate Top-Right Accent -->
+                <polygon points="450,0 600,0 600,120" fill="#2c3e50"></polygon>
+                
+                <!-- LAYER 5: Mid-Teal Top-Left Accent -->
+                <polygon points="0,0 200,0 0,250" fill="#0a9cbd"></polygon>
+
+            </svg>
